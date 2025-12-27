@@ -10,9 +10,9 @@ export function validateEmail(email: string): ValidationResult {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email) {
-    errors.push('Email is required');
+    errors.push('emailIsRequiredError');
   } else if (!emailRegex.test(email)) {
-    errors.push('Please enter a valid email address');
+    errors.push('invalidEmailAddressError');
   }
 
   return {
@@ -25,15 +25,15 @@ export function validatePassword(password: string): ValidationResult {
   const errors: string[] = [];
 
   if (!password) {
-    errors.push('Password is required');
+    errors.push('passwordIsRequiredError');
   } else if (password.length < 8) {
-    errors.push('Password must be at least 8 characters long');
+    errors.push('passwordMustBeAtLeast8CharactersLong');
   } else if (!/[A-Z]/.test(password)) {
-    errors.push('Password must contain at least one uppercase letter');
+    errors.push('passwordMustContainUppercaseLetter');
   } else if (!/[a-z]/.test(password)) {
-    errors.push('Password must contain at least one lowercase letter');
+    errors.push('passwordMustContainLowercaseLetter');
   } else if (!/\d/.test(password)) {
-    errors.push('Password must contain at least one number');
+    errors.push('passwordMustContainNumber');
   }
 
   return {

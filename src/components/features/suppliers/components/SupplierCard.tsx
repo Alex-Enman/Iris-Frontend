@@ -3,6 +3,7 @@ import { Badge } from '@components/ui/badge';
 import { Avatar, AvatarFallback } from '@components/ui/avatar';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Star, MapPin, Award, TrendingUp } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 type SupplierCardProps = {
   id: string;
@@ -22,6 +23,7 @@ type SupplierCardProps = {
 };
 
 export function SupplierCard(props: SupplierCardProps) {
+  const { t } = useLanguage();
   const {
     id,
     name,
@@ -61,7 +63,7 @@ export function SupplierCard(props: SupplierCardProps) {
           {verified && (
             <Badge className='bg-primary'>
               <Award className='mr-1 h-3 w-3' />
-              Verified
+              {t('verified')}
             </Badge>
           )}
         </div>
@@ -106,7 +108,9 @@ export function SupplierCard(props: SupplierCardProps) {
         </div>
 
         <div className='flex items-center justify-between border-t border-border pt-3 text-sm text-muted-foreground'>
-          <div>{totalProducts} products</div>
+          <div>
+            {totalProducts} {t('products')}
+          </div>
           <div className='flex items-center gap-1'>
             <TrendingUp className='h-3 w-3' />
             {responseTime}

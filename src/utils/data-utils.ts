@@ -1,5 +1,7 @@
 // Data transformation and utility functions
 
+import { getStoredLanguage, t } from '@lib/i18n';
+
 export function transformApiResponse<T>(data: any): T {
   // Transform API response to match frontend expectations
   if (Array.isArray(data)) {
@@ -59,5 +61,5 @@ export function handleApiError(error: any): string {
     return error.message;
   }
 
-  return 'An unexpected error occurred';
+  return t('unexpectedErrorOccurredShort', getStoredLanguage());
 }

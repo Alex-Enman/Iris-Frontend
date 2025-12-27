@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export type RestaurantIdentity = {
   id: string;
@@ -43,69 +44,75 @@ export type RestaurantItem = RestaurantIdentity &
 export type SortBy = 'rating' | 'name' | 'newest';
 
 export function useDiscoverRestaurants() {
+  const language = getStoredLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [cuisineFilter, setCuisineFilter] = useState('all');
   const [locationFilter, setLocationFilter] = useState('all');
   const [sortBy, setSortBy] = useState<SortBy>('rating');
 
+  useEffect(() => {
+    setCuisineFilter('all');
+    setLocationFilter('all');
+  }, [language]);
+
   const allRestaurants: RestaurantItem[] = useMemo(
     () => [
       {
         id: '1',
-        name: 'La Bella Cucina',
-        type: 'Italian Fine Dining',
-        cuisine: 'Italian',
-        location: 'Downtown',
-        distance: '2.5 km away',
+        name: t('restaurantLaBellaCucina', language),
+        type: t('restaurantTypeItalianFineDining', language),
+        cuisine: t('restaurantCuisineItalian', language),
+        location: t('restaurantLocationDowntown', language),
+        distance: t('distance2_5kmAway', language),
         rating: 4.7,
         reviews: 342,
         avatar: '🍝',
         isCustomer: true,
         totalSpent: '€12,500',
-        lastOrder: '2 days ago',
-        orderFrequency: 'Weekly',
+        lastOrder: t('twoDaysAgo', language),
+        orderFrequency: t('weeklyFrequency', language),
         avgOrderValue: '€265',
         status: 'active',
-        memberSince: 'Jan 2024',
+        memberSince: t('memberSinceJan2024', language),
         seatingCapacity: 85,
       },
       {
         id: '2',
-        name: 'The Garden Bistro',
-        type: 'Farm-to-Table',
-        cuisine: 'Contemporary',
-        location: 'Midtown',
-        distance: '4.2 km away',
+        name: t('restaurantTheGardenBistro', language),
+        type: t('restaurantTypeFarmToTable', language),
+        cuisine: t('restaurantCuisineContemporary', language),
+        location: t('restaurantLocationMidtown', language),
+        distance: t('distance4_2kmAway', language),
         rating: 4.9,
         reviews: 567,
         avatar: '🌿',
         isCustomer: false,
         status: 'new',
-        memberSince: 'Sep 2024',
+        memberSince: t('memberSinceSep2024', language),
         seatingCapacity: 60,
         lookingForSuppliers: true,
       },
       {
         id: '3',
-        name: 'Sakura Sushi House',
-        type: 'Japanese Restaurant',
-        cuisine: 'Japanese',
-        location: 'East Side',
-        distance: '3.8 km away',
+        name: t('restaurantSakuraSushiHouse', language),
+        type: t('restaurantTypeJapaneseRestaurant', language),
+        cuisine: t('restaurantCuisineJapanese', language),
+        location: t('restaurantLocationEastSide', language),
+        distance: t('distance3_8kmAway', language),
         rating: 4.8,
         reviews: 421,
         avatar: '🍱',
         isCustomer: true,
         totalSpent: '€8,750',
-        lastOrder: '1 week ago',
-        orderFrequency: 'Bi-weekly',
+        lastOrder: t('oneWeekAgo', language),
+        orderFrequency: t('biWeeklyFrequency', language),
         avgOrderValue: '€175',
         status: 'active',
-        memberSince: 'Mar 2024',
+        memberSince: t('memberSinceMar2024', language),
         seatingCapacity: 50,
       },
     ],
-    []
+    [language]
   );
 
   const filteredRestaurants = useMemo(() => {
@@ -138,8 +145,8 @@ export function useDiscoverRestaurants() {
   }, [allRestaurants, searchQuery, cuisineFilter, locationFilter, sortBy]);
 
   const handleAddToFavorites = (restaurantName: string) => {
-    toast.success('Added to favorites', {
-      description: `${restaurantName} has been added to your favorites`,
+    toast.success(t('addedToFavorites', language), {
+      description: `${restaurantName} ${t('hasBeenAddedToYourFavorites', language)}`,
     });
   };
 

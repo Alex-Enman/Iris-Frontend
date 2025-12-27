@@ -1,3 +1,5 @@
+'use client';
+
 // Certifications form component for edit store dialog
 
 import { Button } from '@components/ui/button';
@@ -7,6 +9,7 @@ import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { X, Plus, Award } from 'lucide-react';
 import { StoreFormData } from '@/types/suppliers/edit-store/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface StoreCertificationsFormProps {
   formData: StoreFormData;
@@ -21,6 +24,7 @@ export function StoreCertificationsForm({
   onAddCertification,
   onRemoveCertification,
 }: StoreCertificationsFormProps) {
+  const { t } = useLanguage();
   const handleAddCertification = () => {
     if (formData.newCertification.trim()) {
       onAddCertification();
@@ -30,18 +34,18 @@ export function StoreCertificationsForm({
   return (
     <div className='space-y-4'>
       <div>
-        <Label htmlFor='newCertification'>Add Certification</Label>
+        <Label htmlFor='newCertification'>{t('addCertification')}</Label>
         <div className='flex space-x-2'>
           <Input
             id='newCertification'
             value={formData.newCertification}
             onChange={e => onUpdate({ newCertification: e.target.value })}
-            placeholder='Enter certification name'
+            placeholder={t('enterCertificationName')}
             onKeyPress={e => e.key === 'Enter' && handleAddCertification()}
           />
           <Button onClick={handleAddCertification}>
             <Plus className='mr-2 h-4 w-4' />
-            Add
+            {t('add')}
           </Button>
         </div>
       </div>
@@ -49,14 +53,14 @@ export function StoreCertificationsForm({
       {formData.certifications.length === 0 ? (
         <Card className='p-8 text-center'>
           <Award className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
-          <h3 className='mb-2 text-lg font-semibold'>No certifications yet</h3>
+          <h3 className='mb-2 text-lg font-semibold'>{t('noCertificationsYet')}</h3>
           <p className='text-muted-foreground'>
-            Add certifications to build trust with your customers
+            {t('addCertificationsToBuildTrustWithYourCustomers')}
           </p>
         </Card>
       ) : (
         <div className='space-y-2'>
-          <h4 className='font-medium'>Current Certifications</h4>
+          <h4 className='font-medium'>{t('currentCertifications')}</h4>
           <div className='flex flex-wrap gap-2'>
             {formData.certifications.map((certification, index) => (
               <Badge
@@ -81,17 +85,16 @@ export function StoreCertificationsForm({
 
       <div className='text-sm text-muted-foreground'>
         <p>
-          Certifications help build trust with customers and can include things
-          like:
+          {t('certificationsHelpIntro')}
         </p>
         <ul className='mt-2 list-inside list-disc space-y-1'>
-          <li>Organic Certified</li>
-          <li>Local Producer</li>
-          <li>Traceable</li>
-          <li>Fair Trade</li>
-          <li>Non-GMO</li>
-          <li>Halal Certified</li>
-          <li>Kosher Certified</li>
+          <li>{t('organicCertified')}</li>
+          <li>{t('localProducer')}</li>
+          <li>{t('traceable')}</li>
+          <li>{t('fairTrade')}</li>
+          <li>{t('nonGmo')}</li>
+          <li>{t('halalCertified')}</li>
+          <li>{t('kosherCertified')}</li>
         </ul>
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 import {
   Card,
   CardContent,
@@ -36,6 +37,7 @@ import {
 } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { language, setLanguage, t } = useLanguage();
   const [settings, setSettings] = useState({
     // Notifications
     emailNotifications: true,
@@ -52,7 +54,7 @@ export default function SettingsPage() {
 
     // Appearance
     theme: 'light',
-    language: 'en',
+    language,
     timezone: 'America/Los_Angeles',
 
     // Preferences
@@ -64,9 +66,20 @@ export default function SettingsPage() {
 
   const [hasChanges, setHasChanges] = useState(false);
 
+  useEffect(() => {
+    setSettings(prev => {
+      if (prev.language === language) return prev;
+      return { ...prev, language };
+    });
+  }, [language]);
+
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
     setHasChanges(true);
+
+    if (key === 'language') {
+      setLanguage(value === 'sv' ? 'sv' : 'en');
+    }
   };
 
   const handleSave = () => {
@@ -80,15 +93,15 @@ export default function SettingsPage() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Settings</h1>
+          <h1 className='text-3xl font-bold tracking-tight'>{t('settings')}</h1>
           <p className='text-muted-foreground'>
-            Manage your account preferences and configuration
+            {t('manageAccountPreferencesDescription')}
           </p>
         </div>
         {hasChanges && (
           <Button onClick={handleSave}>
             <Save className='mr-2 h-4 w-4' />
-            Save Changes
+            {t('saveChanges')}
           </Button>
         )}
       </div>
@@ -99,19 +112,19 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
               <Bell className='h-5 w-5' />
-              Notifications
+              {t('notificationsTitle')}
             </CardTitle>
             <CardDescription>
-              Choose how you want to be notified about updates
+              {t('notificationsDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='space-y-4'>
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Email Notifications</Label>
+                  <Label className='text-base'>{t('emailNotifications')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Receive updates via email
+                    {t('emailNotificationsDescription')}
                   </p>
                 </div>
                 <Switch
@@ -124,9 +137,9 @@ export default function SettingsPage() {
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Push Notifications</Label>
+                  <Label className='text-base'>{t('pushNotifications')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Receive push notifications in your browser
+                    {t('pushNotificationsDescription')}
                   </p>
                 </div>
                 <Switch
@@ -139,9 +152,9 @@ export default function SettingsPage() {
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>SMS Notifications</Label>
+                  <Label className='text-base'>{t('smsNotifications')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Receive updates via text message
+                    {t('smsNotificationsDescription')}
                   </p>
                 </div>
                 <Switch
@@ -156,12 +169,12 @@ export default function SettingsPage() {
             <Separator />
 
             <div className='space-y-4'>
-              <h4 className='text-sm font-medium'>Notification Types</h4>
+              <h4 className='text-sm font-medium'>{t('notificationTypes')}</h4>
               <div className='space-y-3'>
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center gap-2'>
                     <Mail className='h-4 w-4 text-muted-foreground' />
-                    <span className='text-sm'>Order Updates</span>
+                    <span className='text-sm'>{t('orderUpdates')}</span>
                   </div>
                   <Switch
                     checked={settings.orderUpdates}
@@ -173,7 +186,7 @@ export default function SettingsPage() {
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center gap-2'>
                     <Smartphone className='h-4 w-4 text-muted-foreground' />
-                    <span className='text-sm'>Supplier Updates</span>
+                    <span className='text-sm'>{t('supplierUpdates')}</span>
                   </div>
                   <Switch
                     checked={settings.supplierUpdates}
@@ -185,7 +198,7 @@ export default function SettingsPage() {
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center gap-2'>
                     <Volume2 className='h-4 w-4 text-muted-foreground' />
-                    <span className='text-sm'>Marketing Emails</span>
+                    <span className='text-sm'>{t('marketingEmails')}</span>
                   </div>
                   <Switch
                     checked={settings.marketingEmails}
@@ -204,19 +217,21 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
               <Shield className='h-5 w-5' />
-              Privacy & Security
+              {t('privacyAndSecurity')}
             </CardTitle>
             <CardDescription>
-              Manage your privacy and security preferences
+              {t('privacyAndSecurityDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='space-y-4'>
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Two-Factor Authentication</Label>
+                  <Label className='text-base'>
+                    {t('twoFactorAuthentication')}
+                  </Label>
                   <p className='text-sm text-muted-foreground'>
-                    Add an extra layer of security to your account
+                    {t('twoFactorAuthenticationDescription')}
                   </p>
                 </div>
                 <Switch
@@ -229,9 +244,9 @@ export default function SettingsPage() {
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Data Sharing</Label>
+                  <Label className='text-base'>{t('dataSharing')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Allow sharing of anonymized data for improvements
+                    {t('dataSharingDescription')}
                   </p>
                 </div>
                 <Switch
@@ -244,9 +259,9 @@ export default function SettingsPage() {
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Analytics Tracking</Label>
+                  <Label className='text-base'>{t('analyticsTracking')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Help us improve by sharing usage analytics
+                    {t('analyticsTrackingDescription')}
                   </p>
                 </div>
                 <Switch
@@ -261,11 +276,11 @@ export default function SettingsPage() {
             <Separator />
 
             <div className='space-y-4'>
-              <h4 className='text-sm font-medium'>Security Status</h4>
+              <h4 className='text-sm font-medium'>{t('securityStatus')}</h4>
               <div className='space-y-2'>
                 <div className='flex items-center gap-2 text-sm'>
                   <CheckCircle className='h-4 w-4 text-green-500' />
-                  <span>Strong password enabled</span>
+                  <span>{t('strongPasswordEnabled')}</span>
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
                   {settings.twoFactorAuth ? (
@@ -274,13 +289,14 @@ export default function SettingsPage() {
                     <AlertTriangle className='h-4 w-4 text-yellow-500' />
                   )}
                   <span>
-                    Two-factor authentication{' '}
-                    {settings.twoFactorAuth ? 'enabled' : 'disabled'}
+                    {settings.twoFactorAuth
+                      ? t('twoFactorAuthenticationEnabled')
+                      : t('twoFactorAuthenticationDisabled')}
                   </span>
                 </div>
                 <div className='flex items-center gap-2 text-sm'>
                   <CheckCircle className='h-4 w-4 text-green-500' />
-                  <span>Account verified</span>
+                  <span>{t('accountVerified')}</span>
                 </div>
               </div>
             </div>
@@ -292,16 +308,16 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
               <Palette className='h-5 w-5' />
-              Appearance
+              {t('appearance')}
             </CardTitle>
             <CardDescription>
-              Customize the look and feel of your dashboard
+              {t('appearanceDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='space-y-4'>
               <div className='space-y-2'>
-                <Label>Theme</Label>
+                <Label>{t('theme')}</Label>
                 <Select
                   value={settings.theme}
                   onValueChange={value => handleSettingChange('theme', value)}
@@ -313,22 +329,22 @@ export default function SettingsPage() {
                     <SelectItem value='light'>
                       <div className='flex items-center gap-2'>
                         <Sun className='h-4 w-4' />
-                        Light
+                        {t('light')}
                       </div>
                     </SelectItem>
                     <SelectItem value='dark'>
                       <div className='flex items-center gap-2'>
                         <Moon className='h-4 w-4' />
-                        Dark
+                        {t('dark')}
                       </div>
                     </SelectItem>
-                    <SelectItem value='system'>System</SelectItem>
+                    <SelectItem value='system'>{t('system')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className='space-y-2'>
-                <Label>Language</Label>
+                <Label>{t('language')}</Label>
                 <Select
                   value={settings.language}
                   onValueChange={value =>
@@ -339,16 +355,14 @@ export default function SettingsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='en'>English</SelectItem>
-                    <SelectItem value='es'>Español</SelectItem>
-                    <SelectItem value='fr'>Français</SelectItem>
-                    <SelectItem value='de'>Deutsch</SelectItem>
+                    <SelectItem value='en'>{t('english')}</SelectItem>
+                    <SelectItem value='sv'>{t('swedish')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className='space-y-2'>
-                <Label>Timezone</Label>
+                <Label>{t('timezone')}</Label>
                 <Select
                   value={settings.timezone}
                   onValueChange={value =>
@@ -360,16 +374,16 @@ export default function SettingsPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='America/Los_Angeles'>
-                      Pacific Time
+                      {t('pacificTime')}
                     </SelectItem>
                     <SelectItem value='America/Denver'>
-                      Mountain Time
+                      {t('mountainTime')}
                     </SelectItem>
                     <SelectItem value='America/Chicago'>
-                      Central Time
+                      {t('centralTime')}
                     </SelectItem>
                     <SelectItem value='America/New_York'>
-                      Eastern Time
+                      {t('easternTime')}
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -383,16 +397,16 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
               <Globe className='h-5 w-5' />
-              Preferences
+              {t('preferencesSection')}
             </CardTitle>
             <CardDescription>
-              Set your default preferences and behavior
+              {t('preferencesSectionDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-6'>
             <div className='space-y-4'>
               <div className='space-y-2'>
-                <Label>Currency</Label>
+                <Label>{t('currency')}</Label>
                 <Select
                   value={settings.currency}
                   onValueChange={value =>
@@ -412,7 +426,7 @@ export default function SettingsPage() {
               </div>
 
               <div className='space-y-2'>
-                <Label>Units</Label>
+                <Label>{t('unitsLabel')}</Label>
                 <Select
                   value={settings.units}
                   onValueChange={value => handleSettingChange('units', value)}
@@ -421,17 +435,17 @@ export default function SettingsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='imperial'>Imperial (lbs, oz)</SelectItem>
-                    <SelectItem value='metric'>Metric (kg, g)</SelectItem>
+                    <SelectItem value='imperial'>{t('imperialUnits')}</SelectItem>
+                    <SelectItem value='metric'>{t('metricUnits')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Auto-save</Label>
+                  <Label className='text-base'>{t('autoSave')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Automatically save changes as you type
+                    {t('autoSaveDescription')}
                   </p>
                 </div>
                 <Switch
@@ -444,9 +458,9 @@ export default function SettingsPage() {
 
               <div className='flex items-center justify-between'>
                 <div className='space-y-0.5'>
-                  <Label className='text-base'>Compact View</Label>
+                  <Label className='text-base'>{t('compactView')}</Label>
                   <p className='text-sm text-muted-foreground'>
-                    Use a more compact layout for better space usage
+                    {t('compactViewDescription')}
                   </p>
                 </div>
                 <Switch

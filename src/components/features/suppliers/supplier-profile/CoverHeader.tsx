@@ -7,8 +7,10 @@ import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Award, Heart, MapPin } from 'lucide-react';
 import { Badge } from '@components/ui/badge';
 import type { CoverHeaderProps } from '@/components/types/cover-header';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function CoverHeader(props: CoverHeaderProps) {
+  const { t } = useLanguage();
   const {
     name,
     verified,
@@ -23,7 +25,7 @@ export function CoverHeader(props: CoverHeaderProps) {
   return (
     <>
       <Button variant='outline' onClick={onBack} className='mb-6 rounded-xl'>
-        ← Back
+        ← {t('back')}
       </Button>
       <Card className='mb-8 overflow-hidden rounded-3xl border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
         <div className='relative h-64 overflow-hidden'>
@@ -48,7 +50,7 @@ export function CoverHeader(props: CoverHeaderProps) {
                   {verified && (
                     <Badge className='bg-primary'>
                       <Award className='mr-1 h-3 w-3' />
-                      Verified
+                      {t('verified')}
                     </Badge>
                   )}
                 </div>
@@ -74,7 +76,7 @@ export function CoverHeader(props: CoverHeaderProps) {
                 className='rounded-xl bg-primary hover:bg-primary/90'
                 onClick={onContact}
               >
-                Contact Supplier
+                {t('contactSupplier')}
               </Button>
             </div>
           </div>

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
+import { toast } from 'sonner';
 import {
   FormLayout,
   FormSection,
@@ -45,6 +47,7 @@ const validationRules = {
 };
 
 export function ProductForm() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ProductFormData>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,12 +81,12 @@ export function ProductForm() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Product created:', formData);
+      toast.success(t('productCreatedSuccessfully'));
       // Reset form
       setFormData(initialData);
       setErrors({});
     } catch (error) {
-      console.error('Error creating product:', error);
+      toast.error(t('productCreateFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -91,101 +94,101 @@ export function ProductForm() {
 
   return (
     <FormLayout
-      title='Add New Product'
-      description='Create a new product for your catalog'
+      title={t('addNewProduct')}
+      description={t('createNewProductForYourCatalog')}
     >
       <form onSubmit={handleSubmit} className='space-y-6'>
-        <FormSection title='Basic Information'>
-          <FormField label='Product Name' error={errors.name} required>
+        <FormSection title={t('basicInformation')}>
+          <FormField label={t('productName')} error={errors.name} required>
             <FormInput
               value={formData.name}
               onChange={handleInputChange('name')}
-              placeholder='Enter product name'
+              placeholder={t('enterProductName')}
               error={!!errors.name}
             />
           </FormField>
 
-          <FormField label='Description' error={errors.description}>
+          <FormField label={t('storeDescription')} error={errors.description}>
             <FormTextarea
               value={formData.description}
               onChange={handleInputChange('description')}
-              placeholder='Enter product description'
+              placeholder={t('enterProductDescription')}
               rows={3}
               error={!!errors.description}
             />
           </FormField>
 
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <FormField label='Category' error={errors.category} required>
+            <FormField label={t('category')} error={errors.category} required>
               <FormSelect
                 value={formData.category}
                 onValueChange={value =>
                   setFormData(prev => ({ ...prev, category: value }))
                 }
-                placeholder='Select category'
+                placeholder={t('selectCategory')}
                 error={!!errors.category}
               >
-                <FormSelectItem value='produce'>Produce</FormSelectItem>
-                <FormSelectItem value='meat'>Meat</FormSelectItem>
-                <FormSelectItem value='dairy'>Dairy</FormSelectItem>
-                <FormSelectItem value='beverages'>Beverages</FormSelectItem>
-                <FormSelectItem value='pantry'>Pantry</FormSelectItem>
+                <FormSelectItem value='produce'>{t('produce')}</FormSelectItem>
+                <FormSelectItem value='meat'>{t('meat')}</FormSelectItem>
+                <FormSelectItem value='dairy'>{t('dairy')}</FormSelectItem>
+                <FormSelectItem value='beverages'>{t('beverages')}</FormSelectItem>
+                <FormSelectItem value='pantry'>{t('pantry')}</FormSelectItem>
               </FormSelect>
             </FormField>
 
-            <FormField label='Supplier' error={errors.supplier} required>
+            <FormField label={t('supplier')} error={errors.supplier} required>
               <FormSelect
                 value={formData.supplier}
                 onValueChange={value =>
                   setFormData(prev => ({ ...prev, supplier: value }))
                 }
-                placeholder='Select supplier'
+                placeholder={t('selectSupplier')}
                 error={!!errors.supplier}
               >
                 <FormSelectItem value='fresh-farms'>
-                  Fresh Farms Co.
+                  {t('freshFarmsCo')}
                 </FormSelectItem>
                 <FormSelectItem value='organic-valley'>
-                  Organic Valley
+                  {t('organicValley')}
                 </FormSelectItem>
                 <FormSelectItem value='local-harvest'>
-                  Local Harvest
+                  {t('localHarvest')}
                 </FormSelectItem>
                 <FormSelectItem value='green-fields'>
-                  Green Fields
+                  {t('greenFields')}
                 </FormSelectItem>
               </FormSelect>
             </FormField>
           </div>
         </FormSection>
 
-        <FormSection title='Pricing & Inventory'>
+        <FormSection title={t('pricingAndInventory')}>
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <FormField label='Price ($)' error={errors.price} required>
+            <FormField label={`${t('price')} ($)`} error={errors.price} required>
               <FormInput
                 type='number'
                 step='0.01'
                 min='0'
                 value={formData.price}
                 onChange={handleInputChange('price')}
-                placeholder='0.00'
+                placeholder={t('pricePlaceholder')}
                 error={!!errors.price}
               />
             </FormField>
 
-            <FormField label='Quantity' error={errors.quantity} required>
+            <FormField label={t('quantity')} error={errors.quantity} required>
               <FormInput
                 type='number'
                 min='1'
                 value={formData.quantity}
                 onChange={handleInputChange('quantity')}
-                placeholder='0'
+                placeholder={t('zeroPlaceholder')}
                 error={!!errors.quantity}
               />
             </FormField>
           </div>
 
-          <FormField label='Availability'>
+          <FormField label={t('availability')}>
             <div className='flex items-center space-x-2'>
               <input
                 type='checkbox'
@@ -194,7 +197,7 @@ export function ProductForm() {
                 className='rounded border-gray-300'
               />
               <label className='text-sm font-medium'>
-                Product is available for purchase
+                {t('productIsAvailableForPurchase')}
               </label>
             </div>
           </FormField>
@@ -202,10 +205,10 @@ export function ProductForm() {
 
         <FormActions>
           <FormButton type='button' variant='outline'>
-            Cancel
+            {t('cancel')}
           </FormButton>
           <FormButton type='submit' loading={isSubmitting}>
-            Create Product
+            {t('createProduct')}
           </FormButton>
         </FormActions>
       </form>

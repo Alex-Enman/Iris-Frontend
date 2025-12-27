@@ -1,6 +1,7 @@
 // Order utility functions
 
 import { Order } from '@/types';
+import { getCurrentLocale, getStoredLanguage, t } from '@lib/i18n';
 
 export function calculateTotalAmount(items: Order['items']): number {
   return items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
@@ -21,21 +22,22 @@ export function getOrderStatusColor(status: Order['status']): string {
 }
 
 export function getOrderStatusText(status: Order['status']): string {
-  const statusTexts: Record<Order['status'], string> = {
-    pending: 'Pending',
-    confirmed: 'Confirmed',
-    preparing: 'Preparing',
-    shipped: 'Shipped',
-    delivered: 'Delivered',
-    cancelled: 'Cancelled',
-    returned: 'Returned',
+  const language = getStoredLanguage();
+  const statusKeyMap: Record<Order['status'], any> = {
+    pending: 'pending',
+    confirmed: 'confirmed',
+    preparing: 'preparing',
+    shipped: 'shipped',
+    delivered: 'delivered',
+    cancelled: 'cancelled',
+    returned: 'returned',
   };
 
-  return statusTexts[status] || 'Unknown';
+  return t(statusKeyMap[status], language);
 }
 
 export function formatOrderDate(date: string): string {
-  return new Date(date).toLocaleDateString('en-US', {
+  return new Date(date).toLocaleDateString(getCurrentLocale(), {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -43,7 +45,7 @@ export function formatOrderDate(date: string): string {
 }
 
 export function formatOrderTime(date: string): string {
-  return new Date(date).toLocaleTimeString('en-US', {
+  return new Date(date).toLocaleTimeString(getCurrentLocale(), {
     hour: '2-digit',
     minute: '2-digit',
   });

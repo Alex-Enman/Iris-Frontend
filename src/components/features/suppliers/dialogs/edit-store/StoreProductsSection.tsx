@@ -7,6 +7,7 @@ import { ProductCard } from './components/ProductCard';
 import { ProductFormDialog } from './components/ProductFormDialog';
 import { EmptyProductsState } from './components/EmptyProductsState';
 import { useStoreProducts } from './hooks/use-store-products';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface StoreProductsSectionProps {
   products: Product[];
@@ -23,6 +24,7 @@ export function StoreProductsSection({
   onDeleteProduct,
   onUpdateProduct,
 }: StoreProductsSectionProps) {
+  const { t } = useLanguage();
   const {
     isAddProductOpen,
     setIsAddProductOpen,
@@ -45,10 +47,10 @@ export function StoreProductsSection({
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Products</h3>
+        <h3 className='text-lg font-semibold'>{t('productsTab')}</h3>
         <Button onClick={() => setIsAddProductOpen(true)}>
           <Plus className='mr-2 h-4 w-4' />
-          Add Product
+          {t('addProduct')}
         </Button>
       </div>
 

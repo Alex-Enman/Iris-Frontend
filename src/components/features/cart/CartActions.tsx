@@ -4,6 +4,7 @@
 import React from 'react';
 import { Button } from '@components/ui/button';
 import { Cart } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface CartActionsProps {
   cart: Cart;
@@ -22,6 +23,7 @@ export function CartActions({
   onSaveForLater,
   loading = false,
 }: CartActionsProps) {
+  const { t } = useLanguage();
   const hasItems = cart.items.length > 0;
 
   return (
@@ -32,7 +34,7 @@ export function CartActions({
           onClick={onContinueShopping}
           className='flex-1'
         >
-          Continue Shopping
+          {t('continueShopping')}
         </Button>
       )}
 
@@ -43,7 +45,7 @@ export function CartActions({
           className='flex-1'
           disabled={loading}
         >
-          Clear Cart
+          {t('clearCart')}
         </Button>
       )}
 
@@ -53,7 +55,7 @@ export function CartActions({
           className='flex-1'
           disabled={!hasItems || loading}
         >
-          {loading ? 'Processing...' : 'Checkout'}
+          {loading ? t('processingEllipsis') : t('checkout')}
         </Button>
       )}
     </div>

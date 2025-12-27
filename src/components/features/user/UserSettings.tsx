@@ -1,3 +1,5 @@
+'use client';
+
 // User settings component
 // Displays user settings form
 
@@ -7,6 +9,7 @@ import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { User } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface UserSettingsProps {
   user: User;
@@ -15,6 +18,7 @@ interface UserSettingsProps {
 }
 
 export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = React.useState({
     name: user.name,
     email: user.email,
@@ -33,12 +37,12 @@ export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
   return (
     <Card className='w-full max-w-md'>
       <CardHeader>
-        <CardTitle>Account Settings</CardTitle>
+        <CardTitle>{t('accountInformation')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='name'>Name</Label>
+            <Label htmlFor='name'>{t('fullName')}</Label>
             <Input
               id='name'
               value={formData.name}
@@ -48,7 +52,7 @@ export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='email'>Email</Label>
+            <Label htmlFor='email'>{t('email')}</Label>
             <Input
               id='email'
               type='email'
@@ -59,7 +63,7 @@ export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='phone'>Phone</Label>
+            <Label htmlFor='phone'>{t('phone')}</Label>
             <Input
               id='phone'
               type='tel'
@@ -70,7 +74,7 @@ export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
 
           <div className='flex gap-2 pt-4'>
             <Button type='submit' size='sm' className='flex-1'>
-              Save Changes
+              {t('saveChanges')}
             </Button>
             {onCancel && (
               <Button
@@ -80,7 +84,7 @@ export function UserSettings({ user, onSave, onCancel }: UserSettingsProps) {
                 onClick={onCancel}
                 className='flex-1'
               >
-                Cancel
+                {t('cancel')}
               </Button>
             )}
           </div>

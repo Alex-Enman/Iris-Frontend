@@ -8,6 +8,7 @@ import {
   CollapsibleTrigger,
 } from '@components/ui/collapsible';
 import { Filter, ChevronDown, X } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FiltersPanelProps {
   show: boolean;
@@ -35,6 +36,7 @@ interface FiltersPanelProps {
 }
 
 export function FiltersPanel(props: FiltersPanelProps) {
+  const { t } = useLanguage();
   const {
     show,
     activeFilterCount,
@@ -63,7 +65,7 @@ export function FiltersPanel(props: FiltersPanelProps) {
         <div className='flex items-center justify-between border-b border-primary/10 bg-gradient-to-br from-primary/5 to-accent/5 p-5'>
           <div className='flex items-center gap-2'>
             <Filter className='h-5 w-5 text-primary' />
-            <h3 className='text-lg'>Filters</h3>
+            <h3 className='text-lg'>{t('filters')}</h3>
             {activeFilterCount > 0 && (
               <Badge className='ml-1 bg-accent'>{activeFilterCount}</Badge>
             )}
@@ -76,7 +78,7 @@ export function FiltersPanel(props: FiltersPanelProps) {
                 onClick={onClear}
                 className='h-8 px-2 text-xs hover:bg-primary/10'
               >
-                Clear
+                {t('clear')}
               </Button>
             )}
             <Button
@@ -92,7 +94,7 @@ export function FiltersPanel(props: FiltersPanelProps) {
         <div className='max-h-[calc(100vh-240px)] overflow-y-auto p-2'>
           <Collapsible open={categoryOpen} onOpenChange={setCategoryOpen}>
             <CollapsibleTrigger className='flex w-full items-center justify-between rounded-2xl p-4 transition-colors hover:bg-primary/5'>
-              <span className='text-sm'>Category</span>
+              <span className='text-sm'>{t('category')}</span>
               <ChevronDown
                 className={`duration-250 h-4 w-4 text-muted-foreground transition-transform ${categoryOpen ? 'rotate-180' : ''}`}
               />
@@ -118,7 +120,7 @@ export function FiltersPanel(props: FiltersPanelProps) {
             className='mt-2'
           >
             <CollapsibleTrigger className='flex w-full items-center justify-between rounded-2xl p-4 transition-colors hover:bg-primary/5'>
-              <span className='text-sm'>Region</span>
+              <span className='text-sm'>{t('region')}</span>
               <ChevronDown
                 className={`duration-250 h-4 w-4 text-muted-foreground transition-transform ${regionOpen ? 'rotate-180' : ''}`}
               />
@@ -153,7 +155,7 @@ export function FiltersPanel(props: FiltersPanelProps) {
             className='mt-2'
           >
             <CollapsibleTrigger className='flex w-full items-center justify-between rounded-2xl p-4 transition-colors hover:bg-primary/5'>
-              <span className='text-sm'>Certification</span>
+              <span className='text-sm'>{t('certification')}</span>
               <ChevronDown
                 className={`duration-250 h-4 w-4 text-muted-foreground transition-transform ${certOpen ? 'rotate-180' : ''}`}
               />

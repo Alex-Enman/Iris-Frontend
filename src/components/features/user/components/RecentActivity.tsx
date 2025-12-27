@@ -1,3 +1,7 @@
+'use client';
+
+import { useLanguage } from '@contexts/LanguageContext';
+
 interface ActivityItem {
   action: string;
   supplier: string;
@@ -9,9 +13,10 @@ interface RecentActivityProps {
 }
 
 export function RecentActivity({ items }: RecentActivityProps) {
+  const { t } = useLanguage();
   return (
     <div className='rounded-2xl bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
-      <h3 className='mb-4'>Recent Activity</h3>
+      <h3 className='mb-4'>{t('recentActivity')}</h3>
       <div className='space-y-3'>
         {items.map((activity, index) => (
           <div

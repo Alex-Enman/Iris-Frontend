@@ -11,7 +11,7 @@ export function useSupplierProductsTab(initialProducts: Product[]) {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [newProduct, setNewProduct] = useState<NewProductForm>({
     name: '',
-    category: 'Vegetables',
+    category: 'vegetables',
     price: '',
     unit: 'kg',
     stock: '',
@@ -32,7 +32,7 @@ export function useSupplierProductsTab(initialProducts: Product[]) {
   const resetNewProduct = () =>
     setNewProduct({
       name: '',
-      category: 'Vegetables',
+      category: 'vegetables',
       price: '',
       unit: 'kg',
       stock: '',

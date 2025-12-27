@@ -1,3 +1,5 @@
+'use client';
+
 // Menu management form component for edit restaurant profile dialog
 
 import { Input } from '@components/ui/input';
@@ -11,6 +13,7 @@ import {
   MenuItem,
   MenuCategory,
 } from '@/types/user/edit-restaurant/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantMenuFormProps {
   profile: RestaurantProfile;
@@ -35,26 +38,27 @@ export function RestaurantMenuForm({
   onUpdateMenuItem,
   onRemoveMenuItem,
 }: RestaurantMenuFormProps) {
+  const { t } = useLanguage();
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Menu Categories</h3>
+        <h3 className='text-lg font-semibold'>{t('menuCategories')}</h3>
         <Button onClick={onAddMenuCategory}>
           <Plus className='mr-2 h-4 w-4' />
-          Add Category
+          {t('addCategory')}
         </Button>
       </div>
 
       {profile.menu.length === 0 ? (
         <Card className='p-8 text-center'>
           <Utensils className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
-          <h3 className='mb-2 text-lg font-semibold'>No menu categories yet</h3>
+          <h3 className='mb-2 text-lg font-semibold'>{t('noMenuCategoriesYet')}</h3>
           <p className='mb-4 text-muted-foreground'>
-            Add your first menu category to get started
+            {t('addYourFirstMenuCategoryToGetStarted')}
           </p>
           <Button onClick={onAddMenuCategory}>
             <Plus className='mr-2 h-4 w-4' />
-            Add Category
+            {t('addCategory')}
           </Button>
         </Card>
       ) : (
@@ -64,7 +68,7 @@ export function RestaurantMenuForm({
               <div className='mb-4 flex items-center justify-between'>
                 <div className='flex-1'>
                   <Label htmlFor={`category-${categoryIndex}`}>
-                    Category Name
+                    {t('categoryName')}
                   </Label>
                   <Input
                     id={`category-${categoryIndex}`}
@@ -74,7 +78,7 @@ export function RestaurantMenuForm({
                         category: e.target.value,
                       })
                     }
-                    placeholder='Enter category name'
+                    placeholder={t('enterCategoryName')}
                   />
                 </div>
                 <Button
@@ -89,20 +93,20 @@ export function RestaurantMenuForm({
 
               <div className='space-y-3'>
                 <div className='flex items-center justify-between'>
-                  <h4 className='font-medium'>Menu Items</h4>
+                  <h4 className='font-medium'>{t('menuItems')}</h4>
                   <Button
                     variant='outline'
                     size='sm'
                     onClick={() => onAddMenuItem(categoryIndex)}
                   >
                     <Plus className='mr-2 h-4 w-4' />
-                    Add Item
+                    {t('addItem')}
                   </Button>
                 </div>
 
                 {category.items.length === 0 ? (
                   <div className='py-4 text-center text-muted-foreground'>
-                    No items in this category yet
+                    {t('noItemsInThisCategoryYet')}
                   </div>
                 ) : (
                   <div className='space-y-3'>
@@ -115,7 +119,7 @@ export function RestaurantMenuForm({
                           <Label
                             htmlFor={`item-name-${categoryIndex}-${itemIndex}`}
                           >
-                            Item Name
+                            {t('itemName')}
                           </Label>
                           <Input
                             id={`item-name-${categoryIndex}-${itemIndex}`}
@@ -125,14 +129,14 @@ export function RestaurantMenuForm({
                                 name: e.target.value,
                               })
                             }
-                            placeholder='Enter item name'
+                            placeholder={t('enterItemName')}
                           />
                         </div>
                         <div>
                           <Label
                             htmlFor={`item-price-${categoryIndex}-${itemIndex}`}
                           >
-                            Price
+                            {t('price')}
                           </Label>
                           <Input
                             id={`item-price-${categoryIndex}-${itemIndex}`}
@@ -142,14 +146,14 @@ export function RestaurantMenuForm({
                                 price: e.target.value,
                               })
                             }
-                            placeholder='Enter price'
+                            placeholder={t('enterPrice')}
                           />
                         </div>
                         <div className='md:col-span-2'>
                           <Label
                             htmlFor={`item-description-${categoryIndex}-${itemIndex}`}
                           >
-                            Description
+                            {t('storeDescription')}
                           </Label>
                           <Textarea
                             id={`item-description-${categoryIndex}-${itemIndex}`}
@@ -159,7 +163,7 @@ export function RestaurantMenuForm({
                                 description: e.target.value,
                               })
                             }
-                            placeholder='Enter item description'
+                            placeholder={t('enterItemDescription')}
                             rows={2}
                           />
                         </div>
@@ -167,7 +171,7 @@ export function RestaurantMenuForm({
                           <Label
                             htmlFor={`item-image-${categoryIndex}-${itemIndex}`}
                           >
-                            Image URL
+                            {t('imageUrl')}
                           </Label>
                           <div className='flex space-x-2'>
                             <Input
@@ -178,7 +182,7 @@ export function RestaurantMenuForm({
                                   image: e.target.value,
                                 })
                               }
-                              placeholder='Enter image URL'
+                              placeholder={t('enterImageUrl')}
                               className='flex-1'
                             />
                             <Button

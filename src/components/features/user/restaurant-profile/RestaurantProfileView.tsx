@@ -11,6 +11,7 @@ import { SupplierAnalyticsCard } from './SupplierAnalyticsCard';
 import { OrderHistoryCard } from './OrderHistoryCard';
 import { PrivateNotesCard } from './PrivateNotesCard';
 import { useRestaurantProfileView } from '@/hooks/user/use-restaurant-profile-view';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface RestaurantProfileViewProps {
   restaurantId: string;
@@ -23,6 +24,7 @@ export function RestaurantProfileView({
   onBack,
   isSupplierView,
 }: RestaurantProfileViewProps) {
+  const { t } = useLanguage();
   const {
     notes,
     setNotes,
@@ -36,15 +38,14 @@ export function RestaurantProfileView({
   // Mock restaurant data - in real app, fetch based on restaurantId
   const restaurant = {
     id: restaurantId,
-    name: 'La Bella Cucina',
-    type: 'Italian Fine Dining',
-    cuisine: ['Italian', 'Mediterranean'],
-    location: '123 Gastronomy Street, Culinary District',
+    name: t('restaurantLaBellaCucina'),
+    type: t('restaurantTypeItalianFineDining'),
+    cuisine: [t('restaurantCuisineItalian'), t('restaurantCuisineMediterranean')],
+    location: t('restaurantProfileAddressSample'),
     rating: 4.7,
     totalReviews: 342,
-    memberSince: 'January 2024',
-    description:
-      'An authentic Italian fine dining experience bringing traditional recipes from Tuscany with a modern twist. We pride ourselves on using locally sourced, organic ingredients to create unforgettable culinary experiences.',
+    memberSince: t('memberSinceJanuary2024'),
+    description: t('restaurantProfileDescriptionSample'),
     coverImage:
       'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200',
     avatar: 'LC',
@@ -52,23 +53,22 @@ export function RestaurantProfileView({
       seatingCapacity: 85,
       avgMonthlyOrders: 47,
       established: '2020',
-      orderVolume: '€12,500/month',
+      orderVolume: t('restaurantOrderVolumeSample'),
     },
     menu: [
       {
-        category: 'Antipasti',
+        category: t('menuCategoryAntipasti'),
         items: [
           {
-            name: 'Bruschetta al Pomodoro',
-            description:
-              'Grilled bread topped with fresh tomatoes, basil, and extra virgin olive oil',
+            name: t('menuItemBruschettaAlPomodoro'),
+            description: t('menuItemBruschettaDescription'),
             price: '€12',
             image:
               'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400',
           },
           {
-            name: 'Burrata con Prosciutto',
-            description: 'Creamy burrata with aged prosciutto and arugula',
+            name: t('menuItemBurrataConProsciutto'),
+            description: t('menuItemBurrataDescription'),
             price: '€18',
             image:
               'https://images.unsplash.com/photo-1498579397066-22750a3cb424?w=400',
@@ -76,18 +76,18 @@ export function RestaurantProfileView({
         ],
       },
       {
-        category: 'Primi Piatti',
+        category: t('menuCategoryPrimiPiatti'),
         items: [
           {
-            name: 'Tagliatelle al Tartufo',
-            description: 'Fresh pasta with black truffle and parmesan',
+            name: t('menuItemTagliatelleAlTartufo'),
+            description: t('menuItemTagliatelleDescription'),
             price: '€28',
             image:
               'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400',
           },
           {
-            name: 'Risotto ai Funghi',
-            description: 'Creamy risotto with wild mushrooms',
+            name: t('menuItemRisottoAiFunghi'),
+            description: t('menuItemRisottoDescription'),
             price: '€24',
             image:
               'https://images.unsplash.com/photo-1476124369491-c7addf8a3b52?w=400',
@@ -95,18 +95,18 @@ export function RestaurantProfileView({
         ],
       },
       {
-        category: 'Secondi',
+        category: t('menuCategorySecondi'),
         items: [
           {
-            name: 'Osso Buco alla Milanese',
-            description: 'Braised veal shanks with saffron risotto',
+            name: t('menuItemOssoBucoAllaMilanese'),
+            description: t('menuItemOssoBucoDescription'),
             price: '€38',
             image:
               'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400',
           },
           {
-            name: 'Branzino al Forno',
-            description: 'Oven-roasted sea bass with herbs and lemon',
+            name: t('menuItemBranzinoAlForno'),
+            description: t('menuItemBranzinoDescription'),
             price: '€35',
             image:
               'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400',
@@ -116,28 +116,28 @@ export function RestaurantProfileView({
     ],
     supplierNeeds: [
       {
-        category: 'Vegetables',
-        frequency: 'Twice weekly',
+        category: t('vegetables'),
+        frequency: t('supplierNeedFrequencyTwiceWeekly'),
         averageOrder: '€250',
-        preferences: 'Organic, locally sourced',
+        preferences: t('supplierNeedPreferencesOrganicLocallySourced'),
       },
       {
-        category: 'Seafood',
-        frequency: 'Daily',
+        category: t('seafood'),
+        frequency: t('supplierNeedFrequencyDaily'),
         averageOrder: '€450',
-        preferences: 'Fresh, sustainable sources',
+        preferences: t('supplierNeedPreferencesFreshSustainableSources'),
       },
       {
-        category: 'Dairy',
-        frequency: 'Weekly',
+        category: t('dairy'),
+        frequency: t('weeklyFrequency'),
         averageOrder: '€180',
-        preferences: 'Premium Italian cheeses',
+        preferences: t('supplierNeedPreferencesPremiumItalianCheeses'),
       },
       {
-        category: 'Herbs & Spices',
-        frequency: 'Weekly',
+        category: t('supplierNeedCategoryHerbsAndSpices'),
+        frequency: t('weeklyFrequency'),
         averageOrder: '€120',
-        preferences: 'Fresh herbs, specialty spices',
+        preferences: t('supplierNeedPreferencesFreshHerbsSpecialtySpices'),
       },
     ],
     contact: {
@@ -146,9 +146,9 @@ export function RestaurantProfileView({
       website: 'www.labellacucina.com',
     },
     orderingPreferences: {
-      leadTime: '48 hours',
-      deliveryWindow: '6:00 AM - 9:00 AM',
-      paymentTerms: 'Net 30',
+      leadTime: t('leadTime48Hours'),
+      deliveryWindow: t('deliveryWindow6to9am'),
+      paymentTerms: t('paymentTermsNet30'),
       minimumOrder: '€100',
     },
   };
@@ -157,32 +157,32 @@ export function RestaurantProfileView({
     totalRevenue: '€12,543',
     totalOrders: 47,
     avgOrderValue: '€267',
-    lastOrderDate: '2 days ago',
-    orderFrequency: 'Weekly',
-    topProducts: ['Tomatoes', 'Fresh Herbs', 'Mozzarella'],
+    lastOrderDate: `2 ${t('daysAgo')}`,
+    orderFrequency: t('weeklyFrequency'),
+    topProducts: [t('productTomatoes'), t('productFreshHerbs'), t('productMozzarella')],
   };
 
   const orderHistory = [
     {
       id: 'ORD-1234',
       date: '2024-10-20',
-      items: ['Tomatoes', 'Basil', 'Mozzarella'],
+      items: [t('productTomatoes'), t('productBasil'), t('productMozzarella')],
       total: '€265.50',
-      status: 'Delivered',
+      status: t('deliveredStatus'),
     },
     {
       id: 'ORD-1198',
       date: '2024-10-13',
-      items: ['Olive Oil', 'Parmesan', 'Fresh Herbs'],
+      items: [t('productOliveOil'), t('productParmesan'), t('productFreshHerbs')],
       total: '€189.30',
-      status: 'Delivered',
+      status: t('deliveredStatus'),
     },
     {
       id: 'ORD-1167',
       date: '2024-10-06',
-      items: ['Tomatoes', 'Arugula', 'Burrata'],
+      items: [t('productTomatoes'), t('productArugula'), t('productBurrata')],
       total: '€245.00',
-      status: 'Delivered',
+      status: t('deliveredStatus'),
     },
   ];
 
@@ -220,13 +220,13 @@ export function RestaurantProfileView({
         <Tabs defaultValue='menu' className='w-full'>
           <TabsList className='mb-6 inline-flex h-12 rounded-2xl bg-white p-1 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
             <TabsTrigger value='menu' className='rounded-xl'>
-              Menu
+              {t('menu')}
             </TabsTrigger>
             <TabsTrigger value='needs' className='rounded-xl'>
-              Supply Needs
+              {t('supplyNeeds')}
             </TabsTrigger>
             <TabsTrigger value='ordering' className='rounded-xl'>
-              Ordering Info
+              {t('orderingInfo')}
             </TabsTrigger>
           </TabsList>
 

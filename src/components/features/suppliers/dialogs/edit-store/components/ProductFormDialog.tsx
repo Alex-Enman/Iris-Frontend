@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { ProductFormData } from '@/types/suppliers/edit-store/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface ProductFormDialogProps {
   open: boolean;
@@ -39,33 +40,34 @@ export function ProductFormDialog({
   onSave,
   onCancel,
 }: ProductFormDialogProps) {
+  const { t } = useLanguage();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? 'Edit Product' : 'Add New Product'}
+            {isEditing ? t('editProduct') : t('addNewProduct')}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? 'Update the product information below.'
-              : 'Add a new product to your store catalog.'}
+              ? t('updateProductInformationBelow')
+              : t('addNewProductToStoreCatalog')}
           </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
           <div>
-            <Label htmlFor='name'>Product Name</Label>
+            <Label htmlFor='name'>{t('productName')}</Label>
             <Input
               id='name'
               value={product.name}
               onChange={e =>
                 onProductChange({ ...product, name: e.target.value })
               }
-              placeholder='Enter product name'
+              placeholder={t('enterProductName')}
             />
           </div>
           <div>
-            <Label htmlFor='category'>Category</Label>
+            <Label htmlFor='category'>{t('category')}</Label>
             <Select
               value={product.category}
               onValueChange={value =>
@@ -76,18 +78,18 @@ export function ProductFormDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='Vegetables'>Vegetables</SelectItem>
-                <SelectItem value='Fruits'>Fruits</SelectItem>
-                <SelectItem value='Dairy'>Dairy</SelectItem>
-                <SelectItem value='Meat'>Meat</SelectItem>
-                <SelectItem value='Bakery'>Bakery</SelectItem>
-                <SelectItem value='Beverages'>Beverages</SelectItem>
+                <SelectItem value='vegetables'>{t('vegetables')}</SelectItem>
+                <SelectItem value='fruits'>{t('fruits')}</SelectItem>
+                <SelectItem value='dairy'>{t('dairy')}</SelectItem>
+                <SelectItem value='meat'>{t('meat')}</SelectItem>
+                <SelectItem value='bakery'>{t('bakery')}</SelectItem>
+                <SelectItem value='beverages'>{t('beverages')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className='grid grid-cols-2 gap-4'>
             <div>
-              <Label htmlFor='price'>Price</Label>
+              <Label htmlFor='price'>{t('price')}</Label>
               <Input
                 id='price'
                 type='number'
@@ -96,11 +98,11 @@ export function ProductFormDialog({
                 onChange={e =>
                   onProductChange({ ...product, price: e.target.value })
                 }
-                placeholder='0.00'
+                placeholder={t('pricePlaceholder')}
               />
             </div>
             <div>
-              <Label htmlFor='unit'>Unit</Label>
+              <Label htmlFor='unit'>{t('unit')}</Label>
               <Select
                 value={product.unit}
                 onValueChange={value =>
@@ -120,7 +122,7 @@ export function ProductFormDialog({
             </div>
           </div>
           <div>
-            <Label htmlFor='stock'>Stock Quantity</Label>
+            <Label htmlFor='stock'>{t('stockQuantity')}</Label>
             <Input
               id='stock'
               type='number'
@@ -128,38 +130,38 @@ export function ProductFormDialog({
               onChange={e =>
                 onProductChange({ ...product, stock: e.target.value })
               }
-              placeholder='0'
+              placeholder={t('zeroPlaceholder')}
             />
           </div>
           <div>
-            <Label htmlFor='description'>Description (optional)</Label>
+            <Label htmlFor='description'>{t('descriptionOptional')}</Label>
             <Input
               id='description'
               value={product.description}
               onChange={e =>
                 onProductChange({ ...product, description: e.target.value })
               }
-              placeholder='Enter product description'
+              placeholder={t('enterProductDescription')}
             />
           </div>
           <div>
-            <Label htmlFor='imageUrl'>Image URL (optional)</Label>
+            <Label htmlFor='imageUrl'>{t('imageUrlOptional')}</Label>
             <Input
               id='imageUrl'
               value={product.imageUrl}
               onChange={e =>
                 onProductChange({ ...product, imageUrl: e.target.value })
               }
-              placeholder='https://example.com/image.jpg'
+              placeholder={t('imageUrlPlaceholder')}
             />
           </div>
         </div>
         <DialogFooter>
           <Button variant='outline' onClick={onCancel}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button onClick={onSave}>
-            {isEditing ? 'Update Product' : 'Add Product'}
+            {isEditing ? t('updateProduct') : t('addProductButton')}
           </Button>
         </DialogFooter>
       </DialogContent>

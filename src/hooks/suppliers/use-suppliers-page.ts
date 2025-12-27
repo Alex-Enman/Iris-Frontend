@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Supplier } from '@/types/suppliers/directory';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export type SortBy = 'rating' | 'distance' | 'reviews' | 'products';
 
 export function useSuppliersPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
@@ -17,65 +19,68 @@ export function useSuppliersPage() {
     () => [
       {
         id: '1',
-        name: 'Green Valley Farm',
-        category: 'Organic Vegetables & Herbs',
-        categoryTypes: ['Vegetables', 'Herbs'],
-        location: 'Valley Ridge',
+        name: t('supplierNameGreenValleyFarm'),
+        category: t('supplierCategoryOrganicVegetablesHerbs'),
+        categoryTypes: [t('vegetables'), t('herbs')],
+        location: t('supplierLocationValleyRidge'),
         distance: 12,
         rating: 4.8,
         totalReviews: 127,
         verified: true,
-        certifications: ['Organic Certified', 'Local Producer', 'Traceable'],
+        certifications: [t('organicCertified'), t('localProducer'), t('traceable')],
         image:
           'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800',
         avatar: 'GV',
         totalProducts: 24,
-        responseTime: '< 2 hours',
-        memberSince: 'March 2022',
-        description:
-          'Family-run organic farm specializing in heritage vegetables and sustainable farming practices.',
+        responseTime: t('responseTimeUnderTwoHours'),
+        memberSince: t('supplierMemberSinceMarch2022'),
+        description: t('supplierDescriptionGreenValleyShort'),
       },
       {
         id: '2',
-        name: 'Mountain Dairy Co.',
-        category: 'Dairy Products & Cheese',
-        categoryTypes: ['Dairy', 'Cheese'],
-        location: 'Highland Valley',
+        name: t('supplierNameMountainDairyCo'),
+        category: t('supplierCategoryDairyProductsAndCheese'),
+        categoryTypes: [t('dairy'), t('cheese')],
+        location: t('supplierLocationHighlandValley'),
         distance: 18,
         rating: 4.6,
         totalReviews: 93,
         verified: true,
-        certifications: ['Organic Certified', 'Traceable'],
+        certifications: [t('organicCertified'), t('traceable')],
         image:
           'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800',
         avatar: 'MD',
         totalProducts: 18,
-        responseTime: '< 3 hours',
-        memberSince: 'June 2021',
-        description:
-          'Artisan dairy producing premium cheeses and dairy products from grass-fed cows.',
+        responseTime: t('responseTimeUnderThreeHours'),
+        memberSince: t('supplierMemberSinceJune2021'),
+        description: t('supplierDescriptionMountainDairy'),
       },
     ],
-    []
+    [t]
   );
 
   const categories = [
-    'Vegetables',
-    'Dairy',
-    'Seafood',
-    'Bakery',
-    'Poultry',
-    'Herbs',
-    'Specialty',
-    'Oils',
+    t('vegetables'),
+    t('dairy'),
+    t('seafood'),
+    t('bakery'),
+    t('poultry'),
+    t('herbs'),
+    t('specialty'),
+    t('oils'),
   ];
   const certifications = [
-    'Organic Certified',
-    'Local Producer',
-    'Traceable',
-    'Sustainable',
-    'Free-Range',
+    t('organicCertified'),
+    t('localProducer'),
+    t('traceable'),
+    t('sustainable'),
+    t('freeRange'),
   ];
+
+  useEffect(() => {
+    setSelectedCategories([]);
+    setSelectedCerts([]);
+  }, [t]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev =>

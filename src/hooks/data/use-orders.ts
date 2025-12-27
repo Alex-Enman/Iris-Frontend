@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants';
 import { Order, OrderStatus } from '@/types';
 import { CreateOrderRequest } from '@/lib/data/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 // Mock orders data - in real app this would come from API
 const MOCK_ORDERS: Order[] = [
@@ -42,22 +43,114 @@ const MOCK_ORDERS: Order[] = [
 ];
 
 export function useOrders() {
+  const { t, language } = useLanguage();
+
   return useQuery({
-    queryKey: QUERY_KEYS.ORDERS,
-    queryFn: () => MOCK_ORDERS,
+    queryKey: [...QUERY_KEYS.ORDERS, language],
+    queryFn: () =>
+      MOCK_ORDERS.map(order => {
+        const items = order.items.map(item => {
+          const rawName = String((item as any).productName ?? '');
+          const match = rawName.match(/^Product\s+(.+)$/i);
+
+          const productName =
+            rawName === 'Heirloom Tomatoes'
+              ? t('productHeirloomTomatoes')
+              : match
+                ? `${t('product')} ${match[1]}`
+                : rawName;
+
+          return { ...item, productName } as any;
+        });
+
+        const deliveryAddress: any = {
+          ...(order as any).deliveryAddress,
+          street:
+            (order as any).deliveryAddress?.street === '123 Restaurant St'
+              ? t('orderDeliveryStreetSample')
+              : (order as any).deliveryAddress?.street,
+          city:
+            (order as any).deliveryAddress?.city === 'San Francisco'
+              ? t('orderDeliveryCitySanFrancisco')
+              : (order as any).deliveryAddress?.city,
+          state:
+            (order as any).deliveryAddress?.state === 'CA'
+              ? t('orderDeliveryStateCA')
+              : (order as any).deliveryAddress?.state,
+          country:
+            (order as any).deliveryAddress?.country === 'USA'
+              ? t('orderDeliveryCountryUSA')
+              : (order as any).deliveryAddress?.country,
+        };
+
+        return {
+          ...order,
+          items,
+          deliveryAddress,
+          notes:
+            (order as any).notes === 'Please deliver in the morning'
+              ? t('orderNotePleaseDeliverInMorning')
+              : (order as any).notes,
+        };
+      }),
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
 
 export function useOrder(id: string) {
+  const { t, language } = useLanguage();
+
   return useQuery({
-    queryKey: QUERY_KEYS.ORDER_DETAIL(id),
+    queryKey: [...QUERY_KEYS.ORDER_DETAIL(id), language],
     queryFn: () => {
       const order = MOCK_ORDERS.find(o => o.id === id);
       if (!order) {
-        throw new Error(`Order with id ${id} not found`);
+        throw new Error(
+          `${t('orderNotFoundMessagePrefix')} ${id} ${t('orderNotFoundMessageSuffix')}`
+        );
       }
-      return order;
+
+      const items = order.items.map(item => {
+        const rawName = String((item as any).productName ?? '');
+        const match = rawName.match(/^Product\s+(.+)$/i);
+        const productName =
+          rawName === 'Heirloom Tomatoes'
+            ? t('productHeirloomTomatoes')
+            : match
+              ? `${t('product')} ${match[1]}`
+              : rawName;
+        return { ...item, productName } as any;
+      });
+
+      const deliveryAddress: any = {
+        ...(order as any).deliveryAddress,
+        street:
+          (order as any).deliveryAddress?.street === '123 Restaurant St'
+            ? t('orderDeliveryStreetSample')
+            : (order as any).deliveryAddress?.street,
+        city:
+          (order as any).deliveryAddress?.city === 'San Francisco'
+            ? t('orderDeliveryCitySanFrancisco')
+            : (order as any).deliveryAddress?.city,
+        state:
+          (order as any).deliveryAddress?.state === 'CA'
+            ? t('orderDeliveryStateCA')
+            : (order as any).deliveryAddress?.state,
+        country:
+          (order as any).deliveryAddress?.country === 'USA'
+            ? t('orderDeliveryCountryUSA')
+            : (order as any).deliveryAddress?.country,
+      };
+
+      return {
+        ...order,
+        items,
+        deliveryAddress,
+        notes:
+          (order as any).notes === 'Please deliver in the morning'
+            ? t('orderNotePleaseDeliverInMorning')
+            : (order as any).notes,
+      };
     },
     enabled: !!id,
     staleTime: 2 * 60 * 1000,
@@ -66,6 +159,7 @@ export function useOrder(id: string) {
 
 export function useCreateOrder() {
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
 
   return useMutation({
     mutationFn: async (orderData: CreateOrderRequest): Promise<Order> => {
@@ -85,7 +179,7 @@ export function useCreateOrder() {
       const orderItems = orderData.items.map((item, index) => ({
         id: (index + 1).toString(),
         productId: item.productId,
-        productName: `Product ${item.productId}`, // Mock product name
+        productName: `${t('product')} ${item.productId}`, // Mock product name
         quantity: item.quantity,
         unitPrice: 10, // Mock unit price
         totalPrice: item.quantity * 10,

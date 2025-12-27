@@ -28,8 +28,10 @@ import {
   Shield,
   Star,
 } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export default function ProfilePage() {
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     name: 'John Doe',
@@ -66,9 +68,9 @@ export default function ProfilePage() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Profile</h1>
+          <h1 className='text-3xl font-bold tracking-tight'>{t('profile')}</h1>
           <p className='text-muted-foreground'>
-            Manage your account information and preferences
+            {t('manageAccountInformationAndPreferences')}
           </p>
         </div>
         <div className='flex gap-2'>
@@ -76,17 +78,17 @@ export default function ProfilePage() {
             <>
               <Button variant='outline' onClick={handleCancel}>
                 <X className='mr-2 h-4 w-4' />
-                Cancel
+                {t('cancel')}
               </Button>
               <Button onClick={handleSave}>
                 <Save className='mr-2 h-4 w-4' />
-                Save Changes
+                {t('saveChanges')}
               </Button>
             </>
           ) : (
             <Button onClick={() => setIsEditing(true)}>
               <Edit className='mr-2 h-4 w-4' />
-              Edit Profile
+              {t('editProfile')}
             </Button>
           )}
         </div>
@@ -113,7 +115,7 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent className='space-y-4'>
               <div className='flex items-center justify-between'>
-                <span className='text-sm text-muted-foreground'>Rating</span>
+                <span className='text-sm text-muted-foreground'>{t('rating')}</span>
                 <div className='flex items-center gap-1'>
                   <Star className='h-4 w-4 fill-yellow-400 text-yellow-400' />
                   <span className='font-medium'>{profileData.rating}</span>
@@ -121,20 +123,20 @@ export default function ProfilePage() {
               </div>
               <div className='flex items-center justify-between'>
                 <span className='text-sm text-muted-foreground'>
-                  Total Orders
+                  {t('totalOrders')}
                 </span>
                 <span className='font-medium'>{profileData.totalOrders}</span>
               </div>
               <div className='flex items-center justify-between'>
                 <span className='text-sm text-muted-foreground'>
-                  Member Since
+                  {t('memberSinceLabel')}
                 </span>
                 <span className='font-medium'>{profileData.memberSince}</span>
               </div>
               <Separator />
               <div className='flex items-center gap-2'>
                 <Shield className='h-4 w-4 text-green-500' />
-                <span className='text-sm text-green-600'>Verified Account</span>
+                <span className='text-sm text-green-600'>{t('verifiedAccount')}</span>
               </div>
             </CardContent>
           </Card>
@@ -145,15 +147,15 @@ export default function ProfilePage() {
           {/* Personal Information */}
           <Card>
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
+              <CardTitle>{t('personalInformation')}</CardTitle>
               <CardDescription>
-                Your personal details and contact information
+                {t('personalInformationDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className='space-y-4'>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='space-y-2'>
-                  <Label htmlFor='name'>Full Name</Label>
+                  <Label htmlFor='name'>{t('fullName')}</Label>
                   {isEditing ? (
                     <Input
                       id='name'
@@ -168,7 +170,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <div className='space-y-2'>
-                  <Label htmlFor='email'>Email Address</Label>
+                  <Label htmlFor='email'>{t('emailAddress')}</Label>
                   {isEditing ? (
                     <Input
                       id='email'
@@ -184,7 +186,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <div className='space-y-2'>
-                  <Label htmlFor='phone'>Phone Number</Label>
+                  <Label htmlFor='phone'>{t('phoneNumber')}</Label>
                   {isEditing ? (
                     <Input
                       id='phone'
@@ -199,7 +201,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <div className='space-y-2'>
-                  <Label htmlFor='restaurant'>Restaurant</Label>
+                  <Label htmlFor='restaurant'>{t('restaurant')}</Label>
                   {isEditing ? (
                     <Input
                       id='restaurant'
@@ -215,7 +217,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <div className='space-y-2'>
-                <Label htmlFor='address'>Address</Label>
+                <Label htmlFor='address'>{t('address')}</Label>
                 {isEditing ? (
                   <Textarea
                     id='address'
@@ -236,9 +238,9 @@ export default function ProfilePage() {
           {/* Account Statistics */}
           <Card>
             <CardHeader>
-              <CardTitle>Account Statistics</CardTitle>
+              <CardTitle>{t('accountStatistics')}</CardTitle>
               <CardDescription>
-                Your activity and performance metrics
+                {t('activityAndPerformanceMetrics')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -246,7 +248,7 @@ export default function ProfilePage() {
                 <div className='rounded-lg border p-4 text-center'>
                   <div className='text-2xl font-bold text-blue-600'>156</div>
                   <div className='text-sm text-muted-foreground'>
-                    Total Orders
+                    {t('totalOrders')}
                   </div>
                 </div>
                 <div className='rounded-lg border p-4 text-center'>
@@ -254,13 +256,13 @@ export default function ProfilePage() {
                     $24,580
                   </div>
                   <div className='text-sm text-muted-foreground'>
-                    Total Spent
+                    {t('totalSpent')}
                   </div>
                 </div>
                 <div className='rounded-lg border p-4 text-center'>
                   <div className='text-2xl font-bold text-purple-600'>12</div>
                   <div className='text-sm text-muted-foreground'>
-                    Active Suppliers
+                    {t('activeSuppliers')}
                   </div>
                 </div>
               </div>
@@ -270,32 +272,32 @@ export default function ProfilePage() {
           {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>{t('recentActivity')}</CardTitle>
               <CardDescription>
-                Your latest marketplace activities
+                {t('latestMarketplaceActivities')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
                 {[
                   {
-                    action: 'Placed order #1234',
-                    time: '2 hours ago',
+                    action: `${t('placedOrder')} #1234`,
+                    time: `2 ${t('hoursAgo')}`,
                     type: 'order',
                   },
                   {
-                    action: 'Added new supplier',
-                    time: '1 day ago',
+                    action: t('addedNewSupplier'),
+                    time: `1 ${t('dayAgo')}`,
                     type: 'supplier',
                   },
                   {
-                    action: 'Updated profile',
-                    time: '3 days ago',
+                    action: t('updatedProfileAction'),
+                    time: `3 ${t('daysAgo')}`,
                     type: 'profile',
                   },
                   {
-                    action: 'Completed order #1233',
-                    time: '1 week ago',
+                    action: `${t('completedOrder')} #1233`,
+                    time: `1 ${t('weekAgo')}`,
                     type: 'order',
                   },
                 ].map((activity, index) => (

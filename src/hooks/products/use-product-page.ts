@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Leaf, MapPin, Award } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface ProductBadgeDef {
   icon: any;
@@ -60,48 +61,47 @@ export type ReviewItem = {
 };
 
 export function useProductPage() {
+  const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   const [imageScale, setImageScale] = useState(1);
   const [showCompare, setShowCompare] = useState(false);
   const [highlightBest, setHighlightBest] = useState(false);
 
   const product: ProductData = {
-    name: 'Heirloom Tomatoes',
-    producer: 'Green Valley Farm',
+    name: t('productHeirloomTomatoes'),
+    producer: t('supplierNameGreenValleyFarm'),
     price: 4.5,
     unit: 'kg',
     image:
       'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
     rating: 4.8,
     reviews: 127,
-    location: '12 km away',
+    location: t('distance12kmAway'),
     verified: true,
-    delivery: 'Thursday 8 AM',
+    delivery: t('thursday8am'),
     badges: [
-      { icon: Leaf, label: 'Organic', color: 'text-primary' },
-      { icon: MapPin, label: 'Local', color: 'text-accent' },
-      { icon: Award, label: 'Traceable', color: 'text-primary' },
+      { icon: Leaf, label: t('organic'), color: 'text-primary' },
+      { icon: MapPin, label: t('local'), color: 'text-accent' },
+      { icon: Award, label: t('traceable'), color: 'text-primary' },
     ],
-    description:
-      'Our heirloom tomatoes are grown using traditional methods passed down through generations. Each variety is carefully selected for its unique flavor profile, vibrant color, and nutritional value. Hand-picked at peak ripeness to ensure maximum taste and quality.',
-    producerInfo:
-      'Green Valley Farm has been a family-run organic farm for over 40 years. Located in the heart of the countryside, we practice sustainable farming methods and take pride in delivering the freshest produce to local restaurants.',
+    description: t('productHeirloomTomatoesLongDescription'),
+    producerInfo: t('producerInfoGreenValleyFarmLong'),
   };
 
   const similarProducts: SimilarProductItem[] = [
     {
       id: 1,
-      name: 'Heirloom Tomatoes',
-      producer: 'Green Valley Farm',
+      name: t('productHeirloomTomatoes'),
+      producer: t('supplierNameGreenValleyFarm'),
       price: '€4.50/kg',
       priceValue: 4.5,
       image: product.image,
       rating: 4.8,
       reviews: 127,
-      location: '12 km away',
-      deliveryTime: '24 hours',
-      stockAvailable: 'In Stock',
-      badges: ['Organic', 'Local', 'Traceable'],
+      location: t('distance12kmAway'),
+      deliveryTime: t('deliveryTime24Hours'),
+      stockAvailable: 'inStock',
+      badges: [t('organic'), t('local'), t('traceable')],
       verified: true,
       isBestPrice: false,
       isBestRating: true,
@@ -109,17 +109,17 @@ export function useProductPage() {
     },
     {
       id: 2,
-      name: 'Cherry Tomatoes',
-      producer: 'Sunrise Organic',
+      name: t('productCherryTomatoes'),
+      producer: t('supplierNameSunriseOrganic'),
       price: '€3.80/kg',
       priceValue: 3.8,
       image: product.image,
       rating: 4.6,
       reviews: 89,
-      location: '18 km away',
-      deliveryTime: '12 hours',
-      stockAvailable: 'In Stock',
-      badges: ['Organic', 'Local'],
+      location: t('distance18kmAway'),
+      deliveryTime: t('deliveryTime12Hours'),
+      stockAvailable: 'limitedStock',
+      badges: [t('organic'), t('local')],
       verified: true,
       isBestPrice: false,
       isBestRating: false,
@@ -127,17 +127,17 @@ export function useProductPage() {
     },
     {
       id: 3,
-      name: 'Roma Tomatoes',
-      producer: 'Heritage Produce',
+      name: t('productRomaTomatoes'),
+      producer: t('supplierNameHeritageProduce'),
       price: '€3.20/kg',
       priceValue: 3.2,
       image: product.image,
       rating: 4.7,
       reviews: 95,
-      location: '25 km away',
-      deliveryTime: '48 hours',
-      stockAvailable: 'Limited Stock',
-      badges: ['Organic', 'Traceable'],
+      location: t('distance25kmAway'),
+      deliveryTime: t('deliveryTime48Hours'),
+      stockAvailable: 'inStock',
+      badges: [t('organic'), t('traceable')],
       verified: false,
       isBestPrice: true,
       isBestRating: false,
@@ -148,20 +148,19 @@ export function useProductPage() {
   const reviews: ReviewItem[] = [
     {
       id: 1,
-      author: 'Chef Marco',
-      restaurant: 'La Cucina',
+      author: t('chefMarco'),
+      restaurant: t('laCucina'),
       rating: 5,
-      comment:
-        'Exceptional quality! The flavor is outstanding and our customers love them.',
-      date: '2 weeks ago',
+      comment: t('reviewCommentExceptionalFlavor'),
+      date: t('twoWeeksAgo'),
     },
     {
       id: 2,
-      author: 'Chef Sarah',
-      restaurant: 'Green Table',
+      author: t('chefSarah'),
+      restaurant: t('greenTable'),
       rating: 5,
-      comment: "Best tomatoes we've sourced. Perfect for our summer menu.",
-      date: '3 weeks ago',
+      comment: t('reviewCommentBestTomatoesSourced'),
+      date: t('threeWeeksAgo'),
     },
   ];
 

@@ -1,3 +1,5 @@
+'use client';
+
 // Supply needs form component for edit restaurant profile dialog
 
 import { Input } from '@components/ui/input';
@@ -10,6 +12,7 @@ import {
   RestaurantProfile,
   SupplyNeed,
 } from '@/types/user/edit-restaurant/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantSupplyNeedsFormProps {
   profile: RestaurantProfile;
@@ -24,27 +27,27 @@ export function RestaurantSupplyNeedsForm({
   onUpdateSupplyNeed,
   onRemoveSupplyNeed,
 }: RestaurantSupplyNeedsFormProps) {
+  const { t } = useLanguage();
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Supplier Needs</h3>
+        <h3 className='text-lg font-semibold'>{t('supplierNeeds')}</h3>
         <Button onClick={onAddSupplyNeed}>
           <Plus className='mr-2 h-4 w-4' />
-          Add Need
+          {t('addNeed')}
         </Button>
       </div>
 
       {profile.supplierNeeds.length === 0 ? (
         <Card className='p-8 text-center'>
           <Package className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
-          <h3 className='mb-2 text-lg font-semibold'>No supplier needs yet</h3>
+          <h3 className='mb-2 text-lg font-semibold'>{t('noSupplierNeedsYet')}</h3>
           <p className='mb-4 text-muted-foreground'>
-            Add your supplier needs to help suppliers understand your
-            requirements
+            {t('addYourSupplierNeedsHelpText')}
           </p>
           <Button onClick={onAddSupplyNeed}>
             <Plus className='mr-2 h-4 w-4' />
-            Add Need
+            {t('addNeed')}
           </Button>
         </Card>
       ) : (
@@ -52,7 +55,9 @@ export function RestaurantSupplyNeedsForm({
           {profile.supplierNeeds.map((need, index) => (
             <Card key={index} className='p-4'>
               <div className='mb-4 flex items-center justify-between'>
-                <h4 className='font-medium'>Supply Need #{index + 1}</h4>
+                <h4 className='font-medium'>
+                  {t('supplyNeed')} #{index + 1}
+                </h4>
                 <Button
                   variant='outline'
                   size='sm'
@@ -64,19 +69,19 @@ export function RestaurantSupplyNeedsForm({
 
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
-                  <Label htmlFor={`need-category-${index}`}>Category</Label>
+                  <Label htmlFor={`need-category-${index}`}>{t('category')}</Label>
                   <Input
                     id={`need-category-${index}`}
                     value={need.category}
                     onChange={e =>
                       onUpdateSupplyNeed(index, { category: e.target.value })
                     }
-                    placeholder='e.g., Fresh Produce, Dairy, Meat'
+                    placeholder={t('supplyNeedCategoryPlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor={`need-frequency-${index}`}>
-                    Order Frequency
+                    {t('orderFrequency')}
                   </Label>
                   <Input
                     id={`need-frequency-${index}`}
@@ -84,12 +89,12 @@ export function RestaurantSupplyNeedsForm({
                     onChange={e =>
                       onUpdateSupplyNeed(index, { frequency: e.target.value })
                     }
-                    placeholder='e.g., Weekly, Bi-weekly, Monthly'
+                    placeholder={t('orderFrequencyPlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor={`need-average-${index}`}>
-                    Average Order Value
+                    {t('averageOrderValue')}
                   </Label>
                   <Input
                     id={`need-average-${index}`}
@@ -99,12 +104,12 @@ export function RestaurantSupplyNeedsForm({
                         averageOrder: e.target.value,
                       })
                     }
-                    placeholder='e.g., €500 - €1000'
+                    placeholder={t('averageOrderValuePlaceholder')}
                   />
                 </div>
                 <div>
                   <Label htmlFor={`need-preferences-${index}`}>
-                    Special Preferences
+                    {t('specialPreferences')}
                   </Label>
                   <Input
                     id={`need-preferences-${index}`}
@@ -112,7 +117,7 @@ export function RestaurantSupplyNeedsForm({
                     onChange={e =>
                       onUpdateSupplyNeed(index, { preferences: e.target.value })
                     }
-                    placeholder='e.g., Organic, Local, Halal'
+                    placeholder={t('specialPreferencesPlaceholder')}
                   />
                 </div>
               </div>

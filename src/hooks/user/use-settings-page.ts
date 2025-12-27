@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface AccountData {
   fullName: string;
@@ -37,6 +38,7 @@ export interface OrderingPrefs {
 }
 
 export function useSettingsPage() {
+  const language = getStoredLanguage();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
@@ -80,29 +82,29 @@ export function useSettingsPage() {
       accountData.newPassword &&
       accountData.newPassword !== accountData.confirmPassword
     ) {
-      toast.error('Passwords do not match');
+      toast.error(t('passwordsDoNotMatch', language));
       return;
     }
-    toast.success('Account settings saved', {
-      description: 'Your account information has been updated',
+    toast.success(t('accountSettingsSaved', language), {
+      description: t('accountInfoUpdated', language),
     });
   };
 
   const handleSaveRestaurant = () => {
-    toast.success('Restaurant settings saved', {
-      description: 'Your restaurant information has been updated',
+    toast.success(t('restaurantSettingsSaved', language), {
+      description: t('restaurantInfoUpdated', language),
     });
   };
 
   const handleSaveNotifications = () => {
-    toast.success('Notification preferences saved', {
-      description: 'Your notification settings have been updated',
+    toast.success(t('notificationPreferencesSaved', language), {
+      description: t('notificationSettingsUpdated', language),
     });
   };
 
   const handleSaveOrdering = () => {
-    toast.success('Ordering preferences saved', {
-      description: 'Your ordering preferences have been updated',
+    toast.success(t('orderingPreferencesSaved', language), {
+      description: t('orderingPreferencesUpdated', language),
     });
   };
 

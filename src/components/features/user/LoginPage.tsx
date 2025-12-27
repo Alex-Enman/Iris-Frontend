@@ -1,15 +1,19 @@
+'use client';
+
 import { useState } from 'react';
 import { Input } from '@components/ui/input';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Store, UtensilsCrossed } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface LoginPageProps {
   onLogin: (userType: 'supplier' | 'restaurant') => void;
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
+  const { t } = useLanguage();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,7 +32,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       } else if (username === 'restaurant' && password === 'restaurant') {
         onLogin('restaurant');
       } else {
-        setError('Invalid username or password');
+        setError(t('invalidUsernameOrPassword'));
         setLoading(false);
       }
     }, 500);
@@ -57,7 +61,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </div>
             <h1 className='mb-2 text-4xl tracking-tight text-primary'>Iris</h1>
             <p className='text-muted-foreground'>
-              Connecting restaurants with local producers
+              {t('loginTagline')}
             </p>
           </div>
 
@@ -65,18 +69,18 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           <div className='overflow-hidden rounded-3xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.12)]'>
             <div className='bg-gradient-to-br from-primary/5 to-accent/5 p-6'>
               <h2 className='text-center text-2xl text-primary'>
-                Welcome Back
+                {t('welcomeBack')}
               </h2>
             </div>
 
             <form onSubmit={handleSubmit} className='p-8'>
               <div className='space-y-5'>
                 <div>
-                  <Label htmlFor='username'>Username</Label>
+                  <Label htmlFor='username'>{t('username')}</Label>
                   <Input
                     id='username'
                     type='text'
-                    placeholder='Enter your username'
+                    placeholder={t('enterYourUsername')}
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                     className='mt-2 h-12 rounded-xl'
@@ -85,11 +89,11 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                 </div>
 
                 <div>
-                  <Label htmlFor='password'>Password</Label>
+                  <Label htmlFor='password'>{t('password')}</Label>
                   <Input
                     id='password'
                     type='password'
-                    placeholder='Enter your password'
+                    placeholder={t('enterYourPassword')}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     className='mt-2 h-12 rounded-xl'
@@ -108,7 +112,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   disabled={loading}
                   className='duration-250 h-12 w-full rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
                 >
-                  {loading ? 'Signing in...' : 'Sign In'}
+                  {loading ? t('signingInEllipsis') : t('signIn')}
                 </Button>
               </div>
             </form>
@@ -117,7 +121,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           {/* Quick Login Options */}
           <div className='mt-8'>
             <p className='mb-4 text-center text-sm text-muted-foreground'>
-              Quick login for demo
+              {t('quickLoginForDemo')}
             </p>
             <div className='grid gap-3 sm:grid-cols-2'>
               <button
@@ -129,9 +133,9 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                     <UtensilsCrossed className='h-6 w-6 text-primary' />
                   </div>
                 </div>
-                <h3 className='mb-1 text-center'>Restaurant</h3>
+                <h3 className='mb-1 text-center'>{t('restaurantRole')}</h3>
                 <p className='text-center text-xs text-muted-foreground'>
-                  Browse & order products
+                  {t('browseAndOrderProducts')}
                 </p>
               </button>
 
@@ -144,9 +148,9 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                     <Store className='h-6 w-6 text-accent' />
                   </div>
                 </div>
-                <h3 className='mb-1 text-center'>Supplier</h3>
+                <h3 className='mb-1 text-center'>{t('supplierRole')}</h3>
                 <p className='text-center text-xs text-muted-foreground'>
-                  Manage your store
+                  {t('manageYourStore')}
                 </p>
               </button>
             </div>
@@ -154,7 +158,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
           {/* Footer */}
           <p className='mt-8 text-center text-xs text-muted-foreground'>
-            Demo credentials: supplier/supplier or restaurant/restaurant
+            {t('demoCredentials')}
           </p>
         </div>
       </div>

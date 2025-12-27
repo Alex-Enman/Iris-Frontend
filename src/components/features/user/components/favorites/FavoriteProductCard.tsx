@@ -2,6 +2,7 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Heart, Star } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FavoriteProductCardProps {
   id: number;
@@ -21,6 +22,7 @@ interface FavoriteProductCardProps {
 }
 
 export function FavoriteProductCard(props: FavoriteProductCardProps) {
+  const { t } = useLanguage();
   const {
     id,
     name,
@@ -50,20 +52,20 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
         <button
           onClick={() => onRemove(id)}
           className='duration-250 absolute right-3 top-3 rounded-full bg-white/95 p-2 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-accent/10'
-          aria-label='Remove from favorites'
+          aria-label={t('removeFromFavorites')}
         >
           <Heart className='h-4 w-4 fill-accent text-accent' />
         </button>
         {organic && (
           <div className='absolute left-3 top-3'>
             <Badge className='bg-primary text-primary-foreground'>
-              Organic
+              {t('organic')}
             </Badge>
           </div>
         )}
         {!inStock && (
           <div className='absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm'>
-            <Badge variant='destructive'>Out of Stock</Badge>
+            <Badge variant='destructive'>{t('outOfStock')}</Badge>
           </div>
         )}
       </div>
@@ -76,7 +78,7 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
             <span>{rating}</span>
           </div>
           <span className='text-xs text-muted-foreground'>
-            Last ordered {lastOrdered}
+            {t('lastOrdered')} {lastOrdered}
           </span>
         </div>
         <div className='mb-3 flex items-baseline gap-1'>
@@ -89,7 +91,7 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
             disabled={!inStock}
             className='w-full rounded-xl'
           >
-            {inStock ? 'Add to Cart' : 'Out of Stock'}
+            {inStock ? t('addToCart') : t('outOfStock')}
           </Button>
           <Button
             variant='outline'
@@ -97,7 +99,7 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
             onClick={() => onViewSupplier(supplierId)}
             className='w-full rounded-xl'
           >
-            View Supplier
+            {t('viewSupplier')}
           </Button>
         </div>
       </div>

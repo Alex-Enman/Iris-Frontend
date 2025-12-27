@@ -6,8 +6,10 @@ import { Avatar, AvatarFallback } from '@components/ui/avatar';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Heart, Utensils } from 'lucide-react';
 import type { CoverHeaderProps } from '@/components/types/cover-header';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function CoverHeader(props: CoverHeaderProps) {
+  const { t } = useLanguage();
   const {
     name,
     type,
@@ -22,7 +24,7 @@ export function CoverHeader(props: CoverHeaderProps) {
   return (
     <>
       <Button variant='outline' onClick={onBack} className='mb-6 rounded-xl'>
-        ← Back
+        ← {t('back')}
       </Button>
       <Card className='mb-8 overflow-hidden rounded-3xl border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
         <div className='relative h-64 overflow-hidden'>
@@ -56,14 +58,14 @@ export function CoverHeader(props: CoverHeaderProps) {
                 className='rounded-xl border-white bg-white/20 text-white backdrop-blur-sm hover:bg-white/30'
                 onClick={onContact}
               >
-                Contact
+                {t('contact')}
               </Button>
               <Button
                 size='sm'
                 className='rounded-xl bg-primary hover:bg-primary/90'
                 onClick={onProposal}
               >
-                Send Proposal
+                {t('sendProposal')}
               </Button>
               <Button
                 size='sm'

@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Award, Star, MapPin } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FeaturedProducerItem {
   id: string;
@@ -23,12 +24,13 @@ interface FeaturedProducersProps {
 }
 
 export function FeaturedProducers({ items, onClick }: FeaturedProducersProps) {
+  const { t } = useLanguage();
   return (
     <section className='mb-12'>
       <div className='mb-6'>
-        <h2 className='text-3xl text-primary'>Featured Producers</h2>
+        <h2 className='text-3xl text-primary'>{t('featuredProducers')}</h2>
         <p className='mt-1 text-muted-foreground'>
-          Top-rated local suppliers recommended for you
+          {t('featuredProducersDescription')}
         </p>
       </div>
       <div className='relative -mx-2 px-2'>
@@ -57,7 +59,7 @@ export function FeaturedProducers({ items, onClick }: FeaturedProducersProps) {
                   {supplier.verified && (
                     <Badge className='bg-primary'>
                       <Award className='mr-1 h-3 w-3' />
-                      Verified
+                      {t('verified')}
                     </Badge>
                   )}
                 </div>

@@ -4,6 +4,8 @@ import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { ShoppingCart } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 export interface Product {
   id: number;
@@ -21,6 +23,7 @@ export interface ProductsTabProps {
 }
 
 export function ProductsTab({ products, onAddToCart }: ProductsTabProps) {
+  const { t } = useLanguage();
   return (
     <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
       {products.map(product => (
@@ -38,7 +41,7 @@ export function ProductsTab({ products, onAddToCart }: ProductsTabProps) {
             />
             {!product.inStock && (
               <div className='absolute inset-0 flex items-center justify-center bg-black/50 text-white'>
-                Out of Stock
+                {t('outOfStock')}
               </div>
             )}
           </div>
@@ -49,7 +52,7 @@ export function ProductsTab({ products, onAddToCart }: ProductsTabProps) {
             </p>
             <div className='flex items-center justify-between'>
               <div className='text-primary'>
-                €{product.price.toFixed(2)}
+                {formatCurrency(product.price, 'EUR')}
                 <span className='text-sm text-muted-foreground'>
                   /{product.unit}
                 </span>
@@ -61,7 +64,7 @@ export function ProductsTab({ products, onAddToCart }: ProductsTabProps) {
                 onClick={() => onAddToCart(product.id, product.name)}
               >
                 <ShoppingCart className='mr-2 h-4 w-4' />
-                Add to Cart
+                {t('addToCart')}
               </Button>
             </div>
           </div>

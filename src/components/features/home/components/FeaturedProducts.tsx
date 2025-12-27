@@ -2,6 +2,7 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { Filter } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ProductItem {
   id: number;
@@ -22,23 +23,25 @@ export function FeaturedProducts({
   onNavigate,
   onClearAll,
 }: FeaturedProductsProps) {
+  const { t } = useLanguage();
   return (
     <section className='mb-16'>
       <div className='mb-6'>
-        <h2>Featured Products</h2>
+        <h2>{t('featuredProducts')}</h2>
         <p className='mt-1 text-muted-foreground'>
-          {products.length} product{products.length !== 1 ? 's' : ''} available
+          {products.length} {products.length === 1 ? t('product') : t('products')}{' '}
+          {t('availableCountSuffix')}
         </p>
       </div>
       {products.length === 0 ? (
         <div className='flex min-h-[300px] flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 p-12 text-center'>
           <Filter className='mb-4 h-12 w-12 text-muted-foreground/30' />
-          <h3 className='mb-2 text-xl text-primary'>No products found</h3>
+          <h3 className='mb-2 text-xl text-primary'>{t('noProductsFound')}</h3>
           <p className='mb-4 max-w-md text-muted-foreground'>
-            Try adjusting your filters to see more results
+            {t('tryAdjustingFilters')}
           </p>
           <Button onClick={onClearAll} variant='outline' className='rounded-xl'>
-            Clear All Filters
+            {t('clearAllFilters')}
           </Button>
         </div>
       ) : (
@@ -66,7 +69,7 @@ export function FeaturedProducts({
                   </p>
                   <div className='flex items-center justify-between'>
                     <span className='text-primary'>{product.price}</span>
-                    <Badge variant='secondary'>In Stock</Badge>
+                    <Badge variant='secondary'>{t('inStock')}</Badge>
                   </div>
                 </div>
               </div>

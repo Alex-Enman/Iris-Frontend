@@ -6,6 +6,7 @@ import {
 } from '@hooks/suppliers/use-discover-restaurants';
 import { RestaurantFiltersBar } from './components/RestaurantFiltersBar';
 import { RestaurantCard } from './components/RestaurantCard';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface DiscoverRestaurantsPageProps {
   onViewRestaurant: (id: string) => void;
@@ -16,6 +17,7 @@ export function DiscoverRestaurantsPage({
   onViewRestaurant,
   onContactRestaurant,
 }: DiscoverRestaurantsPageProps) {
+  const { t } = useLanguage();
   const {
     searchQuery,
     setSearchQuery,
@@ -62,9 +64,9 @@ export function DiscoverRestaurantsPage({
       {filteredRestaurants.length === 0 && (
         <Card className='rounded-3xl border-0 p-12 text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
           <Utensils className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
-          <h3 className='mb-2'>No restaurants found</h3>
+          <h3 className='mb-2'>{t('noRestaurantsFound')}</h3>
           <p className='text-muted-foreground'>
-            Try adjusting your search or filters
+            {t('tryAdjustingSearchOrFilters')}
           </p>
         </Card>
       )}

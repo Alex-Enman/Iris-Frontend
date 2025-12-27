@@ -1,6 +1,7 @@
 // Order formatting utilities
 
 import { Order } from '@/types';
+import { getCurrentLocale } from '@lib/i18n';
 
 export function calculateTotalAmount(items: Order['items']): number {
   return items.reduce((total, item) => {
@@ -10,7 +11,7 @@ export function calculateTotalAmount(items: Order['items']): number {
 
 export function formatOrderDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(getCurrentLocale(), {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

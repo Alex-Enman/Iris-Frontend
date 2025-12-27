@@ -8,6 +8,7 @@ import { Badge } from '@components/ui/badge';
 import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
 import { cn } from '@/utils/utils';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function ProductCard({
   product,
@@ -17,6 +18,8 @@ export function ProductCard({
   isFavorite = false,
   showSupplier = true,
 }: ProductCardProps) {
+  const { t } = useLanguage();
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     onAddToCart(product);
@@ -49,7 +52,7 @@ export function ProductCard({
             />
           ) : (
             <div className='flex h-full w-full items-center justify-center bg-muted'>
-              <span className='text-muted-foreground'>No Image</span>
+              <span className='text-muted-foreground'>{t('noImage')}</span>
             </div>
           )}
 
@@ -75,7 +78,7 @@ export function ProductCard({
           {/* Availability badge */}
           {!product.isAvailable && (
             <Badge variant='destructive' className='absolute left-2 top-2'>
-              Out of Stock
+              {t('outOfStock')}
             </Badge>
           )}
         </div>
@@ -96,7 +99,7 @@ export function ProductCard({
           {/* Supplier info */}
           {showSupplier && (
             <p className='text-xs text-muted-foreground'>
-              by {product.supplierName}
+              {t('byPrefix')} {product.supplierName}
             </p>
           )}
 
@@ -107,14 +110,14 @@ export function ProductCard({
                 {formatCurrency(product.price)}
               </p>
               <p className='text-xs text-muted-foreground'>
-                per {product.unit}
+                {t('perPrefix')} {product.unit}
               </p>
             </div>
 
             {/* Minimum order quantity */}
             <div className='text-right'>
               <p className='text-xs text-muted-foreground'>
-                Min: {product.minimumOrderQuantity} {product.unit}
+                {t('minLabel')}: {product.minimumOrderQuantity} {product.unit}
               </p>
             </div>
           </div>
@@ -146,7 +149,7 @@ export function ProductCard({
             onClick={handleViewDetails}
           >
             <Eye className='mr-2 h-4 w-4' />
-            View Details
+            {t('viewDetails')}
           </Button>
 
           <Button
@@ -156,7 +159,7 @@ export function ProductCard({
             disabled={!product.isAvailable}
           >
             <ShoppingCart className='mr-2 h-4 w-4' />
-            Add to Cart
+            {t('addToCart')}
           </Button>
         </div>
       </CardFooter>

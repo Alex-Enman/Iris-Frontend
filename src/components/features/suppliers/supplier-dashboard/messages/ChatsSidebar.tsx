@@ -2,6 +2,7 @@ import { MessageSquare, Plus } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import type { ChatItem } from '@/hooks/suppliers/use-supplier-messages-tab';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ChatsSidebarProps {
   chats: ChatItem[];
@@ -16,14 +17,15 @@ export function ChatsSidebar({
   onSelectChat,
   onNewChat,
 }: ChatsSidebarProps) {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <CardHeader className='p-6'>
         <div className='flex items-center justify-between'>
-          <h3 className='text-lg'>Chats</h3>
+          <h3 className='text-lg'>{t('chats')}</h3>
           <Button onClick={onNewChat} size='sm' className='rounded-xl'>
             <Plus className='mr-2 h-4 w-4' />
-            New Chat
+            {t('newChat')}
           </Button>
         </div>
       </CardHeader>

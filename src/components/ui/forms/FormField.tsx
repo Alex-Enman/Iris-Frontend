@@ -3,6 +3,8 @@
 import { ReactNode } from 'react';
 import { Label } from '@components/ui/label';
 import { cn } from '@/utils/utils';
+import { useLanguage } from '@contexts/LanguageContext';
+import { translations, type TranslationKey } from '@lib/i18n';
 
 interface FormFieldProps {
   label: string;
@@ -19,6 +21,15 @@ export function FormField({
   required = false,
   className,
 }: FormFieldProps) {
+  const { t } = useLanguage();
+
+  const getErrorText = (value: string) => {
+    if (Object.prototype.hasOwnProperty.call(translations.en, value)) {
+      return t(value as TranslationKey);
+    }
+    return value;
+  };
+
   return (
     <div className={cn('space-y-2', className)}>
       <Label className='text-sm font-medium'>
@@ -26,7 +37,7 @@ export function FormField({
         {required && <span className='ml-1 text-red-500'>*</span>}
       </Label>
       {children}
-      {error && <p className='text-sm text-red-500'>{error}</p>}
+      {error && <p className='text-sm text-red-500'>{getErrorText(error)}</p>}
     </div>
   );
 }

@@ -19,8 +19,10 @@ import {
 } from '@components/features/user';
 import { Toaster } from '@components/ui/sonner';
 import { toast } from 'sonner';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export default function App() {
+  const { t } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState<'supplier' | 'restaurant' | null>(
     null
@@ -33,8 +35,8 @@ export default function App() {
   const handleLogin = (type: 'supplier' | 'restaurant') => {
     setUserType(type);
     setIsAuthenticated(true);
-    toast.success('Welcome!', {
-      description: `Logged in as ${type}`,
+    toast.success(t('welcome'), {
+      description: `${t('loggedInAs')} ${type}`,
       duration: 3000,
     });
   };
@@ -44,7 +46,7 @@ export default function App() {
     setUserType(null);
     setCurrentPage('home');
     setCartCount(0);
-    toast.success('Logged out successfully', {
+    toast.success(t('loggedOutSuccessfully'), {
       duration: 3000,
     });
   };
@@ -57,15 +59,15 @@ export default function App() {
 
   const handleAddToCart = () => {
     setCartCount(cartCount + 1);
-    toast.success('Added to cart', {
-      description: 'Item has been added to your cart',
+    toast.success(t('addedToCart'), {
+      description: t('itemAddedToCart'),
       duration: 3000,
     });
   };
 
   const handleCheckout = () => {
-    toast.success('Order placed!', {
-      description: 'Your order has been confirmed',
+    toast.success(t('orderPlaced'), {
+      description: t('orderConfirmed'),
       duration: 3000,
     });
     setCartCount(0);

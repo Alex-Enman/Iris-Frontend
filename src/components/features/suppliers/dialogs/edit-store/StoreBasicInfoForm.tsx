@@ -1,3 +1,5 @@
+'use client';
+
 // Basic info form component for edit store dialog
 
 import { Input } from '@components/ui/input';
@@ -11,6 +13,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { StoreFormData } from '@/types/suppliers/edit-store/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface StoreBasicInfoFormProps {
   formData: StoreFormData;
@@ -21,61 +24,76 @@ export function StoreBasicInfoForm({
   formData,
   onUpdate,
 }: StoreBasicInfoFormProps) {
+  const { t } = useLanguage();
   return (
     <div className='space-y-4'>
       <div>
-        <Label htmlFor='storeName'>Store Name</Label>
+        <Label htmlFor='storeName'>{t('storeName')}</Label>
         <Input
           id='storeName'
           value={formData.storeName}
           onChange={e => onUpdate({ storeName: e.target.value })}
-          placeholder='Enter store name'
+          placeholder={t('enterStoreName')}
         />
       </div>
 
       <div>
-        <Label htmlFor='storeCategory'>Category</Label>
+        <Label htmlFor='storeCategory'>{t('category')}</Label>
         <Select
           value={formData.storeCategory}
           onValueChange={value => onUpdate({ storeCategory: value })}
         >
           <SelectTrigger>
-            <SelectValue placeholder='Select category' />
+            <SelectValue placeholder={t('selectCategory')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='Organic Vegetables'>
-              Organic Vegetables
+            <SelectItem value='organicVegetables'>
+              {t('storeCategoryOrganicVegetables')}
             </SelectItem>
-            <SelectItem value='Fresh Produce'>Fresh Produce</SelectItem>
-            <SelectItem value='Dairy Products'>Dairy Products</SelectItem>
-            <SelectItem value='Meat & Poultry'>Meat & Poultry</SelectItem>
-            <SelectItem value='Bakery Items'>Bakery Items</SelectItem>
-            <SelectItem value='Beverages'>Beverages</SelectItem>
-            <SelectItem value='Pantry Staples'>Pantry Staples</SelectItem>
-            <SelectItem value='Frozen Foods'>Frozen Foods</SelectItem>
-            <SelectItem value='Specialty Foods'>Specialty Foods</SelectItem>
-            <SelectItem value='Other'>Other</SelectItem>
+            <SelectItem value='freshProduce'>
+              {t('storeCategoryFreshProduce')}
+            </SelectItem>
+            <SelectItem value='dairyProducts'>
+              {t('storeCategoryDairyProducts')}
+            </SelectItem>
+            <SelectItem value='meatAndPoultry'>
+              {t('storeCategoryMeatAndPoultry')}
+            </SelectItem>
+            <SelectItem value='bakeryItems'>
+              {t('storeCategoryBakeryItems')}
+            </SelectItem>
+            <SelectItem value='beverages'>{t('beverages')}</SelectItem>
+            <SelectItem value='pantryStaples'>
+              {t('storeCategoryPantryStaples')}
+            </SelectItem>
+            <SelectItem value='frozenFoods'>
+              {t('storeCategoryFrozenFoods')}
+            </SelectItem>
+            <SelectItem value='specialtyFoods'>
+              {t('storeCategorySpecialtyFoods')}
+            </SelectItem>
+            <SelectItem value='other'>{t('other')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div>
-        <Label htmlFor='location'>Location</Label>
+        <Label htmlFor='location'>{t('locationLabel')}</Label>
         <Input
           id='location'
           value={formData.location}
           onChange={e => onUpdate({ location: e.target.value })}
-          placeholder='Enter store location'
+          placeholder={t('enterStoreLocation')}
         />
       </div>
 
       <div>
-        <Label htmlFor='description'>Description</Label>
+        <Label htmlFor='description'>{t('storeDescription')}</Label>
         <Textarea
           id='description'
           value={formData.description}
           onChange={e => onUpdate({ description: e.target.value })}
-          placeholder='Describe your store and what makes it unique'
+          placeholder={t('describeYourStorePlaceholder')}
           rows={4}
         />
       </div>

@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Trash2, TrendingUp, ShoppingBag } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
+import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 interface CartPageProps {
   onCheckout: () => void;
 }
 
 export function CartPage({ onCheckout }: CartPageProps) {
+  const { t } = useLanguage();
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
-      name: 'Heirloom Tomatoes',
-      producer: 'Green Valley Farm',
+      name: t('productHeirloomTomatoes'),
+      producer: t('supplierNameGreenValleyFarm'),
       price: 4.5,
       quantity: 3,
       unit: 'kg',
@@ -21,18 +24,18 @@ export function CartPage({ onCheckout }: CartPageProps) {
     },
     {
       id: 2,
-      name: 'Free-Range Eggs',
-      producer: 'Sunrise Farm',
+      name: t('freeRangeEggs'),
+      producer: t('supplierNameSunriseFarm'),
       price: 5.2,
       quantity: 2,
-      unit: 'dozen',
+      unit: t('dozenUnit'),
       image:
         'https://images.unsplash.com/photo-1669669420238-7a4be2e3eac6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwZWdncyUyMGZhcm18ZW58MXx8fHwxNzYxMjcyMTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
     },
     {
       id: 3,
-      name: 'Extra Virgin Olive Oil',
-      producer: 'Olive Grove Estate',
+      name: t('productExtraVirginOliveOil'),
+      producer: t('supplierNameOliveGroveEstate'),
       price: 12.0,
       quantity: 1,
       unit: 'L',
@@ -40,6 +43,33 @@ export function CartPage({ onCheckout }: CartPageProps) {
         'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbGl2ZSUyMG9pbCUyMGJvdHRsZXxlbnwxfHx8fDE3NjEyMDU0MTh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     },
   ]);
+
+  useEffect(() => {
+    setCartItems(prev =>
+      prev.map(item => {
+        if (item.id === 1)
+          return {
+            ...item,
+            name: t('productHeirloomTomatoes'),
+            producer: t('supplierNameGreenValleyFarm'),
+          };
+        if (item.id === 2)
+          return {
+            ...item,
+            name: t('freeRangeEggs'),
+            producer: t('supplierNameSunriseFarm'),
+            unit: t('dozenUnit'),
+          };
+        if (item.id === 3)
+          return {
+            ...item,
+            name: t('productExtraVirginOliveOil'),
+            producer: t('supplierNameOliveGroveEstate'),
+          };
+        return item;
+      })
+    );
+  }, [t]);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -64,17 +94,17 @@ export function CartPage({ onCheckout }: CartPageProps) {
   const aiSuggestion = {
     recommendedQuantity: 4,
     savings: 12.5,
-    reasoning: 'Based on your weekly consumption pattern',
+    reasoning: t('aiDemandPredictionReasoning'),
   };
 
   return (
     <div className='min-h-screen py-12'>
       <div className='mx-auto max-w-[1440px] px-8'>
         <div className='mb-8'>
-          <h1 className='mb-2 text-4xl text-primary'>Shopping Cart</h1>
+          <h1 className='mb-2 text-4xl text-primary'>{t('shoppingCart')}</h1>
           <p className='text-muted-foreground'>
-            {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in
-            your cart
+            {cartItems.length}{' '}
+            {cartItems.length === 1 ? t('item') : t('items')} {t('inYourCart')}
           </p>
         </div>
 
@@ -128,10 +158,10 @@ export function CartPage({ onCheckout }: CartPageProps) {
                         </div>
                         <div className='text-right'>
                           <div className='text-sm text-muted-foreground'>
-                            €{item.price.toFixed(2)}/{item.unit}
+                            {formatCurrency(item.price, 'EUR')}/{item.unit}
                           </div>
                           <div className='text-xl text-primary'>
-                            €{(item.price * item.quantity).toFixed(2)}
+                            {formatCurrency(item.price * item.quantity, 'EUR')}
                           </div>
                         </div>
                       </div>
@@ -150,9 +180,9 @@ export function CartPage({ onCheckout }: CartPageProps) {
             {cartItems.length === 0 && (
               <div className='flex flex-col items-center justify-center rounded-2xl bg-white p-16 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <ShoppingBag className='mb-4 h-16 w-16 text-muted-foreground' />
-                <h3 className='mb-2'>Your cart is empty</h3>
+                <h3 className='mb-2'>{t('yourCartIsEmpty')}</h3>
                 <p className='text-muted-foreground'>
-                  Start adding items to your cart
+                  {t('startAddingItemsToCart')}
                 </p>
               </div>
             )}
@@ -165,46 +195,48 @@ export function CartPage({ onCheckout }: CartPageProps) {
               <div className='overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] backdrop-blur-sm'>
                 <div className='mb-4 flex items-center gap-2'>
                   <TrendingUp className='h-5 w-5 text-primary' />
-                  <h3 className='text-lg'>AI Demand Prediction</h3>
+                  <h3 className='text-lg'>{t('aiDemandPrediction')}</h3>
                 </div>
                 <div className='mb-4 rounded-xl bg-white/80 p-4 backdrop-blur-sm'>
                   <p className='mb-2 text-sm text-muted-foreground'>
                     {aiSuggestion.reasoning}
                   </p>
                   <div className='mb-1'>
-                    Recommended weekly order:{' '}
+                    {t('recommendedWeeklyOrder')}: {' '}
                     <span className='text-primary'>
-                      {aiSuggestion.recommendedQuantity} items
+                      {aiSuggestion.recommendedQuantity} {t('items')}
                     </span>
                   </div>
                   <div className='text-sm text-accent'>
-                    Potential savings: €{aiSuggestion.savings.toFixed(2)}
+                    {t('potentialSavings')}: {formatCurrency(aiSuggestion.savings, 'EUR')}
                   </div>
                 </div>
                 <Button
                   variant='outline'
                   className='w-full border-primary/20 hover:bg-primary/10'
                 >
-                  Apply Suggestion
+                  {t('applySuggestion')}
                 </Button>
               </div>
 
               {/* Order Summary */}
               <div className='overflow-hidden rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] backdrop-blur-sm'>
-                <h3 className='mb-4 text-lg'>Order Summary</h3>
+                <h3 className='mb-4 text-lg'>{t('orderSummary')}</h3>
                 <div className='mb-4 space-y-3'>
                   <div className='flex justify-between'>
-                    <span className='text-muted-foreground'>Subtotal</span>
-                    <span>€{subtotal.toFixed(2)}</span>
+                    <span className='text-muted-foreground'>{t('subtotal')}</span>
+                    <span>{formatCurrency(subtotal, 'EUR')}</span>
                   </div>
                   <div className='flex justify-between'>
-                    <span className='text-muted-foreground'>Delivery</span>
-                    <span>€{deliveryFee.toFixed(2)}</span>
+                    <span className='text-muted-foreground'>{t('delivery')}</span>
+                    <span>{formatCurrency(deliveryFee, 'EUR')}</span>
                   </div>
                   <div className='border-t border-border pt-3'>
                     <div className='flex justify-between text-lg'>
-                      <span>Total</span>
-                      <span className='text-primary'>€{total.toFixed(2)}</span>
+                      <span>{t('total')}</span>
+                      <span className='text-primary'>
+                        {formatCurrency(total, 'EUR')}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -213,10 +245,10 @@ export function CartPage({ onCheckout }: CartPageProps) {
                   disabled={cartItems.length === 0}
                   className='duration-250 h-12 w-full rounded-xl bg-primary text-primary-foreground transition-all hover:bg-accent hover:shadow-[0_4px_12px_rgba(197,108,74,0.3)]'
                 >
-                  Proceed to Checkout
+                  {t('proceedToCheckout')}
                 </Button>
                 <p className='mt-4 text-center text-sm text-muted-foreground'>
-                  Estimated delivery: Thursday 8 AM
+                  {t('estimatedDelivery')}: {t('thursday8am')}
                 </p>
               </div>
             </div>

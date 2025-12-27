@@ -1,3 +1,5 @@
+'use client';
+
 // Products tab component for supplier dashboard
 
 import { useSupplierProductsTab } from '@hooks/suppliers/use-supplier-products-tab';
@@ -27,6 +29,7 @@ import type {
   Product,
   NewProductForm,
 } from '@/types/suppliers/supplier-dashboard/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface SupplierProductsTabProps {
   products: Product[];
@@ -46,6 +49,7 @@ export function SupplierProductsTab({
   onDeleteProduct,
   onUpdateProduct,
 }: SupplierProductsTabProps) {
+  const { t } = useLanguage();
   const {
     isAddProductOpen,
     setIsAddProductOpen,
@@ -100,25 +104,25 @@ export function SupplierProductsTab({
       <Dialog open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
         <DialogContent className='sm:max-w-md'>
           <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
+            <DialogTitle>{t('addNewProduct')}</DialogTitle>
             <DialogDescription>
-              Add a new product to your inventory catalog.
+              {t('addNewProductDescription')}
             </DialogDescription>
           </DialogHeader>
           <div className='space-y-4'>
             <div>
-              <Label htmlFor='name'>Product Name</Label>
+              <Label htmlFor='name'>{t('productName')}</Label>
               <Input
                 id='name'
                 value={newProduct.name}
                 onChange={e =>
                   setNewProduct({ ...newProduct, name: e.target.value })
                 }
-                placeholder='Enter product name'
+                placeholder={t('enterProductName')}
               />
             </div>
             <div>
-              <Label htmlFor='category'>Category</Label>
+              <Label htmlFor='category'>{t('category')}</Label>
               <Select
                 value={newProduct.category}
                 onValueChange={value =>
@@ -129,16 +133,16 @@ export function SupplierProductsTab({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='Vegetables'>Vegetables</SelectItem>
-                  <SelectItem value='Fruits'>Fruits</SelectItem>
-                  <SelectItem value='Dairy'>Dairy</SelectItem>
-                  <SelectItem value='Meat'>Meat</SelectItem>
+                  <SelectItem value='vegetables'>{t('vegetables')}</SelectItem>
+                  <SelectItem value='fruits'>{t('fruits')}</SelectItem>
+                  <SelectItem value='dairy'>{t('dairy')}</SelectItem>
+                  <SelectItem value='meat'>{t('meat')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className='grid grid-cols-2 gap-4'>
               <div>
-                <Label htmlFor='price'>Price</Label>
+                <Label htmlFor='price'>{t('price')}</Label>
                 <Input
                   id='price'
                   type='number'
@@ -147,11 +151,11 @@ export function SupplierProductsTab({
                   onChange={e =>
                     setNewProduct({ ...newProduct, price: e.target.value })
                   }
-                  placeholder='0.00'
+                  placeholder={t('pricePlaceholder')}
                 />
               </div>
               <div>
-                <Label htmlFor='unit'>Unit</Label>
+                <Label htmlFor='unit'>{t('unit')}</Label>
                 <Select
                   value={newProduct.unit}
                   onValueChange={value =>
@@ -164,14 +168,14 @@ export function SupplierProductsTab({
                   <SelectContent>
                     <SelectItem value='kg'>kg</SelectItem>
                     <SelectItem value='lb'>lb</SelectItem>
-                    <SelectItem value='piece'>piece</SelectItem>
-                    <SelectItem value='bunch'>bunch</SelectItem>
+                    <SelectItem value='piece'>{t('pieceUnit')}</SelectItem>
+                    <SelectItem value='bunch'>{t('bunchUnit')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div>
-              <Label htmlFor='stock'>Initial Stock</Label>
+              <Label htmlFor='stock'>{t('initialStock')}</Label>
               <Input
                 id='stock'
                 type='number'
@@ -179,18 +183,18 @@ export function SupplierProductsTab({
                 onChange={e =>
                   setNewProduct({ ...newProduct, stock: e.target.value })
                 }
-                placeholder='0'
+                placeholder={t('zeroPlaceholder')}
               />
             </div>
             <div>
-              <Label htmlFor='imageUrl'>Image URL (optional)</Label>
+              <Label htmlFor='imageUrl'>{t('imageUrlOptional')}</Label>
               <Input
                 id='imageUrl'
                 value={newProduct.imageUrl}
                 onChange={e =>
                   setNewProduct({ ...newProduct, imageUrl: e.target.value })
                 }
-                placeholder='https://example.com/image.jpg'
+                placeholder={t('imageUrlPlaceholder')}
               />
             </div>
           </div>
@@ -199,9 +203,9 @@ export function SupplierProductsTab({
               variant='outline'
               onClick={() => setIsAddProductOpen(false)}
             >
-              Cancel
+              {t('cancel')}
             </Button>
-            <Button onClick={handleAddProduct}>Add Product</Button>
+            <Button onClick={handleAddProduct}>{t('addProduct')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

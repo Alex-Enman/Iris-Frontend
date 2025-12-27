@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface NavigationProps {
   currentPage: string;
@@ -24,6 +25,7 @@ export function Navigation({
   unreadMessages = 0,
   onLogout,
 }: NavigationProps) {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -35,10 +37,10 @@ export function Navigation({
   }, []);
 
   const navItems = [
-    { id: 'home', label: 'Marketplace' },
-    { id: 'suppliers', label: 'Suppliers' },
-    { id: 'favorites', label: 'Favorites' },
-    { id: 'orders', label: 'Orders' },
+    { id: 'home', label: t('marketplace') },
+    { id: 'suppliers', label: t('suppliers') },
+    { id: 'favorites', label: t('favorites') },
+    { id: 'orders', label: t('orders') },
   ];
 
   return (
@@ -117,10 +119,10 @@ export function Navigation({
               </DropdownMenuTrigger>
               <DropdownMenuContent className='w-56'>
                 <DropdownMenuItem onClick={() => onNavigate('profile')}>
-                  Profile
+                  {t('profile')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={onLogout}>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={onLogout}>{t('logout')}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <button

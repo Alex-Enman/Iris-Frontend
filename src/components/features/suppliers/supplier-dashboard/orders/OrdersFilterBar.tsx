@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface OrdersFilterBarProps {
   searchTerm: string;
@@ -21,13 +22,14 @@ export function OrdersFilterBar({
   statusFilter,
   onStatusFilterChange,
 }: OrdersFilterBarProps) {
+  const { t } = useLanguage();
   return (
     <div className='mb-6 flex gap-4'>
       <div className='flex-1'>
         <div className='relative'>
           <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
           <Input
-            placeholder='Search orders...'
+            placeholder={t('searchOrdersShortPlaceholder')}
             value={searchTerm}
             onChange={e => onSearchChange(e.target.value)}
             className='pl-10'
@@ -36,14 +38,14 @@ export function OrdersFilterBar({
       </div>
       <Select value={statusFilter} onValueChange={onStatusFilterChange}>
         <SelectTrigger className='w-[180px]'>
-          <SelectValue placeholder='Filter by status' />
+          <SelectValue placeholder={t('filterByStatus')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value='all'>All Statuses</SelectItem>
-          <SelectItem value='processing'>Processing</SelectItem>
-          <SelectItem value='shipped'>Shipped</SelectItem>
-          <SelectItem value='delivered'>Delivered</SelectItem>
-          <SelectItem value='cancelled'>Cancelled</SelectItem>
+          <SelectItem value='all'>{t('allStatuses')}</SelectItem>
+          <SelectItem value='processing'>{t('processing')}</SelectItem>
+          <SelectItem value='shipped'>{t('shipped')}</SelectItem>
+          <SelectItem value='delivered'>{t('delivered')}</SelectItem>
+          <SelectItem value='cancelled'>{t('cancelled')}</SelectItem>
         </SelectContent>
       </Select>
     </div>

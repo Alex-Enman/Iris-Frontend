@@ -1,6 +1,7 @@
 // Main Edit Store Dialog component - refactored orchestrator
 
 import { useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 import {
   Dialog,
   DialogContent,
@@ -39,6 +40,7 @@ export function EditStoreDialog({
   products,
   onSave,
 }: EditStoreDialogProps) {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<StoreTab>('basic');
 
   const { form, products: productsState } = useStoreForm({
@@ -58,21 +60,21 @@ export function EditStoreDialog({
   };
 
   const tabs = [
-    { id: 'basic', label: 'Basic Info', icon: Store },
-    { id: 'contact', label: 'Contact', icon: Phone },
-    { id: 'products', label: 'Products', icon: Package },
-    { id: 'certifications', label: 'Certifications', icon: Award },
-    { id: 'hours', label: 'Business Hours', icon: Clock },
-    { id: 'delivery', label: 'Delivery', icon: Truck },
+    { id: 'basic', label: t('basicInfo'), icon: Store },
+    { id: 'contact', label: t('contactTab'), icon: Phone },
+    { id: 'products', label: t('productsTab'), icon: Package },
+    { id: 'certifications', label: t('certifications'), icon: Award },
+    { id: 'hours', label: t('businessHours'), icon: Clock },
+    { id: 'delivery', label: t('deliveryTab'), icon: Truck },
   ] as const;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle>Edit Store Information</DialogTitle>
+          <DialogTitle>{t('editStoreInformation')}</DialogTitle>
           <DialogDescription>
-            Update your store details, products, and business settings.
+            {t('editStoreInformationDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -137,9 +139,9 @@ export function EditStoreDialog({
 
         <div className='flex justify-end space-x-2 border-t pt-4'>
           <Button variant='outline' onClick={handleCancel}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
+          <Button onClick={handleSave}>{t('saveChanges')}</Button>
         </div>
       </DialogContent>
     </Dialog>

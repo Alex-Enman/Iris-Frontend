@@ -1,12 +1,15 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { User, Bell, CreditCard, Building2 } from 'lucide-react';
 import { useSettingsPage } from '@hooks/user/use-settings-page';
+import { useLanguage } from '@contexts/LanguageContext';
 import { AccountSettingsCard } from './components/settings/AccountSettingsCard';
+import { LanguageSettingsCard } from './components/settings/LanguageSettingsCard';
 import { RestaurantSettingsCard } from './components/settings/RestaurantSettingsCard';
 import { NotificationPreferencesCard } from './components/settings/NotificationPreferencesCard';
 import { OrderingPreferencesCard } from './components/settings/OrderingPreferencesCard';
 
 export function SettingsPage() {
+  const { t } = useLanguage();
   const {
     // visibility
     showPassword,
@@ -35,9 +38,9 @@ export function SettingsPage() {
     <div className='min-h-screen bg-background'>
       <div className='mx-auto max-w-[1200px] px-8 py-12'>
         <div className='mb-8'>
-          <h1 className='mb-2'>Settings</h1>
+          <h1 className='mb-2'>{t('settings')}</h1>
           <p className='text-muted-foreground'>
-            Manage your account settings and preferences
+            {t('settingsDescription')}
           </p>
         </div>
 
@@ -45,19 +48,19 @@ export function SettingsPage() {
           <TabsList className='mb-8 inline-flex h-12 rounded-2xl bg-muted p-1'>
             <TabsTrigger value='account' className='rounded-xl'>
               <User className='mr-2 h-4 w-4' />
-              Account
+              {t('account')}
             </TabsTrigger>
             <TabsTrigger value='restaurant' className='rounded-xl'>
               <Building2 className='mr-2 h-4 w-4' />
-              Restaurant
+              {t('restaurant')}
             </TabsTrigger>
             <TabsTrigger value='notifications' className='rounded-xl'>
               <Bell className='mr-2 h-4 w-4' />
-              Notifications
+              {t('notifications')}
             </TabsTrigger>
             <TabsTrigger value='ordering' className='rounded-xl'>
               <CreditCard className='mr-2 h-4 w-4' />
-              Ordering
+              {t('ordering')}
             </TabsTrigger>
           </TabsList>
 
@@ -76,6 +79,8 @@ export function SettingsPage() {
               onChange={fields => setAccountData({ ...accountData, ...fields })}
               onSave={handleSaveAccount}
             />
+
+            <LanguageSettingsCard />
           </TabsContent>
 
           <TabsContent value='restaurant' className='space-y-6'>

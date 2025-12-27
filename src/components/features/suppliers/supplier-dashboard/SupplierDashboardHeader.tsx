@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface HeaderProps {
   supplierName: string;
@@ -20,15 +21,16 @@ export function SupplierDashboardHeader({
   onOpenSettings,
   onLogout,
 }: HeaderProps) {
+  const { t } = useLanguage();
   return (
     <div className='border-b bg-white'>
       <div className='px-6 py-4'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-4'>
-            <h1 className='text-2xl font-bold'>Supplier Dashboard</h1>
+            <h1 className='text-2xl font-bold'>{t('supplierDashboard')}</h1>
             <Badge variant='secondary' className='flex items-center space-x-1'>
               <div className='h-2 w-2 rounded-full bg-green-500'></div>
-              <span>Online</span>
+              <span>{t('online')}</span>
             </Badge>
           </div>
           <div className='flex items-center space-x-4'>
@@ -44,13 +46,13 @@ export function SupplierDashboardHeader({
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end' className='w-56'>
                 <DropdownMenuItem onClick={onOpenProfile}>
-                  <Store className='mr-2 h-4 w-4' /> Store Profile
+                  <Store className='mr-2 h-4 w-4' /> {t('storeProfile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onOpenSettings}>
-                  <Settings className='mr-2 h-4 w-4' /> Settings
+                  <Settings className='mr-2 h-4 w-4' /> {t('settings')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onLogout}>
-                  <LogOut className='mr-2 h-4 w-4' /> Logout
+                  <LogOut className='mr-2 h-4 w-4' /> {t('logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

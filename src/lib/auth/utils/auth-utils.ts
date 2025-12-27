@@ -1,5 +1,7 @@
 // Authentication utility functions
 
+import { getStoredLanguage, t } from '@lib/i18n';
+
 export function getTokenFromStorage(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('iris_token');
@@ -42,27 +44,29 @@ export function getTokenExpirationTime(token: string): number | null {
 }
 
 export function formatAuthError(error: any): string {
+  const language = getStoredLanguage();
+
   if (error?.response?.status === 401) {
-    return 'Invalid credentials. Please check your email and password.';
+    return t('authErrorInvalidCredentials', language);
   }
 
   if (error?.response?.status === 403) {
-    return 'Access denied. Please contact support if you believe this is an error.';
+    return t('authErrorAccessDenied', language);
   }
 
   if (error?.response?.status === 429) {
-    return 'Too many login attempts. Please try again later.';
+    return t('authErrorTooManyLoginAttempts', language);
   }
 
   if (error?.response?.status >= 500) {
-    return 'Server error. Please try again later.';
+    return t('authErrorServerError', language);
   }
 
   if (error?.message) {
     return error.message;
   }
 
-  return 'An unexpected error occurred. Please try again.';
+  return t('authErrorUnexpected', language);
 }
 
 export function getAuthHeaders(token: string): HeadersInit {

@@ -1,6 +1,9 @@
+'use client';
+
 import { Avatar, AvatarFallback } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Building2 } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantInfoCardProps {
   name: string;
@@ -17,6 +20,7 @@ export function RestaurantInfoCard({
   memberSince,
   onEdit,
 }: RestaurantInfoCardProps) {
+  const { t } = useLanguage();
   return (
     <div className='overflow-hidden rounded-2xl bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <div className='mb-6 flex items-start gap-4'>
@@ -29,7 +33,7 @@ export function RestaurantInfoCard({
           <h3 className='mb-1'>{name}</h3>
           <p className='mb-1 text-sm text-muted-foreground'>{type}</p>
           <p className='text-xs text-muted-foreground'>
-            Member since {memberSince}
+            {t('memberSince')} {memberSince}
           </p>
         </div>
       </div>
@@ -37,7 +41,7 @@ export function RestaurantInfoCard({
         <Building2 className='mb-2 inline h-4 w-4' /> {address}
       </div>
       <Button variant='outline' className='w-full rounded-xl' onClick={onEdit}>
-        Edit Profile
+        {t('editProfile')}
       </Button>
     </div>
   );

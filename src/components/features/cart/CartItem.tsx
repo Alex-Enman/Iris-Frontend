@@ -1,3 +1,5 @@
+'use client';
+
 // Cart item component
 // Displays individual cart item
 
@@ -7,6 +9,7 @@ import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { CartItem as CartItemType } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface CartItemProps {
   item: CartItemType;
@@ -15,6 +18,7 @@ interface CartItemProps {
 }
 
 export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
+  const { t } = useLanguage();
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
     onUpdateQuantity?.(item.id, newQuantity);
@@ -83,7 +87,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
               onClick={handleRemove}
               className='text-red-600 hover:text-red-700'
             >
-              Remove
+              {t('remove')}
             </Button>
           </div>
         </div>

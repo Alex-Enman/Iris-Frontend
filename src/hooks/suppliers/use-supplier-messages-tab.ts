@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { toast } from 'sonner';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface MessageItem {
   id: string;
@@ -24,103 +25,109 @@ interface UseSupplierMessagesTabOptions {
 export function useSupplierMessagesTab({
   onViewSupplier,
 }: UseSupplierMessagesTabOptions = {}) {
-  const [chats, setChats] = useState<ChatItem[]>([
+  const { t } = useLanguage();
+
+  const demoChats: ChatItem[] = [
     {
       id: '1',
-      name: 'Green Valley Farm',
+      name: t('supplierNameGreenValleyFarm'),
       type: 'project',
-      description: 'Supplier: Organic Vegetables',
+      description: t('chatSupplierDescriptionOrganicVegetables'),
       supplierId: '1',
       messages: [
         {
           id: '1',
-          text: "Hi! I'd like to place an order for next week's delivery.",
-          sender: 'You',
-          timestamp: '10:30 AM',
+          text: t('chatMsgHiPlaceOrderNextWeek'),
+          sender: t('you'),
+          timestamp: t('chatTimestamp10_30AM'),
         },
         {
           id: '2',
-          text: "Hello! Of course, we'd be happy to help. What items are you interested in?",
-          sender: 'Green Valley Farm',
-          timestamp: '10:32 AM',
+          text: t('chatMsgHelloHappyToHelpWhatItems'),
+          sender: t('supplierNameGreenValleyFarm'),
+          timestamp: t('chatTimestamp10_32AM'),
         },
         {
           id: '3',
-          text: 'I need 10kg of heirloom tomatoes, 5kg of mixed greens, and 8kg of organic carrots.',
-          sender: 'You',
-          timestamp: '10:33 AM',
+          text: t('chatMsgNeed10kgTomatoesGreensCarrots'),
+          sender: t('you'),
+          timestamp: t('chatTimestamp10_33AM'),
         },
         {
           id: '4',
-          text: 'Perfect! All items are in stock. The heirloom tomatoes are particularly beautiful this week.',
-          sender: 'Green Valley Farm',
-          timestamp: '10:35 AM',
+          text: t('chatMsgPerfectAllInStockTomatoesBeautiful'),
+          sender: t('supplierNameGreenValleyFarm'),
+          timestamp: t('chatTimestamp10_35AM'),
         },
       ],
     },
     {
       id: '2',
-      name: 'Mountain Dairy Co.',
+      name: t('supplierNameMountainDairyCo'),
       type: 'project',
-      description: 'Supplier: Artisan Dairy',
+      description: t('chatSupplierDescriptionArtisanDairy'),
       supplierId: '2',
       messages: [
         {
           id: '1',
-          text: 'Thank you for the last delivery, the mozzarella was excellent!',
-          sender: 'You',
-          timestamp: 'Yesterday, 3:45 PM',
+          text: t('chatMsgThanksLastDeliveryMozzarellaExcellent'),
+          sender: t('you'),
+          timestamp: t('chatTimestampYesterday3_45PM'),
         },
         {
           id: '2',
-          text: "We're so glad you enjoyed it! We have a new aged cheddar you might be interested in.",
-          sender: 'Mountain Dairy Co.',
-          timestamp: 'Yesterday, 4:12 PM',
+          text: t('chatMsgGladYouEnjoyedNewAgedCheddar'),
+          sender: t('supplierNameMountainDairyCo'),
+          timestamp: t('chatTimestampYesterday4_12PM'),
         },
       ],
     },
     {
       id: '3',
-      name: 'Heritage Bakery',
+      name: t('supplierNameHeritageBakery'),
       type: 'project',
-      description: 'Supplier: Artisan Bakery',
+      description: t('chatSupplierDescriptionArtisanBakery'),
       supplierId: '3',
       messages: [
         {
           id: '1',
-          text: 'Can I add pastries to my weekly order?',
-          sender: 'You',
-          timestamp: 'Oct 23, 2:15 PM',
+          text: t('chatMsgCanIAddPastriesWeeklyOrder'),
+          sender: t('you'),
+          timestamp: t('chatTimestampOct23_2_15PM'),
         },
         {
           id: '2',
-          text: 'Absolutely! We have fresh croissants and pain au chocolat available.',
-          sender: 'Heritage Bakery',
-          timestamp: 'Oct 23, 2:20 PM',
+          text: t('chatMsgAbsolutelyFreshCroissantsPainAuChocolat'),
+          sender: t('supplierNameHeritageBakery'),
+          timestamp: t('chatTimestampOct23_2_20PM'),
         },
       ],
     },
     {
       id: '4',
-      name: 'Olive Grove Estate',
+      name: t('supplierNameOliveGroveEstate'),
       type: 'project',
-      description: 'Supplier: Oils & Preserves',
+      description: t('chatSupplierDescriptionOilsAndPreserves'),
       supplierId: '4',
       messages: [
         {
           id: '1',
-          text: 'Do you have any truffle-infused olive oil in stock?',
-          sender: 'You',
-          timestamp: 'Oct 18, 11:00 AM',
+          text: t('chatMsgDoYouHaveTruffleOliveOil'),
+          sender: t('you'),
+          timestamp: t('chatTimestampOct18_11_00AM'),
         },
         {
           id: '2',
-          text: 'Yes! We just received a fresh batch. Would you like to place an order?',
-          sender: 'Olive Grove Estate',
-          timestamp: 'Oct 18, 11:15 AM',
+          text: t('chatMsgYesFreshBatchWouldYouLikeOrder'),
+          sender: t('supplierNameOliveGroveEstate'),
+          timestamp: t('chatTimestampOct18_11_15AM'),
         },
       ],
     },
+  ];
+
+  const [chats, setChats] = useState<ChatItem[]>([
+    ...demoChats,
   ]);
 
   const [selectedChatId, setSelectedChatId] = useState<string>('1');
@@ -136,7 +143,7 @@ export function useSupplierMessagesTab({
     const newMessage: MessageItem = {
       id: `m${Date.now()}`,
       text: messageInput,
-      sender: 'You',
+      sender: t('you'),
       timestamp: new Date().toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
@@ -152,13 +159,13 @@ export function useSupplierMessagesTab({
     );
 
     setMessageInput('');
-    toast.success('Message sent');
+    toast.success(t('messageSent'));
 
     if (selectedChat.type === 'project') {
       setTimeout(() => {
         const autoReply: MessageItem = {
           id: `m${Date.now()}`,
-          text: "Thanks for your message! We'll get back to you shortly.",
+          text: t('autoReplyThanksWellGetBackSoon'),
           sender: selectedChat.name,
           timestamp: new Date().toLocaleTimeString([], {
             hour: '2-digit',
@@ -177,8 +184,13 @@ export function useSupplierMessagesTab({
   };
 
   const handleNewChat = () => {
-    toast.success('New chat feature coming soon!');
+    toast.success(t('newChatFeatureComingSoon'));
   };
+
+  useEffect(() => {
+    setChats(demoChats);
+    setSelectedChatId('1');
+  }, [t]);
 
   const getParticipantCount = (chat: ChatItem) => {
     const uniqueSenders = new Set(chat.messages.map(m => m.sender));

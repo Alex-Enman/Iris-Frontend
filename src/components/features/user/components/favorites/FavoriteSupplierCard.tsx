@@ -10,6 +10,7 @@ import {
   Store,
   Trash2,
 } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FavoriteSupplierCardProps {
   id: number;
@@ -29,6 +30,7 @@ interface FavoriteSupplierCardProps {
 }
 
 export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
+  const { t } = useLanguage();
   const {
     id,
     name,
@@ -63,7 +65,7 @@ export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
         <button
           onClick={() => onRemove(id)}
           className='duration-250 absolute left-4 top-4 rounded-full bg-white/95 p-2 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-accent/10'
-          aria-label='Remove from favorites'
+          aria-label={t('removeFromFavorites')}
         >
           <Heart className='h-5 w-5 fill-accent text-accent' />
         </button>
@@ -88,7 +90,7 @@ export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
           {description}
         </p>
         <div className='mb-4'>
-          <div className='mb-2 text-xs text-muted-foreground'>Specialties</div>
+          <div className='mb-2 text-xs text-muted-foreground'>{t('specialties')}</div>
           <div className='flex flex-wrap gap-1.5'>
             {specialties.slice(0, 3).map((s, i) => (
               <Badge key={i} variant='secondary' className='text-xs'>
@@ -101,10 +103,12 @@ export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
           <div className='flex items-center justify-between text-sm'>
             <div className='flex items-center gap-1.5 text-muted-foreground'>
               <Package className='h-4 w-4' />
-              <span>{totalOrders} orders</span>
+              <span>
+                {totalOrders} {t('orders')}
+              </span>
             </div>
             <span className='text-xs text-muted-foreground'>
-              Last: {lastOrder}
+              {t('last')}: {lastOrder}
             </span>
           </div>
         </div>
@@ -114,7 +118,7 @@ export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
             className='duration-250 w-full rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
           >
             <Store className='mr-2 h-4 w-4' />
-            Visit Store
+            {t('visitStore')}
           </Button>
           <Button
             variant='outline'
@@ -122,7 +126,7 @@ export function FavoriteSupplierCard(props: FavoriteSupplierCardProps) {
             className='duration-250 w-full rounded-xl transition-all hover:border-destructive/20 hover:bg-destructive/5 hover:text-destructive'
           >
             <Trash2 className='mr-2 h-4 w-4' />
-            Remove
+            {t('remove')}
           </Button>
         </div>
       </div>

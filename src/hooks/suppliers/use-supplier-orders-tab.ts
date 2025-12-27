@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Order } from '@/types/suppliers/supplier-dashboard/types';
+import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
 
 interface UseSupplierOrdersTabOptions {
   orders: Order[];
@@ -21,14 +22,14 @@ export function useSupplierOrdersTab({
       order.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === 'all' ||
-      order.status.toLowerCase() === statusFilter.toLowerCase();
+      normalizeOrderStatusId(order.status) === normalizeOrderStatusId(statusFilter);
     return matchesSearch && matchesStatus;
   });
 
   // Group orders by status
   const isActive = (status: string) =>
-    ['in transit', 'processing', 'confirmed', 'shipped'].includes(
-      status.toLowerCase()
+    ['inTransit', 'processing', 'confirmed', 'shipped'].includes(
+      normalizeOrderStatusId(status)
     );
   const isCompleted = (status: string) =>
     ['delivered', 'completed'].includes(status.toLowerCase());

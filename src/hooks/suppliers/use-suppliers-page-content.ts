@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 type SupplierIdentity = { id: string; name: string; avatar: string };
 type SupplierCategoryInfo = { category: string; categoryTypes: string[] };
@@ -25,6 +26,7 @@ export type Supplier = SupplierIdentity &
   SupplierDescription;
 
 export function useSuppliersPageContent() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
@@ -38,45 +40,49 @@ export function useSuppliersPageContent() {
     () => [
       {
         id: '1',
-        name: 'Green Valley Farm',
-        category: 'Organic Vegetables & Herbs',
-        categoryTypes: ['Vegetables', 'Herbs'],
-        location: 'Valley Ridge',
+        name: t('supplierNameGreenValleyFarm'),
+        category: t('supplierCategoryOrganicVegetablesHerbs'),
+        categoryTypes: [t('vegetables'), t('herbs')],
+        location: t('supplierLocationValleyRidge'),
         distance: 12,
         rating: 4.8,
         totalReviews: 127,
         verified: true,
-        certifications: ['Organic Certified', 'Local Producer', 'Traceable'],
+        certifications: [t('organicCertified'), t('localProducer'), t('traceable')],
         image:
           'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800',
         avatar: 'GV',
         totalProducts: 24,
-        responseTime: '< 2 hours',
-        memberSince: 'March 2022',
-        description:
-          'Family-run organic farm specializing in heritage vegetables and sustainable farming practices.',
+        responseTime: t('responseTimeUnderTwoHours'),
+        memberSince: t('supplierMemberSinceMarch2022'),
+        description: t('supplierDescriptionGreenValleyShort'),
       },
     ],
-    []
+    [t]
   );
 
   const categories = [
-    'Vegetables',
-    'Dairy',
-    'Seafood',
-    'Bakery',
-    'Poultry',
-    'Herbs',
-    'Specialty',
-    'Oils',
+    t('vegetables'),
+    t('dairy'),
+    t('seafood'),
+    t('bakery'),
+    t('poultry'),
+    t('herbs'),
+    t('specialty'),
+    t('oils'),
   ];
   const certifications = [
-    'Organic Certified',
-    'Local Producer',
-    'Traceable',
-    'Sustainable',
-    'Free-Range',
+    t('organicCertified'),
+    t('localProducer'),
+    t('traceable'),
+    t('sustainable'),
+    t('freeRange'),
   ];
+
+  useEffect(() => {
+    setSelectedCategories([]);
+    setSelectedCerts([]);
+  }, [t]);
 
   const toggleCategory = (category: string) =>
     setSelectedCategories(prev =>

@@ -1,3 +1,5 @@
+'use client';
+
 // Business hours form component for edit store dialog
 
 import { Label } from '@components/ui/label';
@@ -5,6 +7,7 @@ import { Input } from '@components/ui/input';
 import { Card } from '@components/ui/card';
 import { Clock } from 'lucide-react';
 import { StoreFormData } from '@/types/suppliers/edit-store/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface StoreBusinessHoursFormProps {
   formData: StoreFormData;
@@ -12,19 +15,20 @@ interface StoreBusinessHoursFormProps {
 }
 
 const days = [
-  { key: 'monday', label: 'Monday' },
-  { key: 'tuesday', label: 'Tuesday' },
-  { key: 'wednesday', label: 'Wednesday' },
-  { key: 'thursday', label: 'Thursday' },
-  { key: 'friday', label: 'Friday' },
-  { key: 'saturday', label: 'Saturday' },
-  { key: 'sunday', label: 'Sunday' },
+  { key: 'monday', labelKey: 'monday' },
+  { key: 'tuesday', labelKey: 'tuesday' },
+  { key: 'wednesday', labelKey: 'wednesday' },
+  { key: 'thursday', labelKey: 'thursday' },
+  { key: 'friday', labelKey: 'friday' },
+  { key: 'saturday', labelKey: 'saturday' },
+  { key: 'sunday', labelKey: 'sunday' },
 ] as const;
 
 export function StoreBusinessHoursForm({
   formData,
   onUpdate,
 }: StoreBusinessHoursFormProps) {
+  const { t } = useLanguage();
   const handleTimeChange = (
     day: string,
     timeType: 'Open' | 'Close',
@@ -39,21 +43,23 @@ export function StoreBusinessHoursForm({
     <div className='space-y-4'>
       <div className='mb-4 flex items-center space-x-2'>
         <Clock className='h-5 w-5 text-primary' />
-        <h3 className='text-lg font-semibold'>Business Hours</h3>
+        <h3 className='text-lg font-semibold'>{t('businessHours')}</h3>
       </div>
 
       <div className='space-y-4'>
         {days.map(day => (
           <Card key={day.key} className='p-4'>
             <div className='flex items-center justify-between'>
-              <Label className='min-w-[100px] font-medium'>{day.label}</Label>
+              <Label className='min-w-[100px] font-medium'>
+                {t(day.labelKey)}
+              </Label>
               <div className='flex items-center space-x-2'>
                 <div>
                   <Label
                     htmlFor={`${day.key}Open`}
                     className='text-sm text-muted-foreground'
                   >
-                    Open
+                    {t('openTime')}
                   </Label>
                   <Input
                     id={`${day.key}Open`}
@@ -69,13 +75,13 @@ export function StoreBusinessHoursForm({
                     className='w-24'
                   />
                 </div>
-                <span className='text-muted-foreground'>to</span>
+                <span className='text-muted-foreground'>{t('toConnector')}</span>
                 <div>
                   <Label
                     htmlFor={`${day.key}Close`}
                     className='text-sm text-muted-foreground'
                   >
-                    Close
+                    {t('closeTime')}
                   </Label>
                   <Input
                     id={`${day.key}Close`}
@@ -99,8 +105,7 @@ export function StoreBusinessHoursForm({
 
       <div className='text-sm text-muted-foreground'>
         <p>
-          Set your business hours to help customers know when you're available.
-          You can set different hours for weekends if needed.
+          {t('businessHoursHelpText')} {t('businessHoursHelpText2')}
         </p>
       </div>
     </div>

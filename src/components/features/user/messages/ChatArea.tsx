@@ -6,6 +6,7 @@ import { Card, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Send } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface Message {
   id: string;
@@ -33,13 +34,14 @@ export function ChatArea({
   onSendMessage,
   messagesEndRef,
 }: ChatAreaProps) {
+  const { t } = useLanguage();
   return (
     <Card className='flex h-[calc(100vh-12rem)] flex-col rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <CardHeader className='p-6'>
         <div className='flex items-center justify-between'>
           <h3 className='text-2xl'>{chatName}</h3>
           <div className='text-sm text-muted-foreground'>
-            {participantCount} participant{participantCount !== 1 ? 's' : ''}
+            {participantCount} {participantCount === 1 ? t('participant') : t('participants')}
           </div>
         </div>
       </CardHeader>
@@ -94,7 +96,7 @@ export function ChatArea({
         <div className='border-t border-border p-4'>
           <form onSubmit={onSendMessage} className='flex gap-2'>
             <Input
-              placeholder='Type a message...'
+              placeholder={t('typeAMessage')}
               value={messageInput}
               onChange={e => onMessageInputChange(e.target.value)}
               className='rounded-xl'

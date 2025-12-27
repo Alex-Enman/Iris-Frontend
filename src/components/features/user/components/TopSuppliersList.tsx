@@ -1,4 +1,7 @@
+'use client';
+
 import { Button } from '@components/ui/button';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface TopSupplierSummary {
   name: string;
@@ -15,9 +18,10 @@ export function TopSuppliersList({
   suppliers,
   onViewSupplier,
 }: TopSuppliersListProps) {
+  const { t } = useLanguage();
   return (
     <div className='rounded-2xl bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
-      <h3 className='mb-4'>Top Suppliers This Month</h3>
+      <h3 className='mb-4'>{t('topSuppliersThisMonth')}</h3>
       <div className='space-y-4'>
         {suppliers.map((supplier, index) => (
           <div
@@ -31,7 +35,7 @@ export function TopSuppliersList({
               <div>
                 <div className='mb-1'>{supplier.name}</div>
                 <div className='text-sm text-muted-foreground'>
-                  {supplier.orders} orders
+                  {supplier.orders} {t('ordersCountSuffix')}
                 </div>
               </div>
             </div>
@@ -45,7 +49,7 @@ export function TopSuppliersList({
                 className='rounded-xl'
                 onClick={() => onViewSupplier?.((index + 1).toString())}
               >
-                View Profile
+                {t('viewProfile')}
               </Button>
             </div>
           </div>

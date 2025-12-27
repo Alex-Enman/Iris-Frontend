@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantFiltersBarProps {
   searchQuery: string;
@@ -24,6 +25,7 @@ interface RestaurantFiltersBarProps {
 }
 
 export function RestaurantFiltersBar(props: RestaurantFiltersBarProps) {
+  const { t } = useLanguage();
   const {
     searchQuery,
     setSearchQuery,
@@ -43,7 +45,7 @@ export function RestaurantFiltersBar(props: RestaurantFiltersBarProps) {
         <div className='relative flex-1'>
           <Search className='absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground' />
           <Input
-            placeholder='Search restaurants by name or type...'
+            placeholder={t('searchRestaurantsPlaceholder')}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className='h-12 rounded-2xl pl-12'
@@ -51,54 +53,54 @@ export function RestaurantFiltersBar(props: RestaurantFiltersBarProps) {
         </div>
         <Select value={cuisineFilter} onValueChange={setCuisineFilter}>
           <SelectTrigger className='h-12 w-[180px] rounded-2xl'>
-            <SelectValue placeholder='All Cuisines' />
+            <SelectValue placeholder={t('allCuisines')} />
           </SelectTrigger>
           <SelectContent className='rounded-xl'>
-            <SelectItem value='all'>All Cuisines</SelectItem>
-            <SelectItem value='Italian'>Italian</SelectItem>
-            <SelectItem value='Japanese'>Japanese</SelectItem>
-            <SelectItem value='French'>French</SelectItem>
-            <SelectItem value='Contemporary'>Contemporary</SelectItem>
-            <SelectItem value='Vegetarian'>Vegetarian</SelectItem>
-            <SelectItem value='Vegan'>Vegan</SelectItem>
-            <SelectItem value='Indian'>Indian</SelectItem>
-            <SelectItem value='Seafood'>Seafood</SelectItem>
+            <SelectItem value='all'>{t('allCuisines')}</SelectItem>
+            <SelectItem value='Italian'>{t('italian')}</SelectItem>
+            <SelectItem value='Japanese'>{t('japanese')}</SelectItem>
+            <SelectItem value='French'>{t('french')}</SelectItem>
+            <SelectItem value='Contemporary'>{t('contemporary')}</SelectItem>
+            <SelectItem value='Vegetarian'>{t('vegetarian')}</SelectItem>
+            <SelectItem value='Vegan'>{t('vegan')}</SelectItem>
+            <SelectItem value='Indian'>{t('indian')}</SelectItem>
+            <SelectItem value='Seafood'>{t('seafood')}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={locationFilter} onValueChange={setLocationFilter}>
           <SelectTrigger className='h-12 w-[180px] rounded-2xl'>
-            <SelectValue placeholder='All Locations' />
+            <SelectValue placeholder={t('allLocations')} />
           </SelectTrigger>
           <SelectContent className='rounded-xl'>
-            <SelectItem value='all'>All Locations</SelectItem>
-            <SelectItem value='Downtown'>Downtown</SelectItem>
-            <SelectItem value='Midtown'>Midtown</SelectItem>
-            <SelectItem value='East Side'>East Side</SelectItem>
-            <SelectItem value='West End'>West End</SelectItem>
-            <SelectItem value='Waterfront'>Waterfront</SelectItem>
+            <SelectItem value='all'>{t('allLocations')}</SelectItem>
+            <SelectItem value='Downtown'>{t('downtown')}</SelectItem>
+            <SelectItem value='Midtown'>{t('midtown')}</SelectItem>
+            <SelectItem value='East Side'>{t('eastSide')}</SelectItem>
+            <SelectItem value='West End'>{t('westEnd')}</SelectItem>
+            <SelectItem value='Waterfront'>{t('waterfront')}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={setSortBy}>
           <SelectTrigger className='h-12 w-[180px] rounded-2xl'>
-            <SelectValue placeholder='Sort by' />
+            <SelectValue placeholder={t('sortBy')} />
           </SelectTrigger>
           <SelectContent className='rounded-xl'>
-            <SelectItem value='rating'>Highest Rated</SelectItem>
-            <SelectItem value='name'>Name (A-Z)</SelectItem>
-            <SelectItem value='newest'>Newest</SelectItem>
+            <SelectItem value='rating'>{t('highestRated')}</SelectItem>
+            <SelectItem value='name'>{t('nameAZ')}</SelectItem>
+            <SelectItem value='newest'>{t('newest')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className='flex items-center justify-between'>
         <p className='text-sm text-muted-foreground'>
-          {numFound} restaurant{numFound !== 1 ? 's' : ''} found
+          {numFound} {numFound === 1 ? t('restaurant') : t('restaurants')} {t('found')}
         </p>
         <div className='flex gap-2'>
           <Badge variant='outline' className='px-3 py-1'>
-            {numCustomers} Customers
+            {numCustomers} {t('customers')}
           </Badge>
           <Badge variant='outline' className='px-3 py-1'>
-            {numSeeking} Seeking Suppliers
+            {numSeeking} {t('seekingSuppliers')}
           </Badge>
         </div>
       </div>

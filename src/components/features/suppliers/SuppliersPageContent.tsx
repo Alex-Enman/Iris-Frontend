@@ -6,12 +6,14 @@ import { useSuppliersPageContent } from '@hooks/suppliers/use-suppliers-page-con
 import { FeaturedProducers } from './supplier-dashboard/../components/FeaturedProducers';
 import { FiltersSidebar } from './supplier-dashboard/../components/FiltersSidebar';
 import { SuppliersGrid } from './supplier-dashboard/../components/SuppliersGrid';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface SuppliersPageProps {
   onViewSupplier: (supplierId: string) => void;
 }
 
 export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
+  const { t } = useLanguage();
   const {
     searchQuery,
     setSearchQuery,
@@ -41,9 +43,9 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
     <div className='min-h-screen py-12'>
       <div className='mx-auto max-w-[1440px] px-8'>
         <div className='mb-8'>
-          <h1 className='mb-2 text-4xl text-primary'>Suppliers Directory</h1>
+          <h1 className='mb-2 text-4xl text-primary'>{t('suppliersDirectory')}</h1>
           <p className='text-muted-foreground'>
-            Browse and connect with local producers and suppliers
+            {t('suppliersDirectoryDescription')}
           </p>
         </div>
 
@@ -52,7 +54,7 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
             <Search className='absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground' />
             <Input
               type='text'
-              placeholder='Search suppliers...'
+              placeholder={t('searchSuppliersPlaceholder')}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className='rounded-2xl border-border pl-12 pr-4'
@@ -65,7 +67,7 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
               className='rounded-xl'
             >
               <Filter className='mr-2 h-4 w-4' />
-              Filters
+              {t('filters')}
               {activeFiltersCount > 0 && (
                 <Badge className='ml-2 bg-primary'>{activeFiltersCount}</Badge>
               )}
@@ -75,10 +77,10 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
               onChange={e => setSortBy(e.target.value)}
               className='rounded-xl border px-3 py-2 text-sm'
             >
-              <option value='rating'>Highest Rated</option>
-              <option value='distance'>Nearest First</option>
-              <option value='reviews'>Most Reviewed</option>
-              <option value='products'>Most Products</option>
+              <option value='rating'>{t('highestRated')}</option>
+              <option value='distance'>{t('nearestFirst')}</option>
+              <option value='reviews'>{t('mostReviewed')}</option>
+              <option value='products'>{t('mostProducts')}</option>
             </select>
           </div>
         </div>
@@ -109,15 +111,15 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
 
           <div className='flex-1'>
             <div className='mb-4 text-sm text-muted-foreground'>
-              Showing {filteredSuppliers.length} of {suppliers.length} suppliers
+              {t('showing')} {filteredSuppliers.length} {t('of')} {suppliers.length} {t('suppliers')}
             </div>
             {filteredSuppliers.length === 0 ? (
               <div className='flex min-h-[400px] items-center justify-center rounded-2xl bg-white p-12 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <div className='text-center'>
                   <Search className='mx-auto mb-4 h-16 w-16 text-muted-foreground/30' />
-                  <h3 className='mb-2 text-primary'>No suppliers found</h3>
+                  <h3 className='mb-2 text-primary'>{t('noSuppliersFound')}</h3>
                   <p className='text-muted-foreground'>
-                    Try adjusting your filters or search query
+                    {t('tryAdjustingFiltersOrSearchQuery')}
                   </p>
                   {activeFiltersCount > 0 && (
                     <Button
@@ -125,7 +127,7 @@ export function SuppliersPageContent({ onViewSupplier }: SuppliersPageProps) {
                       className='mt-4 rounded-xl'
                       variant='outline'
                     >
-                      Clear filters
+                      {t('clearFilters')}
                     </Button>
                   )}
                 </div>

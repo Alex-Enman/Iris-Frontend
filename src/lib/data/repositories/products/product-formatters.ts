@@ -2,13 +2,14 @@
 // Data transformation and formatting for products
 
 import { Product } from '@/types';
+import { getCurrentLocale, getStoredLanguage, t } from '@lib/i18n';
 
 export class ProductFormatters {
   /**
    * Format product price for display
    */
   static formatPrice(price: number, currency = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(getCurrentLocale(), {
       style: 'currency',
       currency,
     }).format(price);
@@ -37,7 +38,8 @@ export class ProductFormatters {
    * Format product availability status
    */
   static formatAvailability(isAvailable: boolean): string {
-    return isAvailable ? 'Available' : 'Out of Stock';
+    const language = getStoredLanguage();
+    return isAvailable ? t('available', language) : t('outOfStock', language);
   }
 
   /**
@@ -59,7 +61,7 @@ export class ProductFormatters {
    */
   static formatCreatedDate(date: string | Date): string {
     const createdDate = new Date(date);
-    return createdDate.toLocaleDateString('en-US', {
+    return createdDate.toLocaleDateString(getCurrentLocale(), {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

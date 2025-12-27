@@ -4,6 +4,7 @@ import { useFavoritesPage } from '@hooks/user/use-favorites-page';
 import { FavoriteSupplierCard } from './components/favorites/FavoriteSupplierCard';
 import { FavoriteProductCard } from './components/favorites/FavoriteProductCard';
 import { FavoriteOrderCard } from './components/favorites/FavoriteOrderCard';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FavoritesPageProps {
   onNavigateToProduct: () => void;
@@ -14,6 +15,7 @@ export function FavoritesPage({
   onNavigateToProduct,
   onViewSupplier,
 }: FavoritesPageProps) {
+  const { t } = useLanguage();
   const {
     favoriteSuppliers,
     removeFavoriteSupplier,
@@ -29,11 +31,10 @@ export function FavoritesPage({
         <div className='mb-8'>
           <div className='mb-3 flex items-center gap-3'>
             <Heart className='h-8 w-8 fill-accent text-accent' />
-            <h1 className='text-4xl text-primary'>Favorites</h1>
+            <h1 className='text-4xl text-primary'>{t('favorites')}</h1>
           </div>
           <p className='text-lg text-muted-foreground'>
-            Quick access to your favorite suppliers, products, and recurring
-            orders
+            {t('favoritesDescription')}
           </p>
         </div>
 
@@ -41,15 +42,15 @@ export function FavoritesPage({
           <TabsList className='mb-8 rounded-xl bg-white p-1 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
             <TabsTrigger value='suppliers' className='rounded-lg'>
               <Store className='mr-2 h-4 w-4' />
-              Suppliers ({favoriteSuppliers.length})
+              {t('suppliers')} ({favoriteSuppliers.length})
             </TabsTrigger>
             <TabsTrigger value='products' className='rounded-lg'>
               <ShoppingBag className='mr-2 h-4 w-4' />
-              Products ({favoriteProducts.length})
+              {t('products')} ({favoriteProducts.length})
             </TabsTrigger>
             <TabsTrigger value='orders' className='rounded-lg'>
               <Receipt className='mr-2 h-4 w-4' />
-              Orders ({favoriteOrders.length})
+              {t('orders')} ({favoriteOrders.length})
             </TabsTrigger>
           </TabsList>
 
@@ -58,11 +59,10 @@ export function FavoritesPage({
               <div className='flex min-h-[400px] flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 p-12 text-center'>
                 <Store className='mb-4 h-16 w-16 text-muted-foreground/30' />
                 <h3 className='mb-2 text-xl text-primary'>
-                  No favorite suppliers yet
+                  {t('noFavoriteSuppliersYet')}
                 </h3>
                 <p className='max-w-md text-muted-foreground'>
-                  Start exploring the marketplace and save your favorite
-                  suppliers for quick access
+                  {t('favoritesSuppliersEmptyDescription')}
                 </p>
               </div>
             ) : (
@@ -84,10 +84,10 @@ export function FavoritesPage({
               <div className='flex min-h-[400px] flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 p-12 text-center'>
                 <ShoppingBag className='mb-4 h-16 w-16 text-muted-foreground/30' />
                 <h3 className='mb-2 text-xl text-primary'>
-                  No favorite products yet
+                  {t('noFavoriteProductsYet')}
                 </h3>
                 <p className='max-w-md text-muted-foreground'>
-                  Browse products and save your favorites for quick reordering
+                  {t('favoritesProductsEmptyDescription')}
                 </p>
               </div>
             ) : (
@@ -110,10 +110,10 @@ export function FavoritesPage({
               <div className='bg-gradient.to-br flex min-h-[400px] flex-col items-center justify-center rounded-3xl from-primary/5 to-accent/5 p-12 text-center'>
                 <Receipt className='mb-4 h-16 w-16 text-muted-foreground/30' />
                 <h3 className='mb-2 text-xl text-primary'>
-                  No favorite orders yet
+                  {t('noFavoriteOrdersYet')}
                 </h3>
                 <p className='max-w-md text-muted-foreground'>
-                  Save frequently repeated orders for quick one-click reordering
+                  {t('favoritesOrdersEmptyDescription')}
                 </p>
               </div>
             ) : (
@@ -136,12 +136,10 @@ export function FavoritesPage({
           favoriteOrders.length > 0) && (
           <div className='mt-12 rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 p-8 text-center'>
             <h3 className='mb-3 text-xl text-primary'>
-              Build lasting partnerships
+              {t('buildLastingPartnerships')}
             </h3>
             <p className='mx-auto max-w-2xl text-muted-foreground'>
-              Favoriting suppliers, products, and orders helps you maintain
-              consistent quality and streamline your ordering process. Your
-              favorites are always just a click away.
+              {t('favoritesFooterDescription')}
             </p>
           </div>
         )}

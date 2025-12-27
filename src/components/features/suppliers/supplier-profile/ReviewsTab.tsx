@@ -4,6 +4,7 @@ import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { Progress } from '@components/ui/progress';
 import { Star } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface Review {
   id: number;
@@ -21,10 +22,11 @@ export interface ReviewsTabProps {
 }
 
 export function ReviewsTab({ rating, totalReviews, reviews }: ReviewsTabProps) {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-2xl border-0 p-6 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
       <div className='mb-6'>
-        <h3 className='mb-4'>Customer Reviews</h3>
+        <h3 className='mb-4'>{t('customerReviews')}</h3>
         <div className='flex items-center gap-6 rounded-xl bg-muted/30 p-4'>
           <div className='text-center'>
             <div className='mb-1 text-4xl text-primary'>{rating}</div>
@@ -37,7 +39,7 @@ export function ReviewsTab({ rating, totalReviews, reviews }: ReviewsTabProps) {
               ))}
             </div>
             <div className='mt-1 text-sm text-muted-foreground'>
-              {totalReviews} reviews
+              {totalReviews} {t('reviews')}
             </div>
           </div>
           <div className='flex-1 space-y-2'>
@@ -70,7 +72,7 @@ export function ReviewsTab({ rating, totalReviews, reviews }: ReviewsTabProps) {
                   <span>{review.restaurant}</span>
                   {review.verified && (
                     <Badge variant='outline' className='text-xs'>
-                      Verified Purchase
+                      {t('verifiedPurchase')}
                     </Badge>
                   )}
                 </div>

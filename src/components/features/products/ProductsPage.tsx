@@ -5,12 +5,15 @@ import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { BadgeCheck, MapPin, Star, Truck, ArrowLeftRight } from 'lucide-react';
 import { ProductTabs } from './components/ProductTabs';
 import { ComparisonDialog } from './components/ComparisonDialog';
+import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 interface ProductPageProps {
   onAddToCart: () => void;
 }
 
 export function ProductPage({ onAddToCart }: ProductPageProps) {
+  const { t } = useLanguage();
   const {
     quantity,
     setQuantity,
@@ -69,7 +72,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   <Star className='h-5 w-5 fill-accent text-accent' />
                   <span className='text-lg'>{product.rating}</span>
                   <span className='text-muted-foreground'>
-                    ({product.reviews} reviews)
+                    ({product.reviews} {t('reviews')})
                   </span>
                 </div>
                 <div className='flex items-center gap-1 text-muted-foreground'>
@@ -79,7 +82,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
               </div>
 
               <div className='mb-6 text-4xl text-primary'>
-                €{product.price.toFixed(2)}
+                {formatCurrency(product.price, 'EUR')}
                 <span className='text-xl text-muted-foreground'>
                   /{product.unit}
                 </span>
@@ -101,7 +104,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                 <div className='flex items-center gap-2'>
                   <Truck className='h-5 w-5 text-accent' />
                   <span className='text-sm'>
-                    Estimated delivery: <strong>{product.delivery}</strong>
+                    {t('estimatedDelivery')}: <strong>{product.delivery}</strong>
                   </span>
                 </div>
               </div>
@@ -126,7 +129,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   onClick={onAddToCart}
                   className='duration-250 h-12 flex-1 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
                 >
-                  Add to Cart — €{(product.price * quantity).toFixed(2)}
+                  {t('addToCart')} — {formatCurrency(product.price * quantity, 'EUR')}
                 </Button>
               </div>
 
@@ -136,7 +139,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                 className='duration-250 mb-8 w-full rounded-xl transition-all hover:border-accent hover:bg-accent/10 hover:text-accent'
               >
                 <ArrowLeftRight className='mr-2 h-4 w-4' />
-                Compare with Similar Products
+                {t('compareWithSimilarProducts')}
               </Button>
             </div>
 
@@ -154,7 +157,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
           onClick={onAddToCart}
           className='h-12 w-full rounded-xl bg-primary text-primary-foreground'
         >
-          Add to Cart — €{(product.price * quantity).toFixed(2)}
+          {t('addToCart')} — {formatCurrency(product.price * quantity, 'EUR')}
         </Button>
       </div>
 

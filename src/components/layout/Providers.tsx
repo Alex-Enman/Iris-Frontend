@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@contexts/ThemeContext';
 import { CartProvider } from '@contexts/CartContext';
+import { LanguageProvider } from '@contexts/LanguageContext';
 import { useState } from 'react';
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -29,7 +30,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const AppContent = (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <CartProvider>{children}</CartProvider>
+        <LanguageProvider>
+          <CartProvider>{children}</CartProvider>
+        </LanguageProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

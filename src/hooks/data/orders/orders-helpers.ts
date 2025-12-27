@@ -1,4 +1,5 @@
 import type { Order, OrderFilters, OrderTab } from '@/types/orders/types';
+import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
 
 export function getOrdersForTab(
   activeTab: OrderTab,
@@ -24,13 +25,14 @@ export function getOrdersForTab(
 }
 
 export function filterOrders(orders: Order[], filters: OrderFilters): Order[] {
-  const status = filters.status.toLowerCase();
+  const status = normalizeOrderStatusId(filters.status);
   const supplier = filters.supplier.toLowerCase();
   const search = filters.searchTerm.toLowerCase();
 
   return orders.filter(order => {
+    const orderStatus = normalizeOrderStatusId(order.status);
     const matchesStatus =
-      status === 'all' || order.status.toLowerCase() === status;
+      status === 'all' || orderStatus === status;
     const matchesSupplier =
       supplier === 'all' || order.supplier.toLowerCase().includes(supplier);
     const matchesSearch =

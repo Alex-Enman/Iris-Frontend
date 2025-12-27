@@ -2,6 +2,7 @@
 
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface SupplyNeed {
   category: string;
@@ -15,12 +16,12 @@ export interface SupplyNeedsTabProps {
 }
 
 export function SupplyNeedsTab({ supplierNeeds }: SupplyNeedsTabProps) {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-2xl border-0 p-6 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
-      <h3 className='mb-4'>Current Supply Requirements</h3>
+      <h3 className='mb-4'>{t('currentSupplyRequirements')}</h3>
       <p className='mb-6 text-sm text-muted-foreground'>
-        This restaurant regularly orders the following categories. Consider
-        reaching out with a proposal.
+        {t('supplyRequirementsDescription')}
       </p>
       <div className='grid gap-4 md:grid-cols-2'>
         {supplierNeeds.map((need, index) => (
@@ -36,11 +37,11 @@ export function SupplyNeedsTab({ supplierNeeds }: SupplyNeedsTabProps) {
             </div>
             <div className='space-y-2 text-sm'>
               <div className='flex items-center justify-between'>
-                <span className='text-muted-foreground'>Frequency:</span>
+                <span className='text-muted-foreground'>{t('frequency')}:</span>
                 <span>{need.frequency}</span>
               </div>
               <div className='flex items-start justify-between'>
-                <span className='text-muted-foreground'>Preferences:</span>
+                <span className='text-muted-foreground'>{t('preferences')}:</span>
                 <span className='text-right'>{need.preferences}</span>
               </div>
             </div>

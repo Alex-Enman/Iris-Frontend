@@ -1,9 +1,12 @@
+'use client';
+
 import { Card } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { Input } from '@components/ui/input';
 import { Button } from '@components/ui/button';
 import { Separator } from '@components/ui/separator';
 import { Mail, Phone, Lock, Eye, EyeOff, Save } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface AccountSettingsCardProps {
   fullName: string;
@@ -30,6 +33,7 @@ interface AccountSettingsCardProps {
 }
 
 export function AccountSettingsCard(props: AccountSettingsCardProps) {
+  const { t } = useLanguage();
   const {
     fullName,
     email,
@@ -47,16 +51,16 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
   return (
     <Card className='rounded-3xl border-0 p-8 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <div className='mb-6'>
-        <h2 className='mb-2'>Account Information</h2>
+        <h2 className='mb-2'>{t('accountInformation')}</h2>
         <p className='text-sm text-muted-foreground'>
-          Update your personal account details
+          {t('updateYourPersonalAccountDetails')}
         </p>
       </div>
 
       <div className='space-y-6'>
         <div className='grid gap-6 md:grid-cols-2'>
           <div className='space-y-2'>
-            <Label htmlFor='fullName'>Full Name</Label>
+            <Label htmlFor='fullName'>{t('fullName')}</Label>
             <Input
               id='fullName'
               value={fullName}
@@ -65,7 +69,7 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
             />
           </div>
           <div className='space-y-2'>
-            <Label htmlFor='email'>Email Address</Label>
+            <Label htmlFor='email'>{t('emailAddress')}</Label>
             <div className='relative'>
               <Mail className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
               <Input
@@ -80,7 +84,7 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
         </div>
 
         <div className='space-y-2'>
-          <Label htmlFor='phone'>Phone Number</Label>
+          <Label htmlFor='phone'>{t('phoneNumber')}</Label>
           <div className='relative'>
             <Phone className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
             <Input
@@ -96,15 +100,15 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
         <Separator className='my-6' />
 
         <div className='mb-4'>
-          <h3 className='mb-2'>Change Password</h3>
+          <h3 className='mb-2'>{t('changePassword')}</h3>
           <p className='text-sm text-muted-foreground'>
-            Leave blank to keep your current password
+            {t('leaveBlankToKeepYourCurrentPassword')}
           </p>
         </div>
 
         <div className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='currentPassword'>Current Password</Label>
+            <Label htmlFor='currentPassword'>{t('currentPassword')}</Label>
             <div className='relative'>
               <Lock className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
               <Input
@@ -130,7 +134,7 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
 
           <div className='grid gap-4 md:grid-cols-2'>
             <div className='space-y-2'>
-              <Label htmlFor='newPassword'>New Password</Label>
+              <Label htmlFor='newPassword'>{t('newPassword')}</Label>
               <div className='relative'>
                 <Lock className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
                 <Input
@@ -154,7 +158,7 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
               </div>
             </div>
             <div className='space-y-2'>
-              <Label htmlFor='confirmPassword'>Confirm New Password</Label>
+              <Label htmlFor='confirmPassword'>{t('confirmNewPassword')}</Label>
               <Input
                 id='confirmPassword'
                 type='password'
@@ -172,7 +176,7 @@ export function AccountSettingsCard(props: AccountSettingsCardProps) {
             className='rounded-xl bg-primary hover:bg-primary/90'
           >
             <Save className='mr-2 h-4 w-4' />
-            Save Changes
+            {t('saveChanges')}
           </Button>
         </div>
       </div>

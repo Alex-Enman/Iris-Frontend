@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRestaurantProfile } from '@/hooks/data/user/use-restaurant-profile';
+import { useLanguage } from '@contexts/LanguageContext';
 import { RestaurantBasicInfoForm } from './RestaurantBasicInfoForm';
 import { RestaurantContactForm } from './RestaurantContactForm';
 import { RestaurantMenuForm } from './RestaurantMenuForm';
@@ -38,6 +39,7 @@ export function EditRestaurantProfileDialog({
   restaurantProfile,
   onSave,
 }: EditRestaurantProfileDialogProps) {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<RestaurantTab>('basic');
 
   const {
@@ -61,7 +63,7 @@ export function EditRestaurantProfileDialog({
 
   const handleSave = () => {
     onSave(profile);
-    toast.success('Restaurant profile updated successfully!');
+    toast.success(t('restaurantProfileUpdatedSuccessfully'));
     onOpenChange(false);
   };
 
@@ -71,20 +73,20 @@ export function EditRestaurantProfileDialog({
   };
 
   const tabs = [
-    { id: 'basic', label: 'Basic Info', icon: Utensils },
-    { id: 'contact', label: 'Contact', icon: Phone },
-    { id: 'menu', label: 'Menu', icon: UtensilsCrossed },
-    { id: 'supply-needs', label: 'Supply Needs', icon: Package },
-    { id: 'ordering', label: 'Ordering', icon: Clock },
+    { id: 'basic', label: t('basicInfo'), icon: Utensils },
+    { id: 'contact', label: t('contactTab'), icon: Phone },
+    { id: 'menu', label: t('menu'), icon: UtensilsCrossed },
+    { id: 'supply-needs', label: t('supplyNeeds'), icon: Package },
+    { id: 'ordering', label: t('ordering'), icon: Clock },
   ] as const;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle>Edit Restaurant Profile</DialogTitle>
+          <DialogTitle>{t('editRestaurantProfile')}</DialogTitle>
           <DialogDescription>
-            Update your restaurant information, menu, and supplier preferences.
+            {t('editRestaurantProfileDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -154,9 +156,9 @@ export function EditRestaurantProfileDialog({
 
         <div className='flex justify-end space-x-2 border-t pt-4'>
           <Button variant='outline' onClick={handleCancel}>
-            Cancel
+            {t('cancel')}
           </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
+          <Button onClick={handleSave}>{t('saveChanges')}</Button>
         </div>
       </DialogContent>
     </Dialog>

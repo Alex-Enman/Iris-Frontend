@@ -9,6 +9,7 @@ import {
   Heart,
 } from 'lucide-react';
 import type { RestaurantItem } from '@hooks/suppliers/use-discover-restaurants';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantCardProps extends RestaurantItem {
   onAddFavorite: (name: string) => void;
@@ -17,6 +18,7 @@ interface RestaurantCardProps extends RestaurantItem {
 }
 
 export function RestaurantCard(props: RestaurantCardProps) {
+  const { t } = useLanguage();
   const {
     id,
     name,
@@ -38,15 +40,15 @@ export function RestaurantCard(props: RestaurantCardProps) {
     onContact,
   } = props;
   const statusBadge = () => {
-    if (isCustomer) return <Badge variant='default'>Customer</Badge>;
+    if (isCustomer) return <Badge variant='default'>{t('customer')}</Badge>;
     if (lookingForSuppliers)
       return (
         <Badge className='bg-accent text-accent-foreground'>
-          Seeking Suppliers
+          {t('seekingSuppliers')}
         </Badge>
       );
-    if (status === 'new') return <Badge variant='secondary'>New</Badge>;
-    return <Badge variant='outline'>Potential</Badge>;
+    if (status === 'new') return <Badge variant='secondary'>{t('new')}</Badge>;
+    return <Badge variant='outline'>{t('potential')}</Badge>;
   };
   return (
     <div className='duration-250 rounded-2xl border-2 border-primary/10 bg-gradient-to-br from-primary/5 to-transparent p-5 transition-all hover:border-primary/30'>
@@ -75,18 +77,18 @@ export function RestaurantCard(props: RestaurantCardProps) {
 
       <div className='mb-4 grid grid-cols-3 gap-3 text-sm'>
         <div>
-          <p className='mb-1 text-xs text-muted-foreground'>Rating</p>
+          <p className='mb-1 text-xs text-muted-foreground'>{t('rating')}</p>
           <div className='flex items-center gap-1'>
             <Star className='h-3 w-3 fill-primary text-primary' />
             <p className='font-medium'>{rating}</p>
           </div>
         </div>
         <div>
-          <p className='mb-1 text-xs text-muted-foreground'>Reviews</p>
+          <p className='mb-1 text-xs text-muted-foreground'>{t('reviews')}</p>
           <p className='font-medium'>{reviews}</p>
         </div>
         <div>
-          <p className='mb-1 text-xs text-muted-foreground'>Capacity</p>
+          <p className='mb-1 text-xs text-muted-foreground'>{t('capacity')}</p>
           <p className='font-medium'>{seatingCapacity}</p>
         </div>
       </div>
@@ -103,15 +105,21 @@ export function RestaurantCard(props: RestaurantCardProps) {
         <div className='mb-4 rounded-xl bg-primary/10 p-3'>
           <div className='grid grid-cols-3 gap-3 text-sm'>
             <div>
-              <p className='mb-1 text-xs text-muted-foreground'>Total Spent</p>
+              <p className='mb-1 text-xs text-muted-foreground'>
+                {t('totalSpentLabel')}
+              </p>
               <p className='font-medium text-primary'>{totalSpent}</p>
             </div>
             <div>
-              <p className='mb-1 text-xs text-muted-foreground'>Avg Order</p>
+              <p className='mb-1 text-xs text-muted-foreground'>
+                {t('avgOrderLabel')}
+              </p>
               <p className='font-medium'>{avgOrderValue}</p>
             </div>
             <div>
-              <p className='mb-1 text-xs text-muted-foreground'>Frequency</p>
+              <p className='mb-1 text-xs text-muted-foreground'>
+                {t('frequencyLabel')}
+              </p>
               <p className='font-medium'>{orderFrequency}</p>
             </div>
           </div>
@@ -122,7 +130,7 @@ export function RestaurantCard(props: RestaurantCardProps) {
         <div className='mb-4 flex items-center gap-2 rounded-xl bg-accent/10 px-3 py-2 text-sm'>
           <Sparkles className='h-4 w-4 text-accent' />
           <p className='text-accent-foreground'>
-            Actively seeking new suppliers
+            {t('seekingNewSuppliers')}
           </p>
         </div>
       )}
@@ -135,7 +143,7 @@ export function RestaurantCard(props: RestaurantCardProps) {
           className='flex-1 rounded-xl'
         >
           <MessageCircle className='mr-2 h-4 w-4' />
-          Message
+          {t('message')}
         </Button>
         <Button
           size='sm'
@@ -143,7 +151,7 @@ export function RestaurantCard(props: RestaurantCardProps) {
           className='flex-1 rounded-xl bg-primary hover:bg-primary/90'
         >
           <Eye className='mr-2 h-4 w-4' />
-          View Profile
+          {t('viewProfile')}
         </Button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 // Custom hook for supplier dashboard state management
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Product,
   NewProductForm,
@@ -13,8 +13,10 @@ import {
 import { getMockProducts } from '@/tests/mocks/mock-products';
 import { getMockSupplierOrders } from '@/tests/mocks/mock-orders';
 import { getMockSupplierCustomers } from '@/tests/mocks/mock-customers';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function useSupplierDashboard() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<DashboardTab>('dashboard');
   const [editingProduct, setEditingProduct] = useState<number | null>(null);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
@@ -26,7 +28,7 @@ export function useSupplierDashboard() {
 
   const [newProduct, setNewProduct] = useState<NewProductForm>({
     name: '',
-    category: 'Vegetables',
+    category: 'vegetables',
     price: '',
     unit: 'kg',
     stock: '',
@@ -35,16 +37,15 @@ export function useSupplierDashboard() {
 
   // Mock supplier data
   const [supplierInfo, setSupplierInfo] = useState<SupplierInfo>({
-    name: 'Green Valley Farm',
-    category: 'Organic Vegetables',
-    location: 'Valley Ridge, 12 km from city center',
+    name: t('supplierNameGreenValleyFarm'),
+    category: t('supplierCategoryOrganicVegetables'),
+    location: t('supplierLocationValleyRidge12km'),
     verified: true,
     rating: 4.8,
     totalReviews: 127,
-    memberSince: 'March 2022',
-    description:
-      'Family-run organic farm specializing in heritage vegetables and sustainable farming practices. We use traditional methods passed down through generations.',
-    certifications: ['Organic Certified', 'Local Producer', 'Traceable'],
+    memberSince: t('supplierMemberSinceMarch2022'),
+    description: t('supplierDashboardDescriptionGreenValley'),
+    certifications: [t('organicCertified'), t('localProducer'), t('traceable')],
     email: 'contact@greenvalleyfarm.com',
     phone: '+1 (555) 123-4567',
     website: 'www.greenvalleyfarm.com',
@@ -67,17 +68,44 @@ export function useSupplierDashboard() {
       .map((p, idx) => ({
         id: idx + 1,
         name: p.name,
-        category: 'Vegetables',
+        category: 'vegetables',
         price: p.price,
         unit: p.unit,
         stock: (p as any).stockQuantity ?? 100,
-        status:
-          ((p as any).stockQuantity ?? 100) > 0 ? 'In Stock' : 'Out of Stock',
+        status: ((p as any).stockQuantity ?? 100) > 0 ? 'inStock' : 'outOfStock',
         image: p.image || '',
         sales: 0,
         revenue: '€0.00',
       }))
   );
+
+  useEffect(() => {
+    setSupplierInfo(prev => ({
+      ...prev,
+      name: t('supplierNameGreenValleyFarm'),
+      category: t('supplierCategoryOrganicVegetables'),
+      location: t('supplierLocationValleyRidge12km'),
+      memberSince: t('supplierMemberSinceMarch2022'),
+      description: t('supplierDashboardDescriptionGreenValley'),
+      certifications: [t('organicCertified'), t('localProducer'), t('traceable')],
+    }));
+
+    setEditStoreForm(prev => ({
+      ...prev,
+      name: t('supplierNameGreenValleyFarm'),
+      category: t('supplierCategoryOrganicVegetables'),
+      location: t('supplierLocationValleyRidge12km'),
+      description: t('supplierDashboardDescriptionGreenValley'),
+    }));
+
+    setProducts(prev =>
+      prev.map(p => ({
+        ...p,
+        category: 'vegetables',
+        status: p.stock > 0 ? 'inStock' : 'outOfStock',
+      }))
+    );
+  }, [t]);
 
   // Mock orders data
   const [orders] = useState<Order[]>(getMockSupplierOrders());
@@ -94,7 +122,7 @@ export function useSupplierDashboard() {
         price: parseFloat(newProduct.price),
         unit: newProduct.unit,
         stock: parseInt(newProduct.stock),
-        status: parseInt(newProduct.stock) > 0 ? 'In Stock' : 'Out of Stock',
+        status: parseInt(newProduct.stock) > 0 ? 'inStock' : 'outOfStock',
         image: newProduct.imageUrl || 'https://via.placeholder.com/150',
         sales: 0,
         revenue: '€0.00',
@@ -102,7 +130,7 @@ export function useSupplierDashboard() {
       setProducts([...products, product]);
       setNewProduct({
         name: '',
-        category: 'Vegetables',
+        category: 'vegetables',
         price: '',
         unit: 'kg',
         stock: '',

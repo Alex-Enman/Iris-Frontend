@@ -8,6 +8,7 @@ import type {
   ChatItem,
   MessageItem,
 } from '@/hooks/suppliers/use-supplier-messages-tab';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ChatAreaProps {
   selectedChat: ChatItem;
@@ -26,14 +27,17 @@ export function ChatArea({
   messagesEndRef,
   getParticipantCount,
 }: ChatAreaProps) {
+  const { t } = useLanguage();
   return (
     <Card className='flex h-[calc(100vh-12rem)] flex-col rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <CardHeader className='p-6'>
         <div className='flex items-center justify-between'>
           <h3 className='text-2xl'>{selectedChat.name}</h3>
           <div className='text-sm text-muted-foreground'>
-            {getParticipantCount(selectedChat)} participant
-            {getParticipantCount(selectedChat) !== 1 ? 's' : ''}
+            {getParticipantCount(selectedChat)}{' '}
+            {getParticipantCount(selectedChat) === 1
+              ? t('participant')
+              : t('participants')}
           </div>
         </div>
       </CardHeader>
@@ -90,7 +94,7 @@ export function ChatArea({
         <div className='border-t border-border p-4'>
           <form onSubmit={onSendMessage} className='flex gap-2'>
             <Input
-              placeholder='Type a message...'
+              placeholder={t('typeAMessage')}
               value={messageInput}
               onChange={e => setMessageInput(e.target.value)}
               className='rounded-xl'

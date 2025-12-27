@@ -3,8 +3,10 @@
 import { Star } from 'lucide-react';
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function RecentReviewsCard() {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-3xl border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <div className='border-b border-border p-6'>
@@ -12,7 +14,7 @@ export function RecentReviewsCard() {
           <div className='rounded-xl bg-accent/10 p-2'>
             <Star className='h-5 w-5 text-accent' />
           </div>
-          <h3 className='text-lg'>Recent Reviews</h3>
+          <h3 className='text-lg'>{t('recentReviews')}</h3>
         </div>
       </div>
       <div className='p-6'>
@@ -24,7 +26,7 @@ export function RecentReviewsCard() {
                   GT
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium'>Green Table</h4>
+                  <h4 className='text-sm font-medium'>{t('greenTable')}</h4>
                   <div className='flex gap-0.5'>
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -36,11 +38,11 @@ export function RecentReviewsCard() {
                 </div>
               </div>
               <Badge variant='secondary' className='text-xs'>
-                1d ago
+                1 {t('dayAgo')}
               </Badge>
             </div>
             <p className='text-sm text-muted-foreground'>
-              "Exceptional quality! The tomatoes were incredibly fresh."
+              "{t('reviewExceptionalQualityTomatoes')}"
             </p>
           </div>
 
@@ -51,7 +53,7 @@ export function RecentReviewsCard() {
                   FF
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium'>Farm to Fork</h4>
+                  <h4 className='text-sm font-medium'>{t('farmToFork')}</h4>
                   <div className='flex gap-0.5'>
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -63,11 +65,11 @@ export function RecentReviewsCard() {
                 </div>
               </div>
               <Badge variant='secondary' className='text-xs'>
-                2d ago
+                2 {t('daysAgo')}
               </Badge>
             </div>
             <p className='text-sm text-muted-foreground'>
-              "Reliable deliveries and great communication!"
+              "{t('reviewReliableDeliveriesGreatCommunication')}"
             </p>
           </div>
         </div>

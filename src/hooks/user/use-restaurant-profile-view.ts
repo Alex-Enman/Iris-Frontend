@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface UseRestaurantProfileViewOptions {
   restaurantId: string;
@@ -10,26 +11,25 @@ export interface UseRestaurantProfileViewOptions {
 export function useRestaurantProfileView({
   restaurantId,
 }: UseRestaurantProfileViewOptions) {
+  const language = getStoredLanguage();
   const [notes, setNotes] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleContact = useCallback(() => {
-    toast.success('Opening message');
+    toast.success(t('openingMessage', language));
   }, []);
 
   const handleProposal = useCallback(() => {
-    toast.success('Creating supply proposal');
+    toast.success(t('creatingSupplyProposal', language));
   }, []);
 
   const handleFavorite = useCallback(() => {
     setIsFavorite(prev => !prev);
-    toast.success(
-      !isFavorite ? 'Added to favorites' : 'Removed from favorites'
-    );
+    toast.success(t(!isFavorite ? 'addedToFavorites' : 'removedFromFavorites', language));
   }, [isFavorite]);
 
   const handleSaveNotes = useCallback(() => {
-    toast.success('Notes saved successfully');
+    toast.success(t('notesSavedSuccessfully', language));
   }, []);
 
   return {

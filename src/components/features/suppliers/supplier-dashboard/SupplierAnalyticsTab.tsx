@@ -21,12 +21,15 @@ import {
   Calendar,
   Download,
 } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 interface SupplierAnalyticsTabProps {
   // Analytics data would be passed as props
 }
 
 export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
+  const { t } = useLanguage();
   // Mock analytics data
   const revenueData = [
     { month: 'Jan', revenue: 8500, orders: 45 },
@@ -55,9 +58,9 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h2 className='text-2xl font-bold'>Analytics & Reports</h2>
+          <h2 className='text-2xl font-bold'>{t('analyticsAndReports')}</h2>
           <p className='text-muted-foreground'>
-            Track your performance and business metrics
+            {t('analyticsDescription')}
           </p>
         </div>
         <div className='flex items-center space-x-2'>
@@ -66,15 +69,15 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='1month'>Last Month</SelectItem>
-              <SelectItem value='3months'>Last 3 Months</SelectItem>
-              <SelectItem value='6months'>Last 6 Months</SelectItem>
-              <SelectItem value='1year'>Last Year</SelectItem>
+              <SelectItem value='1month'>{t('lastMonth')}</SelectItem>
+              <SelectItem value='3months'>{t('last3Months')}</SelectItem>
+              <SelectItem value='6months'>{t('last6Months')}</SelectItem>
+              <SelectItem value='1year'>{t('lastYear')}</SelectItem>
             </SelectContent>
           </Select>
           <Button variant='outline'>
             <Download className='mr-2 h-4 w-4' />
-            Export
+            {t('export')}
           </Button>
         </div>
       </div>
@@ -85,13 +88,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-sm font-medium text-muted-foreground'>
-                Total Revenue
+                {t('totalRevenue')}
               </p>
-              <p className='text-2xl font-bold'>€65,550</p>
+              <p className='text-2xl font-bold'>{formatCurrency(65550, 'EUR')}</p>
               <div className='mt-2 flex items-center'>
                 <TrendingUp className='mr-1 h-4 w-4 text-green-500' />
                 <span className='text-sm text-green-600'>
-                  +15.2% from last period
+                  +15.2% {t('fromLastPeriod')}
                 </span>
               </div>
             </div>
@@ -103,13 +106,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-sm font-medium text-muted-foreground'>
-                Total Orders
+                {t('totalOrders')}
               </p>
               <p className='text-2xl font-bold'>356</p>
               <div className='mt-2 flex items-center'>
                 <TrendingUp className='mr-1 h-4 w-4 text-green-500' />
                 <span className='text-sm text-green-600'>
-                  +8.3% from last period
+                  +8.3% {t('fromLastPeriod')}
                 </span>
               </div>
             </div>
@@ -121,13 +124,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-sm font-medium text-muted-foreground'>
-                Active Customers
+                {t('activeCustomers')}
               </p>
               <p className='text-2xl font-bold'>89</p>
               <div className='mt-2 flex items-center'>
                 <TrendingUp className='mr-1 h-4 w-4 text-green-500' />
                 <span className='text-sm text-green-600'>
-                  +12.5% from last period
+                  +12.5% {t('fromLastPeriod')}
                 </span>
               </div>
             </div>
@@ -139,13 +142,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
           <div className='flex items-center justify-between'>
             <div>
               <p className='text-sm font-medium text-muted-foreground'>
-                Avg Order Value
+                {t('avgOrderValue')}
               </p>
-              <p className='text-2xl font-bold'>€184.13</p>
+              <p className='text-2xl font-bold'>{formatCurrency(184.13, 'EUR')}</p>
               <div className='mt-2 flex items-center'>
                 <TrendingDown className='mr-1 h-4 w-4 text-red-500' />
                 <span className='text-sm text-red-600'>
-                  -2.1% from last period
+                  -2.1% {t('fromLastPeriod')}
                 </span>
               </div>
             </div>
@@ -157,12 +160,12 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
       {/* Revenue Chart Placeholder */}
       <Card className='p-6'>
         <div className='mb-6 flex items-center justify-between'>
-          <h3 className='text-lg font-semibold'>Revenue Trend</h3>
+          <h3 className='text-lg font-semibold'>{t('revenueTrend')}</h3>
           <div className='flex items-center space-x-2'>
-            <Badge variant='outline'>6 months</Badge>
+            <Badge variant='outline'>{t('sixMonths')}</Badge>
             <Button variant='outline' size='sm'>
               <Calendar className='mr-2 h-4 w-4' />
-              Custom Range
+              {t('customRange')}
             </Button>
           </div>
         </div>
@@ -170,10 +173,10 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
           <div className='text-center'>
             <BarChart3 className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
             <p className='text-muted-foreground'>
-              Revenue chart would be displayed here
+              {t('revenueChartPlaceholder')}
             </p>
             <p className='text-sm text-muted-foreground'>
-              Integration with charting library needed
+              {t('chartIntegrationNeeded')}
             </p>
           </div>
         </div>
@@ -183,7 +186,7 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
         {/* Top Products */}
         <Card className='p-6'>
           <h3 className='mb-4 text-lg font-semibold'>
-            Top Performing Products
+            {t('topPerformingProducts')}
           </h3>
           <div className='space-y-4'>
             {topProducts.map((product, index) => (
@@ -195,13 +198,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
                   <div>
                     <p className='font-medium'>{product.name}</p>
                     <p className='text-sm text-muted-foreground'>
-                      {product.sales} units sold
+                      {product.sales} {t('unitsSold')}
                     </p>
                   </div>
                 </div>
                 <div className='text-right'>
                   <p className='font-semibold'>{product.revenue}</p>
-                  <p className='text-sm text-muted-foreground'>Revenue</p>
+                  <p className='text-sm text-muted-foreground'>{t('revenueLabel')}</p>
                 </div>
               </div>
             ))}
@@ -210,7 +213,7 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
 
         {/* Top Customers */}
         <Card className='p-6'>
-          <h3 className='mb-4 text-lg font-semibold'>Top Customers</h3>
+          <h3 className='mb-4 text-lg font-semibold'>{t('topCustomers')}</h3>
           <div className='space-y-4'>
             {topCustomers.map((customer, index) => (
               <div key={index} className='flex items-center justify-between'>
@@ -221,13 +224,13 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
                   <div>
                     <p className='font-medium'>{customer.name}</p>
                     <p className='text-sm text-muted-foreground'>
-                      {customer.orders} orders
+                      {customer.orders} {t('orders')}
                     </p>
                   </div>
                 </div>
                 <div className='text-right'>
                   <p className='font-semibold'>{customer.total}</p>
-                  <p className='text-sm text-muted-foreground'>Total spent</p>
+                  <p className='text-sm text-muted-foreground'>{t('totalSpent')}</p>
                 </div>
               </div>
             ))}
@@ -237,36 +240,33 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
 
       {/* Performance Insights */}
       <Card className='p-6'>
-        <h3 className='mb-4 text-lg font-semibold'>Performance Insights</h3>
+        <h3 className='mb-4 text-lg font-semibold'>{t('performanceInsights')}</h3>
         <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
           <div className='text-center'>
             <div className='mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-green-100'>
               <TrendingUp className='h-6 w-6 text-green-600' />
             </div>
-            <h4 className='mb-2 font-semibold'>Revenue Growth</h4>
+            <h4 className='mb-2 font-semibold'>{t('revenueGrowth')}</h4>
             <p className='text-sm text-muted-foreground'>
-              Your revenue has grown by 15.2% compared to the previous period,
-              indicating strong business performance.
+              {t('revenueGrowthDescription')}
             </p>
           </div>
           <div className='text-center'>
             <div className='mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100'>
               <Users className='h-6 w-6 text-blue-600' />
             </div>
-            <h4 className='mb-2 font-semibold'>Customer Acquisition</h4>
+            <h4 className='mb-2 font-semibold'>{t('customerAcquisition')}</h4>
             <p className='text-sm text-muted-foreground'>
-              You've gained 12 new customers this period, expanding your market
-              reach and building a stronger customer base.
+              {t('customerAcquisitionDescription')}
             </p>
           </div>
           <div className='text-center'>
             <div className='mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-100'>
               <Package className='h-6 w-6 text-yellow-600' />
             </div>
-            <h4 className='mb-2 font-semibold'>Product Performance</h4>
+            <h4 className='mb-2 font-semibold'>{t('productPerformance')}</h4>
             <p className='text-sm text-muted-foreground'>
-              Heirloom Tomatoes are your top performer. Consider expanding
-              similar high-demand products.
+              {t('productPerformanceDescription')}
             </p>
           </div>
         </div>

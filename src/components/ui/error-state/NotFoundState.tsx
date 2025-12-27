@@ -1,6 +1,7 @@
 // Not found error state component
 
 import { ErrorState } from './ErrorState';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface NotFoundStateProps {
   title?: string;
@@ -10,15 +11,19 @@ interface NotFoundStateProps {
 }
 
 export function NotFoundState({
-  title = 'Page Not Found',
-  description = "The page you're looking for doesn't exist.",
+  title,
+  description,
   onGoHome,
   className,
 }: NotFoundStateProps) {
+  const { t } = useLanguage();
+  const resolvedTitle = title ?? t('pageNotFoundTitle');
+  const resolvedDescription = description ?? t('pageNotFoundDescription');
+
   return (
     <ErrorState
-      title={title}
-      description={description}
+      title={resolvedTitle}
+      description={resolvedDescription}
       onGoHome={onGoHome}
       className={className}
     />

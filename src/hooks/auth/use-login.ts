@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { UserRole } from '@/types';
 import { getMockAuthCredentials } from '@/tests/mocks/mock-data';
+import type { TranslationKey } from '@lib/i18n';
 
 export interface LoginFormData {
   username: string;
@@ -9,7 +10,7 @@ export interface LoginFormData {
 
 export interface LoginState {
   formData: LoginFormData;
-  error: string;
+  error: TranslationKey | '';
   loading: boolean;
 }
 
@@ -63,6 +64,15 @@ export function useLogin() {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
+      if (!loginState.formData.username || !loginState.formData.password) {
+        setLoginState(prev => ({
+          ...prev,
+          loading: false,
+          error: 'pleaseEnterBothUsernameAndPassword',
+        }));
+        return null;
+      }
+
       const userRole = validateCredentials(
         loginState.formData.username,
         loginState.formData.password
@@ -75,7 +85,7 @@ export function useLogin() {
         setLoginState(prev => ({
           ...prev,
           loading: false,
-          error: 'Invalid username or password',
+          error: 'invalidUsernameOrPassword',
         }));
         return null;
       }
@@ -83,7 +93,7 @@ export function useLogin() {
       setLoginState(prev => ({
         ...prev,
         loading: false,
-        error: 'An error occurred during login',
+        error: 'loginErrorGeneric',
       }));
       return null;
     }

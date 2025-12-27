@@ -1,10 +1,10 @@
 'use client';
 
-import { Card } from '@components/ui/card';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { MapPin, MessageCircle, Eye } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface SupplierCustomer {
   id: string;
@@ -29,20 +29,27 @@ export function SupplierCustomersTab({
   onContact,
   onViewProfile,
 }: SupplierCustomersTabProps) {
+  const { t } = useLanguage();
   const handleContact = (name: string) => {
     if (onContact) onContact(name);
-    else toast.success(`Opening message to ${name}`);
+    else
+      toast.success(t('openingMessageTo'), {
+        description: name,
+      });
   };
   const handleView = (id: string) => {
     if (onViewProfile) onViewProfile(id);
-    else toast.success(`Open restaurant profile ${id}`);
+    else
+      toast.success(t('openingRestaurantProfile'), {
+        description: id,
+      });
   };
 
   return (
     <div>
       <div className='mb-6'>
         <p className='text-sm text-muted-foreground'>
-          View and manage your restaurant partnerships
+          {t('viewAndManageRestaurantPartnerships')}
         </p>
       </div>
 
@@ -65,25 +72,27 @@ export function SupplierCustomersTab({
               <Badge
                 className={c.status === 'active' ? 'bg-primary' : undefined}
               >
-                {c.status}
+                {c.status === 'active' ? t('active') : t('inactive')}
               </Badge>
             </div>
 
             <div className='mb-4 grid grid-cols-3 gap-3 text-sm'>
               <div>
                 <p className='mb-1 text-xs text-muted-foreground'>
-                  Total Orders
+                  {t('totalOrders')}
                 </p>
                 <p className='font-medium'>{c.totalOrders}</p>
               </div>
               <div>
                 <p className='mb-1 text-xs text-muted-foreground'>
-                  Total Spent
+                  {t('totalSpent')}
                 </p>
                 <p className='font-medium text-primary'>{c.totalSpent}</p>
               </div>
               <div>
-                <p className='mb-1 text-xs text-muted-foreground'>Last Order</p>
+                <p className='mb-1 text-xs text-muted-foreground'>
+                  {t('lastOrderLabel')}
+                </p>
                 <p className='font-medium'>{c.lastOrder}</p>
               </div>
             </div>
@@ -101,7 +110,7 @@ export function SupplierCustomersTab({
                 className='flex-1 rounded-xl'
               >
                 <MessageCircle className='mr-2 h-4 w-4' />
-                Message
+                {t('message')}
               </Button>
               <Button
                 size='sm'
@@ -109,7 +118,7 @@ export function SupplierCustomersTab({
                 className='flex-1 rounded-xl bg-primary hover:bg-primary/90'
               >
                 <Eye className='mr-2 h-4 w-4' />
-                View Profile
+                {t('viewProfile')}
               </Button>
             </div>
           </div>

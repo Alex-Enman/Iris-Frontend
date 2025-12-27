@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 import type {
   RestaurantDisplayInfo,
   RestaurantContentInfo,
@@ -27,6 +28,7 @@ export function RestaurantInfoSection({
   content,
   stats,
 }: RestaurantInfoSectionProps) {
+  const { t } = useLanguage();
   const { rating, totalReviews, location, memberSince } = display;
   const { description, cuisine } = content;
   return (
@@ -36,7 +38,7 @@ export function RestaurantInfoSection({
           <Star className='h-5 w-5 fill-primary text-primary' />
           <span className='text-lg'>{rating}</span>
           <span className='text-sm text-muted-foreground'>
-            ({totalReviews} reviews)
+            ({totalReviews} {t('reviews').toLowerCase()})
           </span>
         </div>
         <div className='h-6 w-px bg-border' />
@@ -46,14 +48,14 @@ export function RestaurantInfoSection({
         </div>
         <div className='h-6 w-px bg-border' />
         <div className='text-sm text-muted-foreground'>
-          Member since {memberSince}
+          {t('memberSince')} {memberSince}
         </div>
       </div>
 
       <p className='mb-4 leading-relaxed text-foreground'>{description}</p>
 
       <div className='mb-4'>
-        <p className='mb-2 text-sm text-muted-foreground'>Cuisine Types</p>
+        <p className='mb-2 text-sm text-muted-foreground'>{t('cuisineTypes')}</p>
         <div className='flex flex-wrap gap-2'>
           {cuisine.map((type, idx) => (
             <Badge key={idx} variant='outline'>
@@ -66,25 +68,27 @@ export function RestaurantInfoSection({
       <div className='grid grid-cols-4 gap-4 rounded-2xl bg-muted/30 p-4'>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
-            <Users className='h-4 w-4' /> Seating
+            <Users className='h-4 w-4' /> {t('seating')}
           </div>
-          <div>{stats.seatingCapacity} seats</div>
+          <div>
+            {stats.seatingCapacity} {t('seats')}
+          </div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
-            <TrendingUp className='h-4 w-4' /> Monthly Orders
+            <TrendingUp className='h-4 w-4' /> {t('monthlyOrders')}
           </div>
           <div>{stats.avgMonthlyOrders}</div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
-            <Calendar className='h-4 w-4' /> Established
+            <Calendar className='h-4 w-4' /> {t('established')}
           </div>
           <div>{stats.established}</div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
-            <DollarSign className='h-4 w-4' /> Order Volume
+            <DollarSign className='h-4 w-4' /> {t('orderVolume')}
           </div>
           <div>{stats.orderVolume}</div>
         </div>

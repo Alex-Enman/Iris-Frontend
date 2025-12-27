@@ -14,6 +14,8 @@ import { toast } from 'sonner';
 import { SupplierCustomersTab } from './SupplierCustomersTab';
 import type { SupplierDashboardProps } from '@/types/suppliers/supplier-dashboard/types';
 import { Badge, Button, Card } from '@components/ui';
+import { useLanguage } from '@contexts/LanguageContext';
+import { LanguageSettingsCard } from '@components/features/user/components/settings/LanguageSettingsCard';
 import {
   LayoutDashboard,
   Package,
@@ -27,6 +29,7 @@ import {
 } from 'lucide-react';
 
 export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
+  const { t } = useLanguage();
   const {
     ui,
     products: productsState,
@@ -35,15 +38,15 @@ export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
   } = useSupplierDashboard();
 
   const sidebarTabs = [
-    { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
-    { id: 'products', label: 'Products', icon: Package },
-    { id: 'orders', label: 'Orders', icon: ShoppingCart },
-    { id: 'customers', label: 'Customers', icon: Users },
-    { id: 'discover', label: 'Discover', icon: Compass },
-    { id: 'messages', label: 'Messages', icon: MessageSquare },
-    { id: 'analytics', label: 'Analytics', icon: BarChartBig },
-    { id: 'profile', label: 'Profile', icon: UserCircle },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'dashboard', label: t('overview'), icon: LayoutDashboard },
+    { id: 'products', label: t('products'), icon: Package },
+    { id: 'orders', label: t('orders'), icon: ShoppingCart },
+    { id: 'customers', label: t('customers'), icon: Users },
+    { id: 'discover', label: t('discover'), icon: Compass },
+    { id: 'messages', label: t('messages'), icon: MessageSquare },
+    { id: 'analytics', label: t('analytics'), icon: BarChartBig },
+    { id: 'profile', label: t('profile'), icon: UserCircle },
+    { id: 'settings', label: t('settings'), icon: Settings },
   ];
 
   const renderContent = () => {
@@ -52,16 +55,32 @@ export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
         return (
           <SupplierCustomersTab
             customers={data.customers as any}
-            onContact={name => toast.success(`Message ${name}`)}
-            onViewProfile={id => toast.success(`Open restaurant ${id}`)}
+            onContact={name =>
+              toast.success(t('openingMessageTo'), {
+                description: name,
+              })
+            }
+            onViewProfile={id =>
+              toast.success(t('openingRestaurant'), {
+                description: id,
+              })
+            }
           />
         );
       case 'discover':
         return (
           <div className='space-y-4'>
             <DiscoverRestaurantsPage
-              onViewRestaurant={id => toast.success(`Open restaurant ${id}`)}
-              onContactRestaurant={name => toast.success(`Message ${name}`)}
+              onViewRestaurant={id =>
+                toast.success(t('openingRestaurant'), {
+                  description: id,
+                })
+              }
+              onContactRestaurant={name =>
+                toast.success(t('openingMessageTo'), {
+                  description: name,
+                })
+              }
             />
           </div>
         );
@@ -70,8 +89,9 @@ export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
       case 'settings':
         return (
           <div className='space-y-4'>
-            <h2 className='text-2xl font-bold'>Settings</h2>
-            <Card className='p-6'>Account and store settings coming soon.</Card>
+            <h2 className='text-2xl font-bold'>{t('settings')}</h2>
+            <LanguageSettingsCard />
+            <Card className='p-6'>{t('supplierSettingsComingSoon')}</Card>
           </div>
         );
       case 'profile':
@@ -111,21 +131,21 @@ export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
               supplierInfo={supplier.info}
               stats={[
                 {
-                  label: 'Revenue',
+                  label: t('revenue'),
                   value: '€12,450',
                   change: '+12.5%',
                   icon: BarChartBig,
                   trend: 'up',
                 },
                 {
-                  label: 'Orders',
+                  label: t('orders'),
                   value: '24',
                   change: '+3',
                   icon: ShoppingCart,
                   trend: 'up',
                 },
                 {
-                  label: 'Rating',
+                  label: t('rating'),
                   value: '4.8/5',
                   change: '+0.1',
                   icon: Users,

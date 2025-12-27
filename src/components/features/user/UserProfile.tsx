@@ -1,3 +1,5 @@
+'use client';
+
 // User profile component
 // Displays user profile information
 
@@ -6,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { User } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface UserProfileProps {
   user: User;
@@ -14,6 +17,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ user, onEdit, onLogout }: UserProfileProps) {
+  const { t } = useLanguage();
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -36,11 +40,11 @@ export function UserProfile({ user, onEdit, onLogout }: UserProfileProps) {
       <CardContent className='space-y-4'>
         <div className='space-y-2'>
           <div className='flex justify-between'>
-            <span className='text-sm font-medium'>Role:</span>
+            <span className='text-sm font-medium'>{t('roleLabel')}:</span>
             <span className='text-sm capitalize'>{user.role}</span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-sm font-medium'>Member since:</span>
+            <span className='text-sm font-medium'>{t('memberSince')}:</span>
             <span className='text-sm'>
               {new Date(user.createdAt).toLocaleDateString()}
             </span>
@@ -55,7 +59,7 @@ export function UserProfile({ user, onEdit, onLogout }: UserProfileProps) {
               onClick={onEdit}
               className='flex-1'
             >
-              Edit Profile
+              {t('editProfile')}
             </Button>
           )}
           {onLogout && (
@@ -65,7 +69,7 @@ export function UserProfile({ user, onEdit, onLogout }: UserProfileProps) {
               onClick={onLogout}
               className='flex-1'
             >
-              Logout
+              {t('logout')}
             </Button>
           )}
         </div>

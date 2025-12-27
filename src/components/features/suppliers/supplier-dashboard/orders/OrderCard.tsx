@@ -5,6 +5,8 @@ import { Badge } from '@components/ui/badge';
 import { Progress } from '@components/ui/progress';
 import type { Order } from '@/types/suppliers/supplier-dashboard/types';
 import { getStatusIcon, getStatusColor } from './OrderStatusHelpers';
+import { useLanguage } from '@contexts/LanguageContext';
+import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
 
 interface OrderCardProps {
   order: Order;
@@ -13,6 +15,27 @@ interface OrderCardProps {
 }
 
 export function OrderCard({ order, progressPct, estimate }: OrderCardProps) {
+  const { t } = useLanguage();
+
+  const statusKey = normalizeOrderStatusId(String(order.status ?? ''));
+
+  const statusLabel =
+    statusKey === 'processing'
+      ? t('processing')
+      : statusKey === 'confirmed'
+        ? t('confirmed')
+        : statusKey === 'shipped'
+          ? t('shipped')
+          : statusKey === 'delivered'
+            ? t('delivered')
+            : statusKey === 'cancelled'
+              ? t('cancelled')
+              : statusKey === 'draft'
+                ? t('draft')
+                : statusKey === 'reorder'
+                  ? t('reorder')
+                  : order.status;
+
   return (
     <Card className='duration-250 overflow-hidden rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)] transition-all hover:shadow-[0_2px_8px_rgba(0,0,0,0.12)]'>
       <div className='cursor-pointer p-6'>
@@ -29,7 +52,7 @@ export function OrderCard({ order, progressPct, estimate }: OrderCardProps) {
                       : 'bg-accent text-accent-foreground'
                 }
               >
-                {order.status}
+                {statusLabel}
               </Badge>
             </div>
             <div className='mb-2 flex items-center gap-2'>
@@ -40,7 +63,7 @@ export function OrderCard({ order, progressPct, estimate }: OrderCardProps) {
                 className='h-6 rounded-lg px-2 text-xs'
               >
                 <Store className='mr-1 h-3 w-3' />
-                View Store
+                {t('viewStore')}
               </Button>
             </div>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
@@ -61,7 +84,7 @@ export function OrderCard({ order, progressPct, estimate }: OrderCardProps) {
 
         <div className='mt-4'>
           <div className='mb-2 flex items-center justify-between text-sm'>
-            <span className='text-muted-foreground'>Order Progress</span>
+            <span className='text-muted-foreground'>{t('orderProgress')}</span>
             <span className='text-primary'>{progressPct}%</span>
           </div>
           <Progress value={progressPct} className='h-2' />
@@ -70,7 +93,7 @@ export function OrderCard({ order, progressPct, estimate }: OrderCardProps) {
         <div className='mt-4 rounded-xl bg-accent/10 p-3'>
           <div className='flex items-center gap-2 text-sm'>
             <Truck className='h-4 w-4 text-accent' />
-            <span className='text-muted-foreground'>Estimated delivery: </span>
+            <span className='text-muted-foreground'>{t('estimatedDelivery')}: </span>
             <span className='text-accent'>{estimate}</span>
           </div>
         </div>

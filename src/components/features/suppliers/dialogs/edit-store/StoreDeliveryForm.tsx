@@ -1,3 +1,5 @@
+'use client';
+
 // Delivery settings form component for edit store dialog
 
 import { Input } from '@components/ui/input';
@@ -5,6 +7,7 @@ import { Label } from '@components/ui/label';
 import { Card } from '@components/ui/card';
 import { Truck } from 'lucide-react';
 import { StoreFormData } from '@/types/suppliers/edit-store/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface StoreDeliveryFormProps {
   formData: StoreFormData;
@@ -15,45 +18,46 @@ export function StoreDeliveryForm({
   formData,
   onUpdate,
 }: StoreDeliveryFormProps) {
+  const { t } = useLanguage();
   return (
     <div className='space-y-4'>
       <div className='mb-4 flex items-center space-x-2'>
         <Truck className='h-5 w-5 text-primary' />
-        <h3 className='text-lg font-semibold'>Delivery Settings</h3>
+        <h3 className='text-lg font-semibold'>{t('deliverySettings')}</h3>
       </div>
 
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
         <Card className='p-4'>
           <div className='space-y-4'>
             <div>
-              <Label htmlFor='deliveryRadius'>Delivery Radius (km)</Label>
+              <Label htmlFor='deliveryRadius'>{t('deliveryRadiusKm')}</Label>
               <Input
                 id='deliveryRadius'
                 type='number'
                 value={formData.deliveryRadius}
                 onChange={e => onUpdate({ deliveryRadius: e.target.value })}
-                placeholder='10'
+                placeholder={t('deliveryRadiusPlaceholder')}
                 min='0'
                 step='1'
               />
             </div>
 
             <div>
-              <Label htmlFor='deliveryFee'>Delivery Fee (€)</Label>
+              <Label htmlFor='deliveryFee'>{t('deliveryFeeEur')}</Label>
               <Input
                 id='deliveryFee'
                 type='number'
                 step='0.01'
                 value={formData.deliveryFee}
                 onChange={e => onUpdate({ deliveryFee: e.target.value })}
-                placeholder='5.00'
+                placeholder={t('deliveryFeePlaceholder')}
                 min='0'
               />
             </div>
 
             <div>
               <Label htmlFor='freeDeliveryThreshold'>
-                Free Delivery Threshold (€)
+                {t('freeDeliveryThresholdEur')}
               </Label>
               <Input
                 id='freeDeliveryThreshold'
@@ -63,7 +67,7 @@ export function StoreDeliveryForm({
                 onChange={e =>
                   onUpdate({ freeDeliveryThreshold: e.target.value })
                 }
-                placeholder='50.00'
+                placeholder={t('freeDeliveryThresholdPlaceholder')}
                 min='0'
               />
             </div>
@@ -73,25 +77,25 @@ export function StoreDeliveryForm({
         <Card className='p-4'>
           <div className='space-y-4'>
             <div>
-              <Label htmlFor='minOrderAmount'>Minimum Order Amount (€)</Label>
+              <Label htmlFor='minOrderAmount'>{t('minimumOrderAmountEur')}</Label>
               <Input
                 id='minOrderAmount'
                 type='number'
                 step='0.01'
                 value={formData.minOrderAmount}
                 onChange={e => onUpdate({ minOrderAmount: e.target.value })}
-                placeholder='25.00'
+                placeholder={t('minimumOrderAmountPlaceholder')}
                 min='0'
               />
             </div>
 
             <div>
-              <Label htmlFor='deliveryTime'>Delivery Time (minutes)</Label>
+              <Label htmlFor='deliveryTime'>{t('deliveryTimeMinutes')}</Label>
               <Input
                 id='deliveryTime'
                 value={formData.deliveryTime}
                 onChange={e => onUpdate({ deliveryTime: e.target.value })}
-                placeholder='30-45'
+                placeholder={t('deliveryTimePlaceholder')}
               />
             </div>
           </div>
@@ -100,25 +104,23 @@ export function StoreDeliveryForm({
 
       <div className='text-sm text-muted-foreground'>
         <p>
-          Configure your delivery settings to help customers understand your
-          service area, fees, and delivery times.
+          {t('configureDeliverySettingsHelpText')}
         </p>
         <ul className='mt-2 list-inside list-disc space-y-1'>
           <li>
-            <strong>Delivery Radius:</strong> Maximum distance you deliver to
+            <strong>{t('deliveryRadiusHelpTitle')}</strong> {t('deliveryRadiusHelpText')}
           </li>
           <li>
-            <strong>Delivery Fee:</strong> Standard fee for delivery
+            <strong>{t('deliveryFeeHelpTitle')}</strong> {t('deliveryFeeHelpText')}
           </li>
           <li>
-            <strong>Free Delivery Threshold:</strong> Order amount for free
-            delivery
+            <strong>{t('freeDeliveryThresholdHelpTitle')}</strong> {t('freeDeliveryThresholdHelpText')}
           </li>
           <li>
-            <strong>Minimum Order:</strong> Minimum order amount required
+            <strong>{t('minimumOrderHelpTitle')}</strong> {t('minimumOrderHelpText')}
           </li>
           <li>
-            <strong>Delivery Time:</strong> Expected delivery time range
+            <strong>{t('deliveryTimeHelpTitle')}</strong> {t('deliveryTimeHelpText')}
           </li>
         </ul>
       </div>

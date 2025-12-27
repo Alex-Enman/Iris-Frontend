@@ -1,3 +1,5 @@
+'use client';
+
 // Basic info form component for edit restaurant profile dialog
 
 import { Input } from '@components/ui/input';
@@ -7,6 +9,7 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { X, Plus } from 'lucide-react';
 import { RestaurantProfile } from '@/types/user/edit-restaurant/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface RestaurantBasicInfoFormProps {
   profile: RestaurantProfile;
@@ -25,6 +28,7 @@ export function RestaurantBasicInfoForm({
   onRemoveCuisine,
   onNewCuisineChange,
 }: RestaurantBasicInfoFormProps) {
+  const { t } = useLanguage();
   const handleAddCuisine = () => {
     if (newCuisine.trim()) {
       onAddCuisine();
@@ -34,38 +38,38 @@ export function RestaurantBasicInfoForm({
   return (
     <div className='space-y-4'>
       <div>
-        <Label htmlFor='name'>Restaurant Name</Label>
+        <Label htmlFor='name'>{t('restaurantNameLabel')}</Label>
         <Input
           id='name'
           value={profile.name}
           onChange={e => onUpdate({ name: e.target.value })}
-          placeholder='Enter restaurant name'
+          placeholder={t('enterRestaurantName')}
         />
       </div>
 
       <div>
-        <Label htmlFor='type'>Restaurant Type</Label>
+        <Label htmlFor='type'>{t('restaurantTypeLabel')}</Label>
         <Input
           id='type'
           value={profile.type}
           onChange={e => onUpdate({ type: e.target.value })}
-          placeholder='e.g., Fine Dining, Casual, Fast Food'
+          placeholder={t('restaurantTypePlaceholder')}
         />
       </div>
 
       <div>
-        <Label htmlFor='cuisine'>Cuisine Types</Label>
+        <Label htmlFor='cuisine'>{t('cuisineTypesLabel')}</Label>
         <div className='flex space-x-2'>
           <Input
             id='cuisine'
             value={newCuisine}
             onChange={e => onNewCuisineChange(e.target.value)}
-            placeholder='Add cuisine type'
+            placeholder={t('addCuisineTypePlaceholder')}
             onKeyPress={e => e.key === 'Enter' && handleAddCuisine()}
           />
           <Button onClick={handleAddCuisine}>
             <Plus className='mr-2 h-4 w-4' />
-            Add
+            {t('add')}
           </Button>
         </div>
         <div className='mt-2 flex flex-wrap gap-2'>
@@ -90,64 +94,64 @@ export function RestaurantBasicInfoForm({
       </div>
 
       <div>
-        <Label htmlFor='location'>Location</Label>
+        <Label htmlFor='location'>{t('locationLabel')}</Label>
         <Input
           id='location'
           value={profile.location}
           onChange={e => onUpdate({ location: e.target.value })}
-          placeholder='Enter restaurant location'
+          placeholder={t('restaurantLocationPlaceholder')}
         />
       </div>
 
       <div>
-        <Label htmlFor='description'>Description</Label>
+        <Label htmlFor='description'>{t('storeDescription')}</Label>
         <Textarea
           id='description'
           value={profile.description}
           onChange={e => onUpdate({ description: e.target.value })}
-          placeholder='Describe your restaurant'
+          placeholder={t('restaurantDescriptionPlaceholder')}
           rows={4}
         />
       </div>
 
       <div>
-        <Label htmlFor='coverImage'>Cover Image URL</Label>
+        <Label htmlFor='coverImage'>{t('coverImageUrl')}</Label>
         <Input
           id='coverImage'
           value={profile.coverImage}
           onChange={e => onUpdate({ coverImage: e.target.value })}
-          placeholder='https://example.com/image.jpg'
+          placeholder={t('imageUrlPlaceholder')}
         />
       </div>
 
       <div className='grid grid-cols-2 gap-4'>
         <div>
-          <Label htmlFor='seatingCapacity'>Seating Capacity</Label>
+          <Label htmlFor='seatingCapacity'>{t('seatingCapacity')}</Label>
           <Input
             id='seatingCapacity'
             value={profile.seatingCapacity}
             onChange={e => onUpdate({ seatingCapacity: e.target.value })}
-            placeholder='e.g., 50'
+            placeholder={t('seatingCapacityPlaceholder')}
           />
         </div>
         <div>
-          <Label htmlFor='established'>Established Year</Label>
+          <Label htmlFor='established'>{t('establishedYear')}</Label>
           <Input
             id='established'
             value={profile.established}
             onChange={e => onUpdate({ established: e.target.value })}
-            placeholder='e.g., 2020'
+            placeholder={t('establishedYearPlaceholder')}
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor='orderVolume'>Monthly Order Volume</Label>
+        <Label htmlFor='orderVolume'>{t('monthlyOrderVolume')}</Label>
         <Input
           id='orderVolume'
           value={profile.orderVolume}
           onChange={e => onUpdate({ orderVolume: e.target.value })}
-          placeholder='e.g., €5,000 - €10,000'
+          placeholder={t('monthlyOrderVolumePlaceholder')}
         />
       </div>
     </div>

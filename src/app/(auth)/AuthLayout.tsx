@@ -1,4 +1,6 @@
+'use client';
 import { ReactNode } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -13,6 +15,7 @@ export function AuthLayout({
   subtitle,
   footer,
 }: AuthLayoutProps) {
+  const { t } = useLanguage();
   return (
     <div className='min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/5'>
       <div className='flex min-h-screen items-center justify-center px-4 py-12'>
@@ -32,7 +35,7 @@ export function AuthLayout({
           <div className='overflow-hidden rounded-3xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.12)]'>
             <div className='bg-gradient-to-br from-primary/5 to-accent/5 p-6'>
               <h2 className='text-center text-2xl text-primary'>
-                Welcome Back
+                {t('welcomeBack')}
               </h2>
             </div>
             {children}

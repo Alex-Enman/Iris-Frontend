@@ -17,10 +17,47 @@ export function useStoreForm({
   initialSupplierInfo,
   initialProducts,
 }: UseStoreFormOptions) {
+  const normalizeStoreCategory = (value: string) => {
+    const raw = String(value ?? '').trim();
+    const lower = raw.toLowerCase();
+
+    if (lower === 'organic vegetables' || lower === 'ekologiska grönsaker')
+      return 'organicVegetables';
+    if (lower === 'fresh produce' || lower === 'färska råvaror') return 'freshProduce';
+    if (lower === 'dairy products' || lower === 'mejeriprodukter') return 'dairyProducts';
+    if (lower === 'meat & poultry' || lower === 'meat and poultry' || lower === 'kött & fågel')
+      return 'meatAndPoultry';
+    if (lower === 'bakery items' || lower === 'bagerivaror') return 'bakeryItems';
+    if (lower === 'pantry staples' || lower === 'skafferivaror') return 'pantryStaples';
+    if (lower === 'frozen foods' || lower === 'frysta varor') return 'frozenFoods';
+    if (lower === 'specialty foods') return 'specialtyFoods';
+    if (lower === 'beverages' || lower === 'drycker') return 'beverages';
+    if (lower === 'other' || lower === 'annat') return 'other';
+
+    return raw;
+  };
+
+  const normalizeCategory = (category: string) => {
+    if (category === 'Vegetables') return 'vegetables';
+    if (category === 'Fruits') return 'fruits';
+    if (category === 'Dairy') return 'dairy';
+    if (category === 'Meat') return 'meat';
+    if (category === 'Bakery') return 'bakery';
+    if (category === 'Beverages') return 'beverages';
+    return category;
+  };
+
+  const normalizeStatus = (status: string) => {
+    if (status === 'In Stock') return 'inStock';
+    if (status === 'Low Stock') return 'lowStock';
+    if (status === 'Out of Stock') return 'outOfStock';
+    return status;
+  };
+
   const getDefaultFormData = (): StoreFormData => ({
     // Basic Info
     storeName: initialSupplierInfo.name,
-    storeCategory: initialSupplierInfo.category,
+    storeCategory: normalizeStoreCategory(initialSupplierInfo.category),
     location: initialSupplierInfo.location,
     description: initialSupplierInfo.description,
 
@@ -59,12 +96,18 @@ export function useStoreForm({
 
   const [formData, setFormData] = useState<StoreFormData>(getDefaultFormData());
 
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>(
+    initialProducts.map(p => ({
+      ...p,
+      category: normalizeCategory(p.category),
+      status: normalizeStatus(p.status),
+    }))
+  );
   const [editingProduct, setEditingProduct] = useState<number | null>(null);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [newProduct, setNewProduct] = useState<ProductFormData>({
     name: '',
-    category: 'Vegetables',
+    category: 'vegetables',
     price: '',
     unit: 'kg',
     stock: '',
@@ -77,7 +120,7 @@ export function useStoreForm({
     setFormData(prev => ({
       ...prev,
       storeName: initialSupplierInfo.name,
-      storeCategory: initialSupplierInfo.category,
+      storeCategory: normalizeStoreCategory(initialSupplierInfo.category),
       location: initialSupplierInfo.location,
       description: initialSupplierInfo.description,
       email: initialSupplierInfo.email,
@@ -115,7 +158,7 @@ export function useStoreForm({
     price: parseFloat(formData.price),
     unit: formData.unit,
     stock: parseInt(formData.stock),
-    status: parseInt(formData.stock) > 0 ? 'In Stock' : 'Out of Stock',
+    status: parseInt(formData.stock) > 0 ? 'inStock' : 'outOfStock',
     image: formData.imageUrl || 'https://via.placeholder.com/150',
     description: formData.description,
   });
@@ -123,7 +166,7 @@ export function useStoreForm({
   const resetProductForm = () => {
     setNewProduct({
       name: '',
-      category: 'Vegetables',
+      category: 'vegetables',
       price: '',
       unit: 'kg',
       stock: '',
@@ -146,7 +189,7 @@ export function useStoreForm({
     if (product) {
       setNewProduct({
         name: product.name,
-        category: product.category,
+        category: normalizeCategory(product.category),
         price: product.price.toString(),
         unit: product.unit,
         stock: product.stock.toString(),

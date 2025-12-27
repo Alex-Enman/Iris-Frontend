@@ -5,8 +5,10 @@ import { Button } from '@components/ui/button';
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { toast } from 'sonner';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function UrgentActionsCard() {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-3xl border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <div className='border-b border-border p-6'>
@@ -15,7 +17,7 @@ export function UrgentActionsCard() {
             <div className='rounded-xl bg-destructive/10 p-2'>
               <AlertCircle className='h-5 w-5 text-destructive' />
             </div>
-            <h3 className='text-lg'>Urgent Actions</h3>
+            <h3 className='text-lg'>{t('urgentActions')}</h3>
           </div>
           <Badge variant='destructive'>3</Badge>
         </div>
@@ -27,9 +29,9 @@ export function UrgentActionsCard() {
               <div className='flex items-start gap-3'>
                 <TrendingDown className='h-5 w-5 text-destructive' />
                 <div>
-                  <h4 className='mb-1 font-medium'>Low Stock Alert</h4>
+                  <h4 className='mb-1 font-medium'>{t('lowStockAlert')}</h4>
                   <p className='text-sm text-muted-foreground'>
-                    Seasonal Greens Mix: Only 12 kg remaining
+                    Seasonal Greens Mix: {t('onlyRemaining')} 12 kg
                   </p>
                 </div>
               </div>
@@ -38,9 +40,9 @@ export function UrgentActionsCard() {
               size='sm'
               variant='outline'
               className='mt-3 w-full rounded-xl border-destructive/30 hover:bg-destructive/10'
-              onClick={() => toast.success('Opening stock management')}
+              onClick={() => toast.success(t('openingStockManagement'))}
             >
-              Update Stock
+              {t('updateStock')}
             </Button>
           </div>
 
@@ -49,7 +51,7 @@ export function UrgentActionsCard() {
               <div className='flex items-start gap-3'>
                 <AlertCircle className='h-5 w-5 text-destructive' />
                 <div>
-                  <h4 className='mb-1 font-medium'>Out of Stock</h4>
+                  <h4 className='mb-1 font-medium'>{t('outOfStock')}</h4>
                   <p className='text-sm text-muted-foreground'>
                     Baby Potatoes: Unavailable
                   </p>
@@ -60,9 +62,9 @@ export function UrgentActionsCard() {
               size='sm'
               variant='outline'
               className='mt-3 w-full rounded-xl border-destructive/30 hover:bg-destructive/10'
-              onClick={() => toast.success('Opening restock form')}
+              onClick={() => toast.success(t('openingRestockForm'))}
             >
-              Restock Now
+              {t('restockNow')}
             </Button>
           </div>
 
@@ -71,9 +73,9 @@ export function UrgentActionsCard() {
               <div className='flex items-start gap-3'>
                 <Clock className='h-5 w-5 text-accent' />
                 <div>
-                  <h4 className='mb-1 font-medium'>Pending Order</h4>
+                  <h4 className='mb-1 font-medium'>{t('pendingOrder')}</h4>
                   <p className='text-sm text-muted-foreground'>
-                    Order #ORD-1234 from La Cucina awaiting confirmation
+                    {t('order')} #ORD-1234 {t('from')} La Cucina {t('awaitingConfirmation')}
                   </p>
                 </div>
               </div>
@@ -82,9 +84,9 @@ export function UrgentActionsCard() {
               size='sm'
               variant='outline'
               className='mt-3 w-full rounded-xl border-accent/30 hover:bg-accent/10'
-              onClick={() => toast.success('Opening order details')}
+              onClick={() => toast.success(t('openingOrderDetails'))}
             >
-              Review Order
+              {t('reviewOrder')}
             </Button>
           </div>
         </div>

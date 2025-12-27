@@ -9,6 +9,7 @@ import {
 } from '@components/ui/select';
 import { Label } from '@components/ui/label';
 import { Search, Plus } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ProductsHeaderProps {
   searchTerm: string;
@@ -25,18 +26,19 @@ export function ProductsHeader({
   setCategoryFilter,
   onOpenAdd,
 }: ProductsHeaderProps) {
+  const { t } = useLanguage();
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
         <div>
-          <h2 className='text-2xl font-bold'>Product Inventory</h2>
+          <h2 className='text-2xl font-bold'>{t('productInventory')}</h2>
           <p className='text-muted-foreground'>
-            Manage your product catalog and inventory
+            {t('productInventoryDescription')}
           </p>
         </div>
         <Button onClick={onOpenAdd}>
           <Plus className='mr-2 h-4 w-4' />
-          Add Product
+          {t('addProduct')}
         </Button>
       </div>
 
@@ -44,7 +46,7 @@ export function ProductsHeader({
         <div className='relative max-w-sm flex-1'>
           <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground' />
           <Input
-            placeholder='Search products...'
+            placeholder={t('searchProductsPlaceholder')}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             className='pl-10'
@@ -52,14 +54,14 @@ export function ProductsHeader({
         </div>
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
           <SelectTrigger className='w-48'>
-            <SelectValue placeholder='Filter by category' />
+            <SelectValue placeholder={t('filterByCategory')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='all'>All Categories</SelectItem>
-            <SelectItem value='Vegetables'>Vegetables</SelectItem>
-            <SelectItem value='Fruits'>Fruits</SelectItem>
-            <SelectItem value='Dairy'>Dairy</SelectItem>
-            <SelectItem value='Meat'>Meat</SelectItem>
+            <SelectItem value='all'>{t('allCategories')}</SelectItem>
+            <SelectItem value='vegetables'>{t('vegetables')}</SelectItem>
+            <SelectItem value='fruits'>{t('fruits')}</SelectItem>
+            <SelectItem value='dairy'>{t('dairy')}</SelectItem>
+            <SelectItem value='meat'>{t('meat')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

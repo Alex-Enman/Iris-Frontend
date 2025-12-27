@@ -1,3 +1,5 @@
+'use client';
+
 // Order details component for orders page
 
 import { Button } from '@components/ui/button';
@@ -23,6 +25,8 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { Order } from '@/types/orders/types';
+import { useLanguage } from '@contexts/LanguageContext';
+import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
 
 interface OrderDetailsProps {
   order: Order;
@@ -41,13 +45,17 @@ export function OrderDetails({
   onToggleFavorite,
   onViewSupplier,
 }: OrderDetailsProps) {
+  const { t } = useLanguage();
+
+  const normalizedStatus = normalizeOrderStatusId(order.status);
+
   const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (normalizeOrderStatusId(status)) {
       case 'processing':
         return <Clock className='h-4 w-4' />;
       case 'confirmed':
         return <CheckCircle className='h-4 w-4' />;
-      case 'in transit':
+      case 'inTransit':
         return <Truck className='h-4 w-4' />;
       case 'delivered':
         return <CheckCircle className='h-4 w-4' />;
@@ -60,13 +68,38 @@ export function OrderDetails({
     }
   };
 
+  const getStatusLabelKey = (status: string) => {
+    switch (normalizeOrderStatusId(status)) {
+      case 'processing':
+        return 'processing';
+      case 'confirmed':
+        return 'confirmed';
+      case 'inTransit':
+        return 'inTransit';
+      case 'delivered':
+        return 'delivered';
+      case 'draft':
+        return 'draft';
+      default:
+        return null;
+    }
+  };
+
+  const statusKey = getStatusLabelKey(order.status);
+  const statusLabel = statusKey ? t(statusKey) : order.status;
+
+  const paymentStatusLabel =
+    order.paymentStatus?.toLowerCase() === 'paid'
+      ? t('paid')
+      : order.paymentStatus;
+
   return (
     <Card className='overflow-hidden'>
       <div className='p-6'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-4'>
             <div className='flex items-center space-x-2'>
-              {getStatusIcon(order.status)}
+              {getStatusIcon(normalizedStatus)}
               <div>
                 <h3 className='text-lg font-semibold'>{order.orderNumber}</h3>
                 <p className='text-sm text-muted-foreground'>
@@ -74,7 +107,7 @@ export function OrderDetails({
                 </p>
               </div>
             </div>
-            <Badge className={order.statusColor}>{order.status}</Badge>
+            <Badge className={order.statusColor}>{statusLabel}</Badge>
             {order.progress > 0 && (
               <div className='flex items-center space-x-2'>
                 <Progress value={order.progress} className='w-20' />
@@ -118,7 +151,7 @@ export function OrderDetails({
           <div className='mt-6 space-y-6 border-t pt-6'>
             {/* Order Items */}
             <div>
-              <h4 className='mb-3 font-medium'>Order Items</h4>
+              <h4 className='mb-3 font-medium'>{t('orderItems')}</h4>
               <div className='space-y-2'>
                 {order.items.map((item, index) => (
                   <div
@@ -140,7 +173,7 @@ export function OrderDetails({
             {/* Delivery Information */}
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <div>
-                <h4 className='mb-3 font-medium'>Delivery Information</h4>
+                <h4 className='mb-3 font-medium'>{t('deliveryInformation')}</h4>
                 <div className='space-y-2'>
                   <div className='flex items-center space-x-2'>
                     <MapPin className='h-4 w-4 text-muted-foreground' />
@@ -154,7 +187,7 @@ export function OrderDetails({
                     <div className='flex items-center space-x-2'>
                       <Truck className='h-4 w-4 text-muted-foreground' />
                       <span className='text-sm'>
-                        Tracking: {order.trackingNumber}
+                        {t('tracking')}: {order.trackingNumber}
                       </span>
                     </div>
                   )}
@@ -162,17 +195,19 @@ export function OrderDetails({
               </div>
 
               <div>
-                <h4 className='mb-3 font-medium'>Payment & Status</h4>
+                <h4 className='mb-3 font-medium'>{t('paymentAndStatus')}</h4>
                 <div className='space-y-2'>
                   <div className='flex items-center space-x-2'>
                     <DollarSign className='h-4 w-4 text-muted-foreground' />
                     <span className='text-sm'>
-                      Status: {order.paymentStatus}
+                      {t('paymentStatus')}: {paymentStatusLabel}
                     </span>
                   </div>
                   <div className='flex items-center space-x-2'>
                     <Package className='h-4 w-4 text-muted-foreground' />
-                    <span className='text-sm'>Items: {order.items.length}</span>
+                    <span className='text-sm'>
+                      {t('itemsLabel')}: {order.items.length}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -180,7 +215,7 @@ export function OrderDetails({
 
             {/* Supplier Contact */}
             <div>
-              <h4 className='mb-3 font-medium'>Supplier Contact</h4>
+              <h4 className='mb-3 font-medium'>{t('supplierContact')}</h4>
               <div className='flex items-center space-x-4'>
                 <Button
                   variant='outline'
@@ -188,19 +223,19 @@ export function OrderDetails({
                   onClick={() => onViewSupplier?.(order.supplierId.toString())}
                 >
                   <Store className='mr-2 h-4 w-4' />
-                  View Supplier
+                  {t('viewSupplier')}
                 </Button>
                 <Button variant='outline' size='sm'>
                   <Phone className='mr-2 h-4 w-4' />
-                  Call
+                  {t('callAction')}
                 </Button>
                 <Button variant='outline' size='sm'>
                   <Mail className='mr-2 h-4 w-4' />
-                  Email
+                  {t('emailAction')}
                 </Button>
                 <Button variant='outline' size='sm'>
                   <MessageCircle className='mr-2 h-4 w-4' />
-                  Message
+                  {t('message')}
                 </Button>
               </div>
             </div>
@@ -208,7 +243,7 @@ export function OrderDetails({
             {/* Notes */}
             {order.notes && (
               <div>
-                <h4 className='mb-2 font-medium'>Notes</h4>
+                <h4 className='mb-2 font-medium'>{t('notes')}</h4>
                 <p className='rounded bg-gray-50 p-3 text-sm text-muted-foreground'>
                   {order.notes}
                 </p>
@@ -220,16 +255,16 @@ export function OrderDetails({
               <div className='flex items-center space-x-2'>
                 <Button variant='outline' size='sm'>
                   <Download className='mr-2 h-4 w-4' />
-                  Download Invoice
+                  {t('downloadInvoice')}
                 </Button>
-                {order.status === 'Delivered' && (
+                {statusKey === 'delivered' && (
                   <Button variant='outline' size='sm'>
-                    Reorder
+                    {t('reorder')}
                   </Button>
                 )}
               </div>
               <div className='text-sm text-muted-foreground'>
-                Order ID: {order.id}
+                {t('orderIdLabel')}: {order.id}
               </div>
             </div>
           </div>

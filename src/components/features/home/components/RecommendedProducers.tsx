@@ -1,6 +1,7 @@
 import { Button } from '@components/ui/button';
 import { Search } from 'lucide-react';
 import { ProducerCard } from '@components/features/suppliers';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ProducerItem {
   id: number;
@@ -22,24 +23,25 @@ export function RecommendedProducers({
   onView,
   onClearAll,
 }: RecommendedProducersProps) {
+  const { t } = useLanguage();
   return (
     <section className='overflow-hidden'>
       <div className='mb-6'>
-        <h2>Recommended for You</h2>
+        <h2>{t('recommendedForYou')}</h2>
         <p className='mt-1 text-muted-foreground'>
-          Based on your preferences — {producers.length} producer
-          {producers.length !== 1 ? 's' : ''} found
+          {t('basedOnYourPreferences')} — {producers.length}{' '}
+          {producers.length === 1 ? t('producer') : t('producers')} {t('found')}
         </p>
       </div>
       {producers.length === 0 ? (
         <div className='flex min-h-[300px] flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-primary/5 to-accent/5 p-12 text-center'>
           <Search className='mb-4 h-12 w-12 text-muted-foreground/30' />
-          <h3 className='mb-2 text-xl text-primary'>No producers found</h3>
+          <h3 className='mb-2 text-xl text-primary'>{t('noProducersFound')}</h3>
           <p className='mb-4 max-w-md text-muted-foreground'>
-            Try different filters to discover more producers
+            {t('tryDifferentFilters')}
           </p>
           <Button onClick={onClearAll} variant='outline' className='rounded-xl'>
-            Clear All Filters
+            {t('clearAllFilters')}
           </Button>
         </div>
       ) : (

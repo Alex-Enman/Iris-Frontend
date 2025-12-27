@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface FavoriteSupplierItem {
   id: number;
@@ -42,40 +43,47 @@ export interface FavoriteOrderItem {
 }
 
 export function useFavoritesPage() {
+  const { t } = useLanguage();
   const [favoriteSuppliers, setFavoriteSuppliers] = useState<
     FavoriteSupplierItem[]
   >([
     {
       id: 1,
-      name: 'Green Valley Farm',
+      name: t('supplierNameGreenValleyFarm'),
       image:
         'https://images.unsplash.com/photo-1573481078935-b9605167e06b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMHZlZ2V0YWJsZXMlMjBmYXJtZXJ8ZW58MXx8fHwxNzYxMzA3MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-      location: '12 km away',
+      location: t('distance12kmAway'),
       rating: 4.8,
       reviews: 127,
       verified: true,
-      category: 'Organic Vegetables',
+      category: t('supplierCategoryOrganicVegetables'),
       totalOrders: 24,
-      lastOrder: '2 weeks ago',
-      specialties: ['Heirloom Tomatoes', 'Seasonal Greens', 'Root Vegetables'],
-      description:
-        'Family-run organic farm specializing in heritage vegetables and sustainable farming practices.',
+      lastOrder: t('twoWeeksAgo'),
+      specialties: [
+        t('productHeirloomTomatoes'),
+        t('specialtySeasonalGreens'),
+        t('specialtyRootVegetables'),
+      ],
+      description: t('supplierDescriptionGreenValleyShort'),
     },
     {
       id: 2,
-      name: 'Mountain Dairy Co.',
+      name: t('supplierNameMountainDairyCo'),
       image:
         'https://images.unsplash.com/photo-1722718461923-c69728f7640b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwY2hlZXNlJTIwZGFpcnl8ZW58MXx8fHwxNzYxMzA3MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-      location: '8 km away',
+      location: t('distance8kmAway'),
       rating: 4.9,
       reviews: 203,
       verified: true,
-      category: 'Artisan Dairy',
+      category: t('supplierCategoryArtisanDairy'),
       totalOrders: 18,
-      lastOrder: '1 week ago',
-      specialties: ['Aged Cheese', 'Fresh Milk', 'Yogurt'],
-      description:
-        'Award-winning dairy producer using traditional methods with grass-fed cattle.',
+      lastOrder: t('oneWeekAgo'),
+      specialties: [
+        t('specialtyAgedCheese'),
+        t('specialtyFreshMilk'),
+        t('specialtyYogurt'),
+      ],
+      description: t('supplierDescriptionMountainDairyShort'),
     },
   ]);
 
@@ -84,8 +92,8 @@ export function useFavoritesPage() {
   >([
     {
       id: 1,
-      name: 'Heirloom Tomatoes',
-      supplier: 'Green Valley Farm',
+      name: t('productHeirloomTomatoes'),
+      supplier: t('supplierNameGreenValleyFarm'),
       supplierId: 1,
       image:
         'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400',
@@ -94,12 +102,12 @@ export function useFavoritesPage() {
       inStock: true,
       rating: 4.9,
       organic: true,
-      lastOrdered: '1 week ago',
+      lastOrdered: t('oneWeekAgo'),
     },
     {
       id: 2,
-      name: 'Fresh Mozzarella',
-      supplier: 'Mountain Dairy Co.',
+      name: t('productFreshMozzarella'),
+      supplier: t('supplierNameMountainDairyCo'),
       supplierId: 2,
       image:
         'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400',
@@ -108,21 +116,21 @@ export function useFavoritesPage() {
       inStock: true,
       rating: 4.8,
       organic: false,
-      lastOrdered: '2 days ago',
+      lastOrdered: t('twoDaysAgo'),
     },
   ]);
 
   const [favoriteOrders, setFavoriteOrders] = useState<FavoriteOrderItem[]>([
     {
       id: 'ORD-998',
-      supplier: 'Green Valley Farm',
+      supplier: t('supplierNameGreenValleyFarm'),
       supplierId: 1,
-      date: 'Oct 18, 2025',
+      date: t('orderDateOct18_2025'),
       total: 156.8,
       itemCount: 8,
-      frequency: 'Weekly',
-      lastOrdered: '1 week ago',
-      items: [{ name: 'Heirloom Tomatoes', quantity: '3 kg', price: 13.5 }],
+      frequency: t('weeklyFrequency'),
+      lastOrdered: t('oneWeekAgo'),
+      items: [{ name: t('productHeirloomTomatoes'), quantity: '3 kg', price: 13.5 }],
     },
   ]);
 
@@ -132,6 +140,82 @@ export function useFavoritesPage() {
     setFavoriteProducts(prev => prev.filter(p => p.id !== id));
   const removeFavoriteOrder = (id: string) =>
     setFavoriteOrders(prev => prev.filter(o => o.id !== id));
+
+  useEffect(() => {
+    setFavoriteSuppliers(prev =>
+      prev.map(s => {
+        if (s.id === 1)
+          return {
+            ...s,
+            name: t('supplierNameGreenValleyFarm'),
+            location: t('distance12kmAway'),
+            category: t('supplierCategoryOrganicVegetables'),
+            lastOrder: t('twoWeeksAgo'),
+            specialties: [
+              t('productHeirloomTomatoes'),
+              t('specialtySeasonalGreens'),
+              t('specialtyRootVegetables'),
+            ],
+            description: t('supplierDescriptionGreenValleyShort'),
+          };
+        if (s.id === 2)
+          return {
+            ...s,
+            name: t('supplierNameMountainDairyCo'),
+            location: t('distance8kmAway'),
+            category: t('supplierCategoryArtisanDairy'),
+            lastOrder: t('oneWeekAgo'),
+            specialties: [
+              t('specialtyAgedCheese'),
+              t('specialtyFreshMilk'),
+              t('specialtyYogurt'),
+            ],
+            description: t('supplierDescriptionMountainDairyShort'),
+          };
+        return s;
+      })
+    );
+
+    setFavoriteProducts(prev =>
+      prev.map(p => {
+        if (p.id === 1)
+          return {
+            ...p,
+            name: t('productHeirloomTomatoes'),
+            supplier: t('supplierNameGreenValleyFarm'),
+            lastOrdered: t('oneWeekAgo'),
+          };
+        if (p.id === 2)
+          return {
+            ...p,
+            name: t('productFreshMozzarella'),
+            supplier: t('supplierNameMountainDairyCo'),
+            lastOrdered: t('twoDaysAgo'),
+          };
+        return p;
+      })
+    );
+
+    setFavoriteOrders(prev =>
+      prev.map(o => {
+        if (o.id !== 'ORD-998') return o;
+        return {
+          ...o,
+          supplier: t('supplierNameGreenValleyFarm'),
+          date: t('orderDateOct18_2025'),
+          frequency: t('weeklyFrequency'),
+          lastOrdered: t('oneWeekAgo'),
+          items: [
+            {
+              name: t('productHeirloomTomatoes'),
+              quantity: '3 kg',
+              price: 13.5,
+            },
+          ],
+        };
+      })
+    );
+  }, [t]);
 
   return {
     favoriteSuppliers,

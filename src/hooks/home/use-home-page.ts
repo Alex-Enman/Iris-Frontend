@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface Producer {
   id: number;
@@ -25,6 +26,7 @@ export interface ProductItem {
 }
 
 export function useHomePage() {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
@@ -34,75 +36,86 @@ export function useHomePage() {
   const [certOpen, setCertOpen] = useState(true);
 
   const categories = [
-    { id: 'all', label: 'All' },
-    { id: 'vegetables', label: 'Vegetables' },
-    { id: 'dairy', label: 'Dairy' },
-    { id: 'meat', label: 'Meat' },
-    { id: 'organic', label: 'Organic' },
-    { id: 'seasonal', label: 'Seasonal' },
+    { id: 'all', label: t('all') },
+    { id: 'vegetables', label: t('vegetables') },
+    { id: 'dairy', label: t('dairy') },
+    { id: 'meat', label: t('meat') },
+    { id: 'organic', label: t('organic') },
+    { id: 'seasonal', label: t('seasonal') },
   ];
 
-  const regions = ['Within 10km', '10-20km', '20-50km'];
-  const certifications = ['Organic', 'Local', 'Traceable'];
+  const regionOptions = [
+    { id: 'within10km', label: t('within10km') },
+    { id: 'tenToTwentyKm', label: t('tenToTwentyKm') },
+    { id: 'twentyToFiftyKm', label: t('twentyToFiftyKm') },
+  ];
+
+  const regions = regionOptions.map(r => r.label);
+  const certifications = [t('organic'), t('local'), t('traceable')];
 
   const allProducers: Producer[] = useMemo(
     () => [
       {
         id: 1,
-        name: 'Green Valley Farm',
+        name: t('supplierNameGreenValleyFarm'),
         image:
           'https://images.unsplash.com/photo-1573481078935-b9605167e06b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMHZlZ2V0YWJsZXMlMjBmYXJtZXJ8ZW58MXx8fHwxNzYxMzA3MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-        distance: '12 km',
+        distance: t('distance12km'),
         distanceKm: 12,
         rating: 4.8,
         verified: true,
-        category: 'Organic Vegetables',
+        category: t('supplierCategoryOrganicVegetables'),
         categoryType: ['vegetables', 'organic'],
-        certifications: ['Organic', 'Local', 'Traceable'],
+        certifications: [t('organic'), t('local'), t('traceable')],
         isSeasonal: true,
       },
       {
         id: 2,
-        name: 'Mountain Dairy Co.',
+        name: t('supplierNameMountainDairyCo'),
         image:
           'https://images.unsplash.com/photo-1722718461923-c69728f7640b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwY2hlZXNlJTIwZGFpcnl8ZW58MXx8fHwxNzYxMzA3MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-        distance: '8 km',
+        distance: t('distance8km'),
         distanceKm: 8,
         rating: 4.9,
         verified: true,
-        category: 'Artisan Dairy',
+        category: t('supplierCategoryArtisanDairy'),
         categoryType: ['dairy'],
-        certifications: ['Local', 'Traceable'],
+        certifications: [t('local'), t('traceable')],
       },
     ],
-    []
+    [t]
   );
 
   const allProducts: ProductItem[] = useMemo(
     () => [
       {
         id: 1,
-        name: 'Heirloom Tomatoes',
-        producer: 'Green Valley Farm',
+        name: t('productHeirloomTomatoes'),
+        producer: t('supplierNameGreenValleyFarm'),
         image:
           'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
         price: '€4.50/kg',
         categoryType: ['vegetables', 'organic', 'seasonal'],
-        certifications: ['Organic', 'Local'],
+        certifications: [t('organic'), t('local')],
       },
       {
         id: 2,
-        name: 'Free-Range Eggs',
-        producer: 'Free Range Poultry',
+        name: t('freeRangeEggs'),
+        producer: t('supplierNameFreeRangePoultry'),
         image:
           'https://images.unsplash.com/photo-1669669420238-7a4be2e3eac6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwZWdncyUyMGZhcm18ZW58MXx8fHwxNzYxMjcyMTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
         price: '€5.20/dozen',
         categoryType: ['organic'],
-        certifications: ['Organic', 'Local'],
+        certifications: [t('organic'), t('local')],
       },
     ],
-    []
+    [t]
   );
+
+  useEffect(() => {
+    setSelectedRegions([]);
+    setSelectedCerts([]);
+  }, [t]);
 
   const filteredProducers = useMemo(() => {
     return allProducers.filter(producer => {
@@ -113,10 +126,12 @@ export function useHomePage() {
       const regionMatch =
         selectedRegions.length === 0 ||
         selectedRegions.some(region => {
-          if (region === 'Within 10km') return producer.distanceKm <= 10;
-          if (region === '10-20km')
+          const regionId =
+            regionOptions.find(r => r.label === region)?.id ?? region;
+          if (regionId === 'within10km') return producer.distanceKm <= 10;
+          if (regionId === 'tenToTwentyKm')
             return producer.distanceKm > 10 && producer.distanceKm <= 20;
-          if (region === '20-50km')
+          if (regionId === 'twentyToFiftyKm')
             return producer.distanceKm > 20 && producer.distanceKm <= 50;
           return false;
         });

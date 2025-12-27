@@ -3,8 +3,10 @@
 import { ProductListProps } from '@/components/types';
 import { ProductCard } from './ProductCard';
 import { Skeleton } from '@components/ui/skeleton';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function ProductList(props: ProductListProps) {
+  const { t } = useLanguage();
   const {
     products,
     loading = false,
@@ -41,9 +43,9 @@ export function ProductList(props: ProductListProps) {
             />
           </svg>
         </div>
-        <h3 className='mt-4 text-lg font-semibold'>No products found</h3>
+        <h3 className='mt-4 text-lg font-semibold'>{t('noProductsFound')}</h3>
         <p className='mt-2 text-sm text-muted-foreground'>
-          Try adjusting your search or filter criteria
+          {t('tryAdjustingSearchOrFilters')}
         </p>
       </div>
     );

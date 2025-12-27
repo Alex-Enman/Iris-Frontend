@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@components/ui/card';
-import { ImageWithFallback } from '@/../figma-components/figma/ImageWithFallback';
+import { ImageWithFallback } from '@components/ui/image-with-fallback';
 
 export interface MenuItem {
   name: string;

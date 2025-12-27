@@ -1,6 +1,7 @@
 // API client configuration and utilities
 
 import { APP_CONFIG } from '@/constants';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export class ApiClient {
   private baseURL: string;
@@ -123,10 +124,14 @@ export class ApiClient {
       }
 
       if (error instanceof Error && error.name === 'AbortError') {
-        throw new ApiError('Request timeout', 408, 'TIMEOUT_ERROR');
+        throw new ApiError(
+          t('requestTimeoutError', getStoredLanguage()),
+          408,
+          'TIMEOUT_ERROR'
+        );
       }
 
-      throw new ApiError('Network error occurred', 0, 'NETWORK_ERROR', {
+      throw new ApiError(t('networkErrorDescription', getStoredLanguage()), 0, 'NETWORK_ERROR', {
         originalError: error,
       });
     }
@@ -225,5 +230,9 @@ export const handleApiError = (error: any): ApiError => {
     return new ApiError(error.message, 0, 'NETWORK_ERROR');
   }
 
-  return new ApiError('An unexpected error occurred', 0, 'UNKNOWN_ERROR');
+  return new ApiError(
+    t('unexpectedErrorOccurredShort', getStoredLanguage()),
+    0,
+    'UNKNOWN_ERROR'
+  );
 };

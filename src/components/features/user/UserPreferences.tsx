@@ -1,3 +1,5 @@
+'use client';
+
 // User preferences component
 // Displays user preferences settings
 
@@ -13,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
+import { useLanguage } from '@contexts/LanguageContext';
 
 type Preferences = {
   notifications: boolean;
@@ -31,6 +34,7 @@ export function UserPreferences({
   preferences,
   onUpdate,
 }: UserPreferencesProps) {
+  const { t } = useLanguage();
   const [localPreferences, setLocalPreferences] = React.useState(preferences);
 
   const handleToggle = (key: keyof Preferences) => {
@@ -47,15 +51,15 @@ export function UserPreferences({
   return (
     <Card className='w-full max-w-md'>
       <CardHeader>
-        <CardTitle>Preferences</CardTitle>
+        <CardTitle>{t('preferences')}</CardTitle>
       </CardHeader>
       <CardContent className='space-y-6'>
         {/* Notifications */}
         <div className='space-y-4'>
-          <h4 className='text-sm font-medium'>Notifications</h4>
+          <h4 className='text-sm font-medium'>{t('notificationsTitle')}</h4>
 
           <div className='flex items-center justify-between'>
-            <Label htmlFor='notifications'>Push Notifications</Label>
+            <Label htmlFor='notifications'>{t('pushNotifications')}</Label>
             <Switch
               id='notifications'
               checked={localPreferences.notifications}
@@ -64,7 +68,7 @@ export function UserPreferences({
           </div>
 
           <div className='flex items-center justify-between'>
-            <Label htmlFor='email-updates'>Email Updates</Label>
+            <Label htmlFor='email-updates'>{t('emailNotifications')}</Label>
             <Switch
               id='email-updates'
               checked={localPreferences.emailUpdates}
@@ -73,7 +77,7 @@ export function UserPreferences({
           </div>
 
           <div className='flex items-center justify-between'>
-            <Label htmlFor='sms-updates'>SMS Updates</Label>
+            <Label htmlFor='sms-updates'>{t('smsNotifications')}</Label>
             <Switch
               id='sms-updates'
               checked={localPreferences.smsUpdates}
@@ -84,10 +88,10 @@ export function UserPreferences({
 
         {/* Appearance */}
         <div className='space-y-4'>
-          <h4 className='text-sm font-medium'>Appearance</h4>
+          <h4 className='text-sm font-medium'>{t('appearance')}</h4>
 
           <div className='space-y-2'>
-            <Label htmlFor='theme'>Theme</Label>
+            <Label htmlFor='theme'>{t('theme')}</Label>
             <Select
               value={localPreferences.theme}
               onValueChange={value => handleSelect('theme', value)}
@@ -96,15 +100,15 @@ export function UserPreferences({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='light'>Light</SelectItem>
-                <SelectItem value='dark'>Dark</SelectItem>
-                <SelectItem value='system'>System</SelectItem>
+                <SelectItem value='light'>{t('light')}</SelectItem>
+                <SelectItem value='dark'>{t('dark')}</SelectItem>
+                <SelectItem value='system'>{t('system')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className='space-y-2'>
-            <Label htmlFor='language'>Language</Label>
+            <Label htmlFor='language'>{t('language')}</Label>
             <Select
               value={localPreferences.language}
               onValueChange={value => handleSelect('language', value)}
@@ -113,9 +117,9 @@ export function UserPreferences({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='en'>English</SelectItem>
-                <SelectItem value='es'>Spanish</SelectItem>
-                <SelectItem value='fr'>French</SelectItem>
+                <SelectItem value='en'>{t('english')}</SelectItem>
+                <SelectItem value='es'>{t('spanishLanguage')}</SelectItem>
+                <SelectItem value='fr'>{t('frenchLanguage')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

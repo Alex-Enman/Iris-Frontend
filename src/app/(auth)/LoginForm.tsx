@@ -1,15 +1,19 @@
+'use client';
+
 import { Input } from '@components/ui/input';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { useLogin } from 'hooks/auth/use-login';
 import { UserRole } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface LoginFormProps {
   onLogin: (userType: UserRole) => void;
 }
 
 export function LoginForm({ onLogin }: LoginFormProps) {
+  const { t } = useLanguage();
   const {
     formData: { username, password },
     error,
@@ -30,11 +34,11 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     <form onSubmit={handleSubmit} className='p-8'>
       <div className='space-y-5'>
         <div>
-          <Label htmlFor='username'>Username</Label>
+          <Label htmlFor='username'>{t('username')}</Label>
           <Input
             id='username'
             type='text'
-            placeholder='Enter your username'
+            placeholder={t('enterYourUsername')}
             value={username}
             onChange={e => updateField('username', e.target.value)}
             className='mt-2 h-12 rounded-xl'
@@ -43,11 +47,11 @@ export function LoginForm({ onLogin }: LoginFormProps) {
         </div>
 
         <div>
-          <Label htmlFor='password'>Password</Label>
+          <Label htmlFor='password'>{t('password')}</Label>
           <Input
             id='password'
             type='password'
-            placeholder='Enter your password'
+            placeholder={t('enterYourPassword')}
             value={password}
             onChange={e => updateField('password', e.target.value)}
             className='mt-2 h-12 rounded-xl'
@@ -57,7 +61,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
 
         {error && (
           <Alert variant='destructive' className='rounded-xl'>
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{t(error)}</AlertDescription>
           </Alert>
         )}
 
@@ -66,7 +70,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           disabled={loading}
           className='duration-250 h-12 w-full rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? t('signingInEllipsis') : t('signIn')}
         </Button>
       </div>
     </form>

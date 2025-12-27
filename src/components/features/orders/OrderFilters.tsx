@@ -11,6 +11,7 @@ import {
 } from '@components/ui/select';
 import { Search, Filter } from 'lucide-react';
 import { OrderFilters as OrderFiltersType } from '@/types/orders/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface OrderFiltersProps {
   filters: OrderFiltersType;
@@ -23,6 +24,7 @@ export function OrderFilters({
   onFiltersChange,
   suppliers,
 }: OrderFiltersProps) {
+  const { t } = useLanguage();
   const handleFilterChange = (key: keyof OrderFiltersType, value: string) => {
     onFiltersChange({ ...filters, [key]: value });
   };
@@ -31,17 +33,17 @@ export function OrderFilters({
     <div className='space-y-4 rounded-lg border bg-white p-4'>
       <div className='flex items-center space-x-2'>
         <Filter className='h-5 w-5 text-primary' />
-        <h3 className='text-lg font-semibold'>Filters</h3>
+        <h3 className='text-lg font-semibold'>{t('filters')}</h3>
       </div>
 
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <div>
-          <Label htmlFor='search'>Search Orders</Label>
+          <Label htmlFor='search'>{t('searchOrders')}</Label>
           <div className='relative'>
             <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground' />
             <Input
               id='search'
-              placeholder='Search by order number or supplier...'
+              placeholder={t('searchOrdersPlaceholder')}
               value={filters.searchTerm}
               onChange={e => handleFilterChange('searchTerm', e.target.value)}
               className='pl-10'
@@ -50,37 +52,37 @@ export function OrderFilters({
         </div>
 
         <div>
-          <Label htmlFor='status'>Status</Label>
+          <Label htmlFor='status'>{t('status')}</Label>
           <Select
             value={filters.status}
             onValueChange={value => handleFilterChange('status', value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder='All Status' />
+              <SelectValue placeholder={t('allStatus')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='all'>All Status</SelectItem>
-              <SelectItem value='processing'>Processing</SelectItem>
-              <SelectItem value='confirmed'>Confirmed</SelectItem>
-              <SelectItem value='in transit'>In Transit</SelectItem>
-              <SelectItem value='delivered'>Delivered</SelectItem>
-              <SelectItem value='draft'>Draft</SelectItem>
-              <SelectItem value='reorder'>Reorder</SelectItem>
+              <SelectItem value='all'>{t('allStatus')}</SelectItem>
+              <SelectItem value='processing'>{t('processing')}</SelectItem>
+              <SelectItem value='confirmed'>{t('confirmed')}</SelectItem>
+              <SelectItem value='inTransit'>{t('inTransit')}</SelectItem>
+              <SelectItem value='delivered'>{t('delivered')}</SelectItem>
+              <SelectItem value='draft'>{t('draft')}</SelectItem>
+              <SelectItem value='reorder'>{t('reorder')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
-          <Label htmlFor='supplier'>Supplier</Label>
+          <Label htmlFor='supplier'>{t('supplier')}</Label>
           <Select
             value={filters.supplier}
             onValueChange={value => handleFilterChange('supplier', value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder='All Suppliers' />
+              <SelectValue placeholder={t('allSuppliers')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='all'>All Suppliers</SelectItem>
+              <SelectItem value='all'>{t('allSuppliers')}</SelectItem>
               {suppliers.map(supplier => (
                 <SelectItem key={supplier} value={supplier}>
                   {supplier}
@@ -91,20 +93,20 @@ export function OrderFilters({
         </div>
 
         <div>
-          <Label htmlFor='dateRange'>Date Range</Label>
+          <Label htmlFor='dateRange'>{t('dateRange')}</Label>
           <Select
             value={filters.dateRange}
             onValueChange={value => handleFilterChange('dateRange', value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder='All Time' />
+              <SelectValue placeholder={t('allTime')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='all'>All Time</SelectItem>
-              <SelectItem value='today'>Today</SelectItem>
-              <SelectItem value='week'>This Week</SelectItem>
-              <SelectItem value='month'>This Month</SelectItem>
-              <SelectItem value='quarter'>This Quarter</SelectItem>
+              <SelectItem value='all'>{t('allTime')}</SelectItem>
+              <SelectItem value='today'>{t('today')}</SelectItem>
+              <SelectItem value='week'>{t('thisWeek')}</SelectItem>
+              <SelectItem value='month'>{t('thisMonth')}</SelectItem>
+              <SelectItem value='quarter'>{t('thisQuarter')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -115,7 +117,9 @@ export function OrderFilters({
         filters.supplier !== 'all' ||
         filters.dateRange !== 'all') && (
         <div className='flex items-center justify-between border-t pt-2'>
-          <span className='text-sm text-muted-foreground'>Filters applied</span>
+          <span className='text-sm text-muted-foreground'>
+            {t('filtersApplied')}
+          </span>
           <button
             onClick={() =>
               onFiltersChange({
@@ -127,7 +131,7 @@ export function OrderFilters({
             }
             className='text-sm text-primary hover:underline'
           >
-            Clear all filters
+            {t('clearAllFilters')}
           </button>
         </div>
       )}

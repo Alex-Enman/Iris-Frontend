@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface SupplierListItem {
   id: number;
@@ -16,16 +17,17 @@ export interface SupplierListItem {
 }
 
 export function useSuppliersList() {
+  const language = getStoredLanguage();
   const suppliersList: SupplierListItem[] = [
     {
       id: 1,
-      name: 'Green Valley Farm',
-      category: 'Organic Vegetables',
+      name: t('supplierNameGreenValleyFarm', language),
+      category: t('supplierCategoryOrganicVegetables', language),
       rating: 4.8,
       totalOrders: 28,
       monthlySpend: '€1,247',
-      lastOrder: '2 days ago',
-      relationship: 'Premium Partner',
+      lastOrder: t('twoDaysAgo', language),
+      relationship: t('relationshipPremiumPartner', language),
       contactEmail: 'orders@greenvalley.com',
       contactPhone: '+1 (555) 123-4567',
       hasContract: true,
@@ -34,13 +36,13 @@ export function useSuppliersList() {
     },
     {
       id: 2,
-      name: 'Mountain Dairy Co.',
-      category: 'Dairy Products',
+      name: t('supplierNameMountainDairyCo', language),
+      category: t('supplierCategoryDairyProducts', language),
       rating: 4.6,
       totalOrders: 19,
       monthlySpend: '€892',
-      lastOrder: '1 week ago',
-      relationship: 'Regular Supplier',
+      lastOrder: t('oneWeekAgo', language),
+      relationship: t('relationshipRegularSupplier', language),
       contactEmail: 'sales@mountaindairy.com',
       contactPhone: '+1 (555) 234-5678',
       hasContract: true,
@@ -49,13 +51,13 @@ export function useSuppliersList() {
     },
     {
       id: 3,
-      name: 'Heritage Bakery',
-      category: 'Artisan Bread & Pastries',
+      name: t('supplierNameHeritageBakery', language),
+      category: t('supplierCategoryArtisanBreadAndPastries', language),
       rating: 4.9,
       totalOrders: 15,
       monthlySpend: '€675',
-      lastOrder: '3 days ago',
-      relationship: 'Preferred Vendor',
+      lastOrder: t('threeDaysAgo', language),
+      relationship: t('relationshipPreferredVendor', language),
       contactEmail: 'contact@heritagebakery.com',
       contactPhone: '+1 (555) 345-6789',
       hasContract: false,
@@ -65,13 +67,15 @@ export function useSuppliersList() {
   ];
 
   const handleReorder = (orderId: string, supplier: string) => {
-    toast.success(`Reordering from ${supplier}`, {
-      description: `Order ${orderId} has been added to your cart.`,
+    toast.success(t('reorderingFrom', language), {
+      description: `${supplier} — ${t('order', language)} ${orderId} ${t('orderAddedToCart', language)}`,
     });
   };
 
   const handleContactSupplier = (supplier: string) => {
-    toast.success(`Opening message to ${supplier}`);
+    toast.success(t('openingMessageTo', language), {
+      description: supplier,
+    });
   };
 
   return {

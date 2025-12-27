@@ -14,12 +14,14 @@ import { FiltersSidebar } from './components/FiltersSidebar';
 import { FeaturedProducers } from './components/FeaturedProducers';
 import { SuppliersGrid } from './components/SuppliersGrid';
 import { Card } from '@components/ui/card';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface SuppliersPageProps {
   onViewSupplier: (supplierId: string) => void;
 }
 
 export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
+  const { t } = useLanguage();
   const {
     searchQuery,
     setSearchQuery,
@@ -49,9 +51,9 @@ export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
     <div className='min-h-screen py-12'>
       <div className='mx-auto max-w-[1440px] px-8'>
         <div className='mb-8'>
-          <h1 className='mb-2 text-4xl text-primary'>Suppliers Directory</h1>
+          <h1 className='mb-2 text-4xl text-primary'>{t('suppliersDirectory')}</h1>
           <p className='text-muted-foreground'>
-            Browse and connect with local producers and suppliers
+            {t('suppliersDirectoryDescription')}
           </p>
         </div>
 
@@ -60,7 +62,7 @@ export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
             <Search className='absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground' />
             <Input
               type='text'
-              placeholder='Search suppliers...'
+              placeholder={t('searchSuppliersPlaceholder')}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className='rounded-2xl border-border pl-12 pr-4'
@@ -73,20 +75,20 @@ export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
               className='rounded-xl'
             >
               <Filter className='mr-2 h-4 w-4' />
-              Filters
+              {t('filters')}
               {activeFiltersCount > 0 && (
                 <Badge className='ml-2 bg-primary'>{activeFiltersCount}</Badge>
               )}
             </Button>
             <Select value={sortBy} onValueChange={setSortBy as any}>
               <SelectTrigger className='w-[180px] rounded-xl'>
-                <SelectValue placeholder='Sort by' />
+                <SelectValue placeholder={t('sortBy')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='rating'>Highest Rated</SelectItem>
-                <SelectItem value='distance'>Nearest First</SelectItem>
-                <SelectItem value='reviews'>Most Reviewed</SelectItem>
-                <SelectItem value='products'>Most Products</SelectItem>
+                <SelectItem value='rating'>{t('highestRated')}</SelectItem>
+                <SelectItem value='distance'>{t('nearestFirst')}</SelectItem>
+                <SelectItem value='reviews'>{t('mostReviewed')}</SelectItem>
+                <SelectItem value='products'>{t('mostProducts')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -118,16 +120,16 @@ export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
 
           <div className='flex-1'>
             <div className='mb-4 text-sm text-muted-foreground'>
-              Showing {filteredSuppliers.length} of {suppliers.length} suppliers
+              {t('showing')} {filteredSuppliers.length} {t('of')} {suppliers.length} {t('suppliers')}
             </div>
 
             {filteredSuppliers.length === 0 ? (
               <Card className='flex min-h-[400px] items-center justify-center rounded-2xl p-12 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <div className='text-center'>
                   <Search className='mx-auto mb-4 h-16 w-16 text-muted-foreground/30' />
-                  <h3 className='mb-2 text-primary'>No suppliers found</h3>
+                  <h3 className='mb-2 text-primary'>{t('noSuppliersFound')}</h3>
                   <p className='text-muted-foreground'>
-                    Try adjusting your filters or search query
+                    {t('tryAdjustingFiltersOrSearchQuery')}
                   </p>
                   {activeFiltersCount > 0 && (
                     <Button
@@ -135,7 +137,7 @@ export function SuppliersPage({ onViewSupplier }: SuppliersPageProps) {
                       className='mt-4 rounded-xl'
                       variant='outline'
                     >
-                      Clear filters
+                      {t('clearFilters')}
                     </Button>
                   )}
                 </div>

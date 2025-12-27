@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Dialog,
   DialogContent,
@@ -24,6 +26,7 @@ import {
   BadgeCheck,
 } from 'lucide-react';
 import type { SimilarProductItem } from '@hooks/products/use-product-page';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ComparisonDialogProps {
   open: boolean;
@@ -42,13 +45,14 @@ export function ComparisonDialog({
   items,
   onAddToCart,
 }: ComparisonDialogProps) {
+  const { t } = useLanguage();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90vh] max-w-6xl overflow-y-auto'>
         <DialogHeader>
           <DialogTitle className='flex items-center gap-2 text-2xl text-primary'>
             <ArrowLeftRight className='h-6 w-6' />
-            Compare Similar Products
+            {t('compareSimilarProducts')}
           </DialogTitle>
         </DialogHeader>
 
@@ -59,7 +63,7 @@ export function ComparisonDialog({
             onCheckedChange={onToggleHighlight}
           />
           <Label htmlFor='highlight-mode-dialog' className='cursor-pointer'>
-            Highlight Best Value
+            {t('highlightBestValue')}
           </Label>
           <TooltipProvider>
             <Tooltip>
@@ -67,7 +71,7 @@ export function ComparisonDialog({
                 <Info className='h-4 w-4 text-muted-foreground' />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Mark the best price, rating, and delivery time</p>
+                <p>{t('markTheBestPriceRatingAndDeliveryTime')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -110,7 +114,7 @@ export function ComparisonDialog({
                   className={`duration-250 mb-3 rounded-xl p-3 transition-all ${highlightBest && item.isBestRating ? 'bg-primary/10 ring-2 ring-primary' : 'bg-muted/30'}`}
                 >
                   <div className='mb-1 text-xs text-muted-foreground'>
-                    Average Rating
+                    {t('averageRating')}
                   </div>
                   <div className='flex items-center gap-2'>
                     <Star className='h-4 w-4 fill-accent text-accent' />
@@ -125,7 +129,7 @@ export function ComparisonDialog({
                   className={`duration-250 mb-3 rounded-xl p-3 transition-all ${highlightBest && item.isBestPrice ? 'bg-primary/10 ring-2 ring-primary' : 'bg-muted/30'}`}
                 >
                   <div className='mb-1 text-xs text-muted-foreground'>
-                    Price per Unit
+                    {t('pricePerUnit')}
                   </div>
                   <div className='text-xl text-primary'>
                     €{item.priceValue.toFixed(2)}
@@ -137,7 +141,7 @@ export function ComparisonDialog({
                   className={`duration-250 mb-3 rounded-xl p-3 transition-all ${highlightBest && item.isBestDelivery ? 'bg-primary/10 ring-2 ring-primary' : 'bg-muted/30'}`}
                 >
                   <div className='mb-1 text-xs text-muted-foreground'>
-                    Delivery Time
+                    {t('deliveryTime')}
                   </div>
                   <div className='flex items-center gap-2'>
                     <Truck className='h-4 w-4 text-accent' />
@@ -147,23 +151,36 @@ export function ComparisonDialog({
 
                 <div className='mb-3 rounded-xl bg-muted/30 p-3'>
                   <div className='mb-1 text-xs text-muted-foreground'>
-                    Stock Status
+                    {t('stockStatus')}
                   </div>
+                  {(() => {
+                    const stockKey =
+                      item.stockAvailable === 'inStock'
+                        ? 'inStock'
+                        : item.stockAvailable === 'outOfStock'
+                          ? 'outOfStock'
+                          : item.stockAvailable === 'limitedStock'
+                            ? 'limitedStock'
+                            : null;
+                    const stockLabel = stockKey ? t(stockKey) : item.stockAvailable;
+                    return (
                   <Badge
                     variant={
-                      item.stockAvailable === 'In Stock'
+                      item.stockAvailable === 'inStock'
                         ? 'default'
                         : 'secondary'
                     }
                     className='text-xs'
                   >
-                    {item.stockAvailable}
+                    {stockLabel}
                   </Badge>
+                    );
+                  })()}
                 </div>
 
                 <div className='mb-4 rounded-xl bg-muted/30 p-3'>
                   <div className='mb-2 text-xs text-muted-foreground'>
-                    Certifications
+                    {t('certificationsLabel')}
                   </div>
                   <div className='flex flex-wrap gap-1.5'>
                     {item.badges.map((b, i) => (
@@ -179,13 +196,13 @@ export function ComparisonDialog({
                     onClick={onAddToCart}
                     className='duration-250 w-full rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90'
                   >
-                    Add to Cart
+                    {t('addToCart')}
                   </Button>
                   <Button
                     variant='outline'
                     className='duration-250 w-full rounded-xl text-xs transition-all hover:bg-accent/10'
                   >
-                    View Details
+                    {t('viewDetails')}
                   </Button>
                 </div>
               </div>
@@ -195,8 +212,7 @@ export function ComparisonDialog({
 
         <div className='mt-6 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 p-6 text-center'>
           <p className='text-sm text-muted-foreground'>
-            Compare pricing, ratings, delivery times, and certifications to make
-            the best choice for your needs.
+            {t('compareSimilarProductsHelpText')}
           </p>
         </div>
       </DialogContent>

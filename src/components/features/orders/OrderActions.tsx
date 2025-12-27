@@ -4,6 +4,7 @@
 import React from 'react';
 import { Button } from '@components/ui/button';
 import { OrderStatus as OrderStatusType } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface OrderActionsProps {
   orderId: string;
@@ -22,6 +23,7 @@ export function OrderActions({
   onTrack,
   onReorder,
 }: OrderActionsProps) {
+  const { t } = useLanguage();
   const canCancel = status === 'pending' || status === 'confirmed';
   const canTrack = status === 'shipped' || status === 'delivered';
   const canReorder = status === 'delivered';
@@ -34,7 +36,7 @@ export function OrderActions({
           size='sm'
           onClick={() => onViewDetails(orderId)}
         >
-          View Details
+          {t('viewDetails')}
         </Button>
       )}
 
@@ -44,19 +46,19 @@ export function OrderActions({
           size='sm'
           onClick={() => onCancel(orderId)}
         >
-          Cancel Order
+          {t('cancelOrder')}
         </Button>
       )}
 
       {canTrack && onTrack && (
         <Button variant='outline' size='sm' onClick={() => onTrack(orderId)}>
-          Track Order
+          {t('trackOrder')}
         </Button>
       )}
 
       {canReorder && onReorder && (
         <Button variant='default' size='sm' onClick={() => onReorder(orderId)}>
-          Reorder
+          {t('reorder')}
         </Button>
       )}
     </div>

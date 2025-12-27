@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@components/ui/select';
 import { ChevronDown } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface FiltersSidebarToggles {
   show: boolean;
@@ -45,6 +46,7 @@ type FiltersSidebarProps = FiltersSidebarToggles &
   FiltersSidebarMeta;
 
 export function FiltersSidebar(props: FiltersSidebarProps) {
+  const { t } = useLanguage();
   const {
     show,
     selectedDistance,
@@ -68,7 +70,7 @@ export function FiltersSidebar(props: FiltersSidebarProps) {
       <div className='sticky top-24'>
         <div className='rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
           <div className='flex items-center justify-between border-b border-border p-6 pb-4'>
-            <h3>Filters</h3>
+            <h3>{t('filters')}</h3>
             {activeFiltersCount > 0 && (
               <Button
                 variant='ghost'
@@ -76,7 +78,7 @@ export function FiltersSidebar(props: FiltersSidebarProps) {
                 onClick={clearAllFilters}
                 className='h-auto p-0 text-sm text-primary hover:bg-transparent'
               >
-                Clear all
+                {t('clearAll')}
               </Button>
             )}
           </div>
@@ -84,7 +86,7 @@ export function FiltersSidebar(props: FiltersSidebarProps) {
           <ScrollArea className='h-[calc(100vh-280px)]'>
             <div className='p-6 pt-4'>
               <div className='mb-6'>
-                <Label className='mb-3 block text-sm'>Distance</Label>
+                <Label className='mb-3 block text-sm'>{t('distance')}</Label>
                 <Select
                   value={selectedDistance}
                   onValueChange={setSelectedDistance}
@@ -93,17 +95,17 @@ export function FiltersSidebar(props: FiltersSidebarProps) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='all'>Any distance</SelectItem>
-                    <SelectItem value='10'>Within 10 km</SelectItem>
-                    <SelectItem value='25'>Within 25 km</SelectItem>
-                    <SelectItem value='50'>Within 50 km</SelectItem>
+                    <SelectItem value='all'>{t('anyDistance')}</SelectItem>
+                    <SelectItem value='10'>{t('within10km')}</SelectItem>
+                    <SelectItem value='25'>{t('within25km')}</SelectItem>
+                    <SelectItem value='50'>{t('within50km')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <Collapsible open={categoryOpen} onOpenChange={setCategoryOpen}>
                 <CollapsibleTrigger className='mb-3 flex w-full items-center justify-between text-sm'>
-                  <span>Category</span>
+                  <span>{t('category')}</span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-200 ${categoryOpen ? 'rotate-180' : ''}`}
                   />
@@ -131,7 +133,7 @@ export function FiltersSidebar(props: FiltersSidebarProps) {
 
               <Collapsible open={certOpen} onOpenChange={setCertOpen}>
                 <CollapsibleTrigger className='mb-3 flex w-full items-center justify-between text-sm'>
-                  <span>Certifications</span>
+                  <span>{t('certificationsLabel')}</span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-200 ${certOpen ? 'rotate-180' : ''}`}
                   />

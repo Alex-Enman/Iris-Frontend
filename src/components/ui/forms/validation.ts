@@ -16,11 +16,11 @@ export interface ValidationResult {
 export function validateField(
   value: any,
   rules: ValidationRule,
-  fieldName: string
+  _fieldName: string
 ): string | null {
   // Required validation
   if (rules.required && (!value || value.toString().trim() === '')) {
-    return `${fieldName} is required`;
+    return 'requiredFieldError';
   }
 
   // Skip other validations if value is empty and not required
@@ -30,17 +30,17 @@ export function validateField(
 
   // Min length validation
   if (rules.minLength && value.toString().length < rules.minLength) {
-    return `${fieldName} must be at least ${rules.minLength} characters`;
+    return 'fieldMinLengthError';
   }
 
   // Max length validation
   if (rules.maxLength && value.toString().length > rules.maxLength) {
-    return `${fieldName} must be no more than ${rules.maxLength} characters`;
+    return 'fieldMaxLengthError';
   }
 
   // Pattern validation
   if (rules.pattern && !rules.pattern.test(value.toString())) {
-    return `${fieldName} format is invalid`;
+    return 'fieldInvalidFormatError';
   }
 
   // Custom validation
@@ -98,7 +98,7 @@ export const commonRules = {
     custom: (value: any) => {
       const num = parseFloat(value);
       if (isNaN(num) || num < 0) {
-        return 'Price must be a valid positive number';
+        return 'priceMustBePositiveNumber';
       }
       return null;
     },
@@ -108,7 +108,7 @@ export const commonRules = {
     custom: (value: any) => {
       const num = parseInt(value);
       if (isNaN(num) || num < 1) {
-        return 'Quantity must be a valid positive integer';
+        return 'quantityMustBePositiveInteger';
       }
       return null;
     },

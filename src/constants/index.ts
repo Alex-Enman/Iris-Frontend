@@ -184,24 +184,24 @@ export const VALIDATION = {
 } as const;
 
 export const ERROR_MESSAGES = {
-  REQUIRED_FIELD: 'This field is required',
-  INVALID_EMAIL: 'Please enter a valid email address',
-  INVALID_PHONE: 'Please enter a valid phone number',
-  PASSWORD_TOO_SHORT: `Password must be at least ${VALIDATION.PASSWORD_MIN_LENGTH} characters`,
-  NAME_TOO_SHORT: `Name must be at least ${VALIDATION.NAME_MIN_LENGTH} characters`,
-  NAME_TOO_LONG: `Name must be less than ${VALIDATION.NAME_MAX_LENGTH} characters`,
-  NETWORK_ERROR: 'Network error. Please check your connection.',
-  UNAUTHORIZED: 'You are not authorized to perform this action.',
-  NOT_FOUND: 'The requested resource was not found.',
-  SERVER_ERROR: 'An unexpected error occurred. Please try again.',
+  REQUIRED_FIELD: 'requiredFieldError',
+  INVALID_EMAIL: 'invalidEmailAddressError',
+  INVALID_PHONE: 'invalidPhoneNumberError',
+  PASSWORD_TOO_SHORT: 'passwordTooShortError',
+  NAME_TOO_SHORT: 'nameTooShortError',
+  NAME_TOO_LONG: 'nameTooLongError',
+  NETWORK_ERROR: 'networkErrorDescription',
+  UNAUTHORIZED: 'notAuthorizedToPerformAction',
+  NOT_FOUND: 'notFoundDescription',
+  SERVER_ERROR: 'unexpectedErrorOccurredDescription',
 } as const;
 
 export const SUCCESS_MESSAGES = {
-  PROFILE_UPDATED: 'Profile updated successfully',
-  ORDER_CREATED: 'Order created successfully',
-  ORDER_UPDATED: 'Order updated successfully',
-  ITEM_ADDED_TO_CART: 'Item added to cart',
-  ITEM_REMOVED_FROM_CART: 'Item removed from cart',
-  CART_CLEARED: 'Cart cleared successfully',
-  MESSAGE_SENT: 'Message sent successfully',
+  PROFILE_UPDATED: 'profileUpdatedSuccessfully',
+  ORDER_CREATED: 'orderCreatedSuccessfully',
+  ORDER_UPDATED: 'orderUpdatedSuccessfully',
+  ITEM_ADDED_TO_CART: 'itemAddedToCart',
+  ITEM_REMOVED_FROM_CART: 'itemRemovedFromCart',
+  CART_CLEARED: 'cartClearedSuccessfully',
+  MESSAGE_SENT: 'messageSentSuccessfully',
 } as const;

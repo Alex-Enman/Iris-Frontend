@@ -13,6 +13,7 @@ import { Button } from '@components/ui/button';
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { useSupplierDashboardTab } from '@/hooks/suppliers/use-supplier-dashboard-tab';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface NewRestaurantMatchesCardProps {
   onContactRestaurant?: (restaurantName: string) => void;
@@ -23,6 +24,7 @@ export function NewRestaurantMatchesCard({
   onContactRestaurant,
   onViewRestaurantProfile,
 }: NewRestaurantMatchesCardProps) {
+  const { t } = useLanguage();
   const { handleContactRestaurant, handleViewRestaurantProfile } =
     useSupplierDashboardTab({
       onContactRestaurant,
@@ -38,13 +40,13 @@ export function NewRestaurantMatchesCard({
               <div className='rounded-xl bg-primary/10 p-2'>
                 <Store className='h-5 w-5 text-primary' />
               </div>
-              <h3 className='text-lg'>New Restaurant Matches</h3>
+              <h3 className='text-lg'>{t('newRestaurantMatches')}</h3>
             </div>
             <p className='text-sm text-muted-foreground'>
-              Restaurants looking for suppliers like you
+              {t('restaurantsLookingForSuppliersLikeYou')}
             </p>
           </div>
-          <Badge className='bg-primary'>4 New</Badge>
+          <Badge className='bg-primary'>4 {t('new')}</Badge>
         </div>
       </div>
       <div className='p-6'>
@@ -99,7 +101,7 @@ export function NewRestaurantMatchesCard({
                   <div>
                     <h4 className='mb-1 font-medium'>{r.name}</h4>
                     <p className='text-sm text-muted-foreground'>
-                      Plant-Based Restaurant
+                      {t('plantBasedRestaurant')}
                     </p>
                   </div>
                 </div>
@@ -107,21 +109,25 @@ export function NewRestaurantMatchesCard({
                   variant='secondary'
                   className='bg-primary/10 text-primary'
                 >
-                  {r.match} Match
+                  {r.match} {t('match')}
                 </Badge>
               </div>
               <div className='mb-4 space-y-2 text-sm'>
                 <div className='flex items-center gap-2 text-muted-foreground'>
                   <MapPin className='h-4 w-4' />
-                  <span>{r.away} away</span>
+                  <span>{r.away} {t('away')}</span>
                 </div>
                 <div className='flex items-center gap-2'>
                   <Package className='h-4 w-4 text-primary' />
-                  <span>Looking for: {r.looking}</span>
+                  <span>
+                    {t('lookingFor')}: {r.looking}
+                  </span>
                 </div>
                 <div className='flex items-center gap-2'>
                   <Clock className='h-4 w-4 text-primary' />
-                  <span>Needs {r.frequency} deliveries</span>
+                  <span>
+                    {t('needsDeliveries')} {r.frequency}
+                  </span>
                 </div>
               </div>
               <div className='flex gap-2'>
@@ -132,7 +138,7 @@ export function NewRestaurantMatchesCard({
                   className='flex-1 rounded-xl'
                 >
                   <Eye className='mr-2 h-4 w-4' />
-                  View
+                  {t('view')}
                 </Button>
                 <Button
                   size='sm'
@@ -140,7 +146,7 @@ export function NewRestaurantMatchesCard({
                   className='flex-1 rounded-xl bg-primary hover:bg-primary/90'
                 >
                   <MessageCircle className='mr-2 h-4 w-4' />
-                  Contact
+                  {t('contact')}
                 </Button>
               </div>
             </div>
@@ -151,7 +157,7 @@ export function NewRestaurantMatchesCard({
           className='mt-6 w-full rounded-xl'
           onClick={() => handleViewRestaurantProfile('all')}
         >
-          View All Matches
+          {t('viewAllMatches')}
           <ArrowRight className='ml-2 h-4 w-4' />
         </Button>
       </div>

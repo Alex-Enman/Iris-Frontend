@@ -1,3 +1,5 @@
+import { getStoredLanguage, t } from '@lib/i18n';
+
 export interface SupplyAgreementItem {
   id: number;
   supplier: string;
@@ -12,27 +14,29 @@ export interface SupplyAgreementItem {
 }
 
 export function useSupplyAgreements() {
+  const language = getStoredLanguage();
+
   const supplyAgreements: SupplyAgreementItem[] = [
     {
       id: 1,
-      supplier: 'Green Valley Farm',
-      type: 'Weekly Delivery',
-      frequency: 'Every Monday & Thursday',
-      status: 'Active',
+      supplier: t('supplierNameGreenValleyFarm', language),
+      type: t('agreementWeeklyDelivery', language),
+      frequency: t('agreementFrequencyEveryMondayAndThursday', language),
+      status: t('activeStatus', language),
       nextDelivery: '2024-10-28',
-      items: 'Seasonal vegetables, herbs',
+      items: t('agreementItemsSeasonalVegetablesHerbs', language),
       discount: '15%',
       startDate: '2024-03-15',
       endDate: '2025-03-15',
     },
     {
       id: 2,
-      supplier: 'Mountain Dairy Co.',
-      type: 'Bi-Weekly Supply',
-      frequency: 'Every other Tuesday',
-      status: 'Active',
+      supplier: t('supplierNameMountainDairyCo', language),
+      type: t('agreementBiWeeklySupply', language),
+      frequency: t('agreementFrequencyEveryOtherTuesday', language),
+      status: t('activeStatus', language),
       nextDelivery: '2024-10-29',
-      items: 'Dairy products, cheese',
+      items: t('agreementItemsDairyProductsCheese', language),
       discount: '10%',
       startDate: '2024-04-01',
       endDate: '2025-04-01',

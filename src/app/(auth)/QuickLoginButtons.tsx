@@ -1,14 +1,18 @@
+'use client';
+
 import { Store, UtensilsCrossed } from 'lucide-react';
 import { useLogin } from 'hooks/auth/use-login';
 import { UserRole } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export function QuickLoginButtons() {
   const { quickLogin } = useLogin();
+  const { t } = useLanguage();
 
   return (
     <div className='mt-8'>
       <p className='mb-4 text-center text-sm text-muted-foreground'>
-        Quick login for demo
+        {t('quickLoginForDemo')}
       </p>
       <div className='grid gap-3 sm:grid-cols-2'>
         <button
@@ -20,9 +24,9 @@ export function QuickLoginButtons() {
               <UtensilsCrossed className='h-6 w-6 text-primary' />
             </div>
           </div>
-          <h3 className='mb-1 text-center'>Restaurant</h3>
+          <h3 className='mb-1 text-center'>{t('restaurantRole')}</h3>
           <p className='text-center text-xs text-muted-foreground'>
-            Browse & order products
+            {t('browseAndOrderProducts')}
           </p>
         </button>
 
@@ -35,9 +39,9 @@ export function QuickLoginButtons() {
               <Store className='h-6 w-6 text-accent' />
             </div>
           </div>
-          <h3 className='mb-1 text-center'>Supplier</h3>
+          <h3 className='mb-1 text-center'>{t('supplierRole')}</h3>
           <p className='text-center text-xs text-muted-foreground'>
-            Manage your store
+            {t('manageYourStore')}
           </p>
         </button>
       </div>

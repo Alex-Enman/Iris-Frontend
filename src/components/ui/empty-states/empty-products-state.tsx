@@ -3,6 +3,7 @@
 import { Package } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { cn } from '../utils';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface EmptyProductsStateProps {
   onAddProduct?: () => void;
@@ -15,6 +16,7 @@ export function EmptyProductsState({
   onBrowseProducts,
   className,
 }: EmptyProductsStateProps) {
+  const { t } = useLanguage();
   return (
     <div
       className={cn(
@@ -24,19 +26,18 @@ export function EmptyProductsState({
     >
       <Package className='mb-4 h-12 w-12 text-muted-foreground' />
       <h3 className='mb-2 text-xl font-semibold text-foreground'>
-        No products found
+        {t('noProductsFound')}
       </h3>
       <p className='mb-6 max-w-md text-muted-foreground'>
-        There are no products available at the moment. Check back later or try
-        different filters.
+        {t('noProductsAvailableDescription')}
       </p>
       <div className='flex gap-3'>
         {onBrowseProducts && (
-          <Button onClick={onBrowseProducts}>Browse Products</Button>
+          <Button onClick={onBrowseProducts}>{t('browseProducts')}</Button>
         )}
         {onAddProduct && (
           <Button variant='outline' onClick={onAddProduct}>
-            Add Product
+            {t('addProduct')}
           </Button>
         )}
       </div>

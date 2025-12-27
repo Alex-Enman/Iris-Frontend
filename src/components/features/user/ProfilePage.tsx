@@ -24,12 +24,14 @@ import { TopSuppliersList } from './components/TopSuppliersList';
 import { RecentActivity } from './components/RecentActivity';
 import { SupplyAgreements } from './components/SupplyAgreements';
 import { EditRestaurantProfileDialog } from './dialogs/edit-restaurant/EditRestaurantProfileDialog';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface ProfilePageProps {
   onViewSupplier?: (supplierId: string) => void;
 }
 
 export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
+  const { t } = useLanguage();
   const {
     activeTab,
     setActiveTab,
@@ -50,9 +52,9 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
     <div className='min-h-screen py-12'>
       <div className='mx-auto max-w-[1440px] px-8'>
         <div className='mb-8'>
-          <h1 className='mb-2 text-4xl text-primary'>Profile</h1>
+          <h1 className='mb-2 text-4xl text-primary'>{t('profile')}</h1>
           <p className='text-muted-foreground'>
-            Manage your restaurant profile and view insights
+            {t('profileDescription')}
           </p>
         </div>
 
@@ -70,14 +72,14 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
               <div className='rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <nav className='p-2'>
                   {[
-                    { icon: User, label: 'My Account', value: 'account' },
+                    { icon: User, label: t('myAccount'), value: 'account' },
                     {
                       icon: Package,
-                      label: 'My Suppliers',
+                      label: t('mySuppliers'),
                       value: 'suppliers',
                     },
-                    { icon: FileText, label: 'Invoices', value: 'invoices' },
-                    { icon: BarChart3, label: 'Analytics', value: 'analytics' },
+                    { icon: FileText, label: t('invoicesLabel'), value: 'invoices' },
+                    { icon: BarChart3, label: t('analyticsLabel'), value: 'analytics' },
                   ].map((item, index) => (
                     <button
                       key={index}
@@ -105,9 +107,9 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                 <div className='overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-accent/5 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
                   <div className='mb-4 flex items-center justify-between'>
                     <div>
-                      <h3 className='mb-1'>Sustainability Score</h3>
+                      <h3 className='mb-1'>{t('sustainabilityScore')}</h3>
                       <p className='text-sm text-muted-foreground'>
-                        Based on sourcing practices
+                        {t('basedOnSourcingPractices')}
                       </p>
                     </div>
                     <div className='text-4xl text-primary'>
@@ -120,15 +122,15 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                   <Progress value={sustainabilityScore} className='h-3' />
                   <div className='mt-4 grid grid-cols-3 gap-4 text-sm'>
                     <div>
-                      <div className='text-muted-foreground'>Local</div>
+                      <div className='text-muted-foreground'>{t('local')}</div>
                       <div className='text-primary'>78%</div>
                     </div>
                     <div>
-                      <div className='text-muted-foreground'>Organic</div>
+                      <div className='text-muted-foreground'>{t('organic')}</div>
                       <div className='text-primary'>65%</div>
                     </div>
                     <div>
-                      <div className='text-muted-foreground'>Traceable</div>
+                      <div className='text-muted-foreground'>{t('traceable')}</div>
                       <div className='text-primary'>92%</div>
                     </div>
                   </div>
@@ -142,19 +144,19 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                 <RecentActivity
                   items={[
                     {
-                      action: 'Order delivered',
-                      supplier: 'Green Valley Farm',
-                      time: '2 hours ago',
+                      action: t('orderDelivered'),
+                      supplier: t('supplierNameGreenValleyFarm'),
+                      time: `2 ${t('hoursAgo')}`,
                     },
                     {
-                      action: 'Invoice paid',
-                      supplier: 'Mountain Dairy Co.',
-                      time: '1 day ago',
+                      action: t('invoicePaid'),
+                      supplier: t('supplierNameMountainDairyCo'),
+                      time: `1 ${t('dayAgo')}`,
                     },
                     {
-                      action: 'New review posted',
-                      supplier: 'Heritage Bakery',
-                      time: '3 days ago',
+                      action: t('newReviewPosted'),
+                      supplier: t('supplierNameHeritageBakery'),
+                      time: `3 ${t('daysAgo')}`,
                     },
                   ]}
                 />
@@ -166,17 +168,17 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                 <Tabs defaultValue='all' className='w-full'>
                   <div className='mb-6 flex items-center justify-between'>
                     <div>
-                      <h2 className='mb-1'>My Suppliers</h2>
+                      <h2 className='mb-1'>{t('mySuppliers')}</h2>
                       <p className='text-sm text-muted-foreground'>
-                        Manage your supplier relationships and recurring orders
+                        {t('manageSuppliersDescription')}
                       </p>
                     </div>
                     <TabsList className='rounded-xl'>
                       <TabsTrigger value='all' className='rounded-lg'>
-                        All Suppliers
+                        {t('allSuppliersLabel')}
                       </TabsTrigger>
                       <TabsTrigger value='agreements' className='rounded-lg'>
-                        Contracts
+                        {t('contracts')}
                       </TabsTrigger>
                     </TabsList>
                   </div>
@@ -210,7 +212,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                         className='bg-primary'
                                       >
                                         <Repeat className='mr-1 h-3 w-3' />
-                                        Contract
+                                        {t('contract')}
                                       </Badge>
                                     )}
                                   </div>
@@ -222,7 +224,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                               <div className='mb-4 flex flex-wrap gap-4 text-sm'>
                                 <div>
                                   <span className='text-muted-foreground'>
-                                    Relationship:{' '}
+                                    {t('relationship')}: {' '}
                                   </span>
                                   <Badge variant='outline'>
                                     {supplier.relationship}
@@ -230,13 +232,13 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                 </div>
                                 <div>
                                   <span className='text-muted-foreground'>
-                                    Total Orders:{' '}
+                                    {t('totalOrders')}: {' '}
                                   </span>
                                   <span>{supplier.totalOrders}</span>
                                 </div>
                                 <div>
                                   <span className='text-muted-foreground'>
-                                    Monthly:{' '}
+                                    {t('monthly')}: {' '}
                                   </span>
                                   <span className='text-primary'>
                                     {supplier.monthlySpend}
@@ -244,7 +246,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                 </div>
                                 <div>
                                   <span className='text-muted-foreground'>
-                                    Last Order:{' '}
+                                    {t('lastOrder')}: {' '}
                                   </span>
                                   <span>{supplier.lastOrder}</span>
                                 </div>
@@ -259,7 +261,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                   }}
                                 >
                                   <Store className='mr-2 h-4 w-4' />
-                                  Visit Store
+                                  {t('visitStore')}
                                 </Button>
                                 <Button
                                   size='sm'
@@ -271,7 +273,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                   }}
                                 >
                                   <MessageCircle className='mr-2 h-4 w-4' />
-                                  Message
+                                  {t('message')}
                                 </Button>
                                 <Button
                                   size='sm'
@@ -280,7 +282,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                   onClick={e => e.stopPropagation()}
                                 >
                                   <Mail className='mr-2 h-4 w-4' />
-                                  Email
+                                  {t('emailAction')}
                                 </Button>
                                 <Button
                                   size='sm'
@@ -289,7 +291,7 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
                                   onClick={e => e.stopPropagation()}
                                 >
                                   <Phone className='mr-2 h-4 w-4' />
-                                  Call
+                                  {t('callAction')}
                                 </Button>
                               </div>
                             </div>
@@ -310,9 +312,9 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
               <div className='flex min-h-[400px] items-center justify-center rounded-2xl bg-white p-12 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <div className='text-center'>
                   <FileText className='mx-auto mb-4 h-16 w-16 text-muted-foreground/30' />
-                  <h3 className='mb-2 text-primary'>Invoices</h3>
+                  <h3 className='mb-2 text-primary'>{t('invoicesLabel')}</h3>
                   <p className='text-muted-foreground'>
-                    Invoice management coming soon
+                    {t('invoiceManagementComingSoon')}
                   </p>
                 </div>
               </div>
@@ -322,9 +324,9 @@ export function ProfilePage({ onViewSupplier }: ProfilePageProps) {
               <div className='flex min-h-[400px] items-center justify-center rounded-2xl bg-white p-12 shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
                 <div className='text-center'>
                   <BarChart3 className='mx-auto mb-4 h-16 w-16 text-muted-foreground/30' />
-                  <h3 className='mb-2 text-primary'>Analytics Dashboard</h3>
+                  <h3 className='mb-2 text-primary'>{t('analyticsDashboard')}</h3>
                   <p className='text-muted-foreground'>
-                    Detailed analytics and insights coming soon
+                    {t('analyticsComingSoon')}
                   </p>
                 </div>
               </div>

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface RestaurantMenuItem {
   name: string;
@@ -62,112 +63,121 @@ export interface TopSupplierSummary {
 }
 
 export function useRestaurantProfile() {
+  const language = getStoredLanguage();
+
+  const getDefaultRestaurantProfile = (): RestaurantProfile => ({
+    name: t('restaurantLaBellaCucina', language),
+    type: t('restaurantTypeItalianFineDining', language),
+    cuisine: [
+      t('restaurantCuisineItalian', language),
+      t('restaurantCuisineMediterranean', language),
+    ],
+    location: t('restaurantProfileAddressSample', language),
+    description: t('restaurantProfileDescriptionSample', language),
+    coverImage:
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200',
+    seatingCapacity: '85',
+    established: '2020',
+    orderVolume: t('restaurantOrderVolumeSample', language),
+    email: 'orders@labellacucina.com',
+    phone: '+1 (555) 987-6543',
+    website: 'www.labellacucina.com',
+    leadTime: t('leadTime48Hours', language),
+    deliveryWindow: t('deliveryWindow6to9am', language),
+    paymentTerms: t('paymentTermsNet30', language),
+    minimumOrder: '€100',
+    menu: [
+      {
+        category: t('menuCategoryAntipasti', language),
+        items: [
+          {
+            name: t('menuItemBruschettaAlPomodoro', language),
+            description: t('menuItemBruschettaDescription', language),
+            price: '€12',
+            image:
+              'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400',
+          },
+          {
+            name: t('menuItemBurrataConProsciutto', language),
+            description: t('menuItemBurrataDescription', language),
+            price: '€18',
+            image:
+              'https://images.unsplash.com/photo-1498579397066-22750a3cb424?w=400',
+          },
+        ],
+      },
+      {
+        category: t('menuCategoryPrimiPiatti', language),
+        items: [
+          {
+            name: t('menuItemTagliatelleAlTartufo', language),
+            description: t('menuItemTagliatelleDescription', language),
+            price: '€28',
+            image:
+              'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400',
+          },
+          {
+            name: t('menuItemRisottoAiFunghi', language),
+            description: t('menuItemRisottoDescription', language),
+            price: '€24',
+            image:
+              'https://images.unsplash.com/photo-1476124369491-c7addf8a3b52?w=400',
+          },
+        ],
+      },
+    ],
+    supplierNeeds: [
+      {
+        category: t('vegetables', language),
+        frequency: t('supplierNeedFrequencyTwiceWeekly', language),
+        averageOrder: '€250',
+        preferences: t('supplierNeedPreferencesOrganicLocallySourced', language),
+      },
+      {
+        category: t('seafood', language),
+        frequency: t('supplierNeedFrequencyDaily', language),
+        averageOrder: '€450',
+        preferences: t('supplierNeedPreferencesFreshSustainableSources', language),
+      },
+      {
+        category: t('dairy', language),
+        frequency: t('weeklyFrequency', language),
+        averageOrder: '€180',
+        preferences: t('supplierNeedPreferencesPremiumItalianCheeses', language),
+      },
+    ],
+  });
+
   const [restaurantProfile, setRestaurantProfile] = useState<RestaurantProfile>(
-    {
-      name: 'La Bella Cucina',
-      type: 'Italian Fine Dining',
-      cuisine: ['Italian', 'Mediterranean'],
-      location: '123 Gastronomy Street, Culinary District',
-      description:
-        'An authentic Italian fine dining experience bringing traditional recipes from Tuscany with a modern twist. We pride ourselves on using locally sourced, organic ingredients to create unforgettable culinary experiences.',
-      coverImage:
-        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200',
-      seatingCapacity: '85',
-      established: '2020',
-      orderVolume: '€12,500/month',
-      email: 'orders@labellacucina.com',
-      phone: '+1 (555) 987-6543',
-      website: 'www.labellacucina.com',
-      leadTime: '48 hours',
-      deliveryWindow: '6:00 AM - 9:00 AM',
-      paymentTerms: 'Net 30',
-      minimumOrder: '€100',
-      menu: [
-        {
-          category: 'Antipasti',
-          items: [
-            {
-              name: 'Bruschetta al Pomodoro',
-              description:
-                'Grilled bread topped with fresh tomatoes, basil, and extra virgin olive oil',
-              price: '€12',
-              image:
-                'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400',
-            },
-            {
-              name: 'Burrata con Prosciutto',
-              description: 'Creamy burrata with aged prosciutto and arugula',
-              price: '€18',
-              image:
-                'https://images.unsplash.com/photo-1498579397066-22750a3cb424?w=400',
-            },
-          ],
-        },
-        {
-          category: 'Primi Piatti',
-          items: [
-            {
-              name: 'Tagliatelle al Tartufo',
-              description: 'Fresh pasta with black truffle and parmesan',
-              price: '€28',
-              image:
-                'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400',
-            },
-            {
-              name: 'Risotto ai Funghi',
-              description: 'Creamy risotto with wild mushrooms',
-              price: '€24',
-              image:
-                'https://images.unsplash.com/photo-1476124369491-c7addf8a3b52?w=400',
-            },
-          ],
-        },
-      ],
-      supplierNeeds: [
-        {
-          category: 'Vegetables',
-          frequency: 'Twice weekly',
-          averageOrder: '€250',
-          preferences: 'Organic, locally sourced',
-        },
-        {
-          category: 'Seafood',
-          frequency: 'Daily',
-          averageOrder: '€450',
-          preferences: 'Fresh, sustainable sources',
-        },
-        {
-          category: 'Dairy',
-          frequency: 'Weekly',
-          averageOrder: '€180',
-          preferences: 'Premium Italian cheeses',
-        },
-      ],
-    }
+    getDefaultRestaurantProfile()
   );
+
+  useEffect(() => {
+    setRestaurantProfile(getDefaultRestaurantProfile());
+  }, [language]);
 
   const restaurantInfo = {
     name: restaurantProfile.name,
     type: restaurantProfile.type,
     address: restaurantProfile.location,
-    memberSince: 'January 2024',
+    memberSince: t('memberSinceJanuary2024', language),
   };
 
   const metrics = [
     {
-      label: 'Monthly Orders',
+      label: t('monthlyOrders', language),
       value: '47',
       change: '+12%',
       trend: 'up' as const,
     },
     {
-      label: 'Reorder Rate',
+      label: t('reorderRate', language),
       value: '87%',
       change: '+5%',
       trend: 'up' as const,
     },
     {
-      label: 'Waste Reduction',
+      label: t('wasteReduction', language),
       value: '23%',
       change: '+8%',
       trend: 'up' as const,
@@ -175,16 +185,16 @@ export function useRestaurantProfile() {
   ];
 
   const topSuppliers: TopSupplierSummary[] = [
-    { name: 'Green Valley Farm', orders: 28, spend: '€1,247' },
-    { name: 'Mountain Dairy Co.', orders: 19, spend: '€892' },
-    { name: 'Heritage Bakery', orders: 15, spend: '€675' },
+    { name: t('supplierNameGreenValleyFarm', language), orders: 28, spend: '€1,247' },
+    { name: t('supplierNameMountainDairyCo', language), orders: 19, spend: '€892' },
+    { name: t('supplierNameHeritageBakery', language), orders: 15, spend: '€675' },
   ];
 
   const sustainabilityScore = 82;
 
   const handleSaveProfile = (updatedProfile: RestaurantProfile) => {
     setRestaurantProfile(updatedProfile);
-    toast.success('Restaurant profile updated successfully!');
+    toast.success(t('restaurantProfileUpdatedSuccessfully', language));
   };
 
   return {

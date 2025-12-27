@@ -3,6 +3,7 @@
 import { Users } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { cn } from '../utils';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface EmptySuppliersStateProps {
   onAddSupplier?: () => void;
@@ -15,6 +16,7 @@ export function EmptySuppliersState({
   onBrowseSuppliers,
   className,
 }: EmptySuppliersStateProps) {
+  const { t } = useLanguage();
   return (
     <div
       className={cn(
@@ -24,19 +26,18 @@ export function EmptySuppliersState({
     >
       <Users className='mb-4 h-12 w-12 text-muted-foreground' />
       <h3 className='mb-2 text-xl font-semibold text-foreground'>
-        No suppliers found
+        {t('noSuppliersFound')}
       </h3>
       <p className='mb-6 max-w-md text-muted-foreground'>
-        There are no suppliers available at the moment. Check back later or try
-        different filters.
+        {t('noSuppliersAvailableDescription')}
       </p>
       <div className='flex gap-3'>
         {onBrowseSuppliers && (
-          <Button onClick={onBrowseSuppliers}>Browse Suppliers</Button>
+          <Button onClick={onBrowseSuppliers}>{t('browseSuppliers')}</Button>
         )}
         {onAddSupplier && (
           <Button variant='outline' onClick={onAddSupplier}>
-            Add Supplier
+            {t('addSupplier')}
           </Button>
         )}
       </div>

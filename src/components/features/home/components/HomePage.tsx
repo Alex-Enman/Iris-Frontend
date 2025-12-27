@@ -5,6 +5,7 @@ import { HeroSection } from './HeroSection';
 import { FiltersPanel } from './FiltersPanel';
 import { FeaturedProducts } from './FeaturedProducts';
 import { RecommendedProducers } from './RecommendedProducers';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface HomePageProps {
   onNavigateToProduct: () => void;
@@ -15,6 +16,7 @@ export function HomePage({
   onNavigateToProduct,
   onViewSupplier,
 }: HomePageProps) {
+  const { t } = useLanguage();
   const {
     selectedCategory,
     setSelectedCategory,
@@ -78,7 +80,7 @@ export function HomePage({
                   variant='outline'
                 >
                   <Filter className='mr-2 h-4 w-4' />
-                  Show Filters
+                  {t('showFilters')}
                 </Button>
               </div>
             )}

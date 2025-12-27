@@ -1,6 +1,8 @@
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Heart, Package, Store } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 interface FavoriteOrderCardProps {
   id: string;
@@ -27,29 +29,36 @@ export function FavoriteOrderCard({
   onRemove,
   onViewSupplier,
 }: FavoriteOrderCardProps) {
+  const { t } = useLanguage();
   return (
     <div className='duration-250 overflow-hidden rounded-2xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]'>
       <div className='p-6'>
         <div className='mb-4 flex items-start justify-between'>
           <div className='flex-1'>
             <div className='mb-2 flex items-center gap-3'>
-              <h3 className='text-lg'>Order #{id}</h3>
+              <h3 className='text-lg'>
+                {t('order')} #{id}
+              </h3>
               <Badge className='bg-accent/10 text-accent'>
                 <Heart className='mr-1 h-3 w-3 fill-accent' />
-                Favorite
+                {t('favorite')}
               </Badge>
               <Badge variant='outline'>{frequency}</Badge>
             </div>
             <p className='text-muted-foreground'>{supplier}</p>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
-              <span>{itemCount} items</span>
-              <span>Last ordered: {lastOrdered}</span>
+              <span>
+                {itemCount} {itemCount === 1 ? t('item') : t('items')}
+              </span>
+              <span>
+                {t('lastOrdered')}: {lastOrdered}
+              </span>
             </div>
           </div>
           <button
             onClick={() => onRemove(id)}
             className='duration-250 rounded-full p-2 transition-all hover:bg-destructive/5'
-            aria-label='Remove from favorites'
+            aria-label={t('removeFromFavorites')}
           >
             <Heart className='h-5 w-5 fill-accent text-accent' />
           </button>
@@ -57,7 +66,7 @@ export function FavoriteOrderCard({
 
         <div className='mb-4 space-y-2 rounded-xl bg-muted/20 p-4'>
           <div className='mb-2 text-sm text-muted-foreground'>
-            Order includes:
+            {t('orderIncludes')}:
           </div>
           {items.map((item, index) => (
             <div
@@ -67,19 +76,23 @@ export function FavoriteOrderCard({
               <span>
                 {item.name} × {item.quantity}
               </span>
-              <span className='text-primary'>€{item.price.toFixed(2)}</span>
+              <span className='text-primary'>
+                {formatCurrency(item.price, 'EUR')}
+              </span>
             </div>
           ))}
           <div className='mt-3 flex items-center justify-between border-t border-border pt-3'>
-            <span className='text-muted-foreground'>Total</span>
-            <span className='text-lg text-primary'>€{total.toFixed(2)}</span>
+            <span className='text-muted-foreground'>{t('total')}</span>
+            <span className='text-lg text-primary'>
+              {formatCurrency(total, 'EUR')}
+            </span>
           </div>
         </div>
 
         <div className='flex gap-2'>
           <Button className='flex-1 rounded-xl bg-primary text-primary-foreground'>
             <Package className='mr-2 h-4 w-4' />
-            Reorder Now
+            {t('reorderNow')}
           </Button>
           <Button
             variant='outline'
@@ -87,7 +100,7 @@ export function FavoriteOrderCard({
             className='rounded-xl'
           >
             <Store className='mr-2 h-4 w-4' />
-            View Supplier
+            {t('viewSupplier')}
           </Button>
         </div>
       </div>

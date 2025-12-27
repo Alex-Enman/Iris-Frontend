@@ -3,6 +3,7 @@
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { Package } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface Order {
   id: string;
@@ -17,14 +18,15 @@ export interface OrderHistoryCardProps {
 }
 
 export function OrderHistoryCard({ orders }: OrderHistoryCardProps) {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-3xl border-0 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] lg:col-span-2'>
       <div className='mb-4 flex items-center gap-2'>
         <Package className='h-5 w-5 text-primary' />
-        <h3>Order History</h3>
+        <h3>{t('orderHistory')}</h3>
       </div>
       <p className='mb-4 text-sm text-muted-foreground'>
-        Recent orders from this restaurant
+        {t('recentOrdersFromThisRestaurant')}
       </p>
       <div className='space-y-3'>
         {orders.map(order => (
@@ -39,7 +41,9 @@ export function OrderHistoryCard({ orders }: OrderHistoryCardProps) {
               </div>
               <div className='text-right'>
                 <div className='mb-1 text-primary'>{order.total}</div>
-                <Badge variant='outline'>{order.status}</Badge>
+                <Badge variant='outline'>
+                  {order.status === t('deliveredStatus') ? t('delivered') : order.status}
+                </Badge>
               </div>
             </div>
             <div className='flex flex-wrap gap-1'>

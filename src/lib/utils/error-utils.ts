@@ -2,6 +2,7 @@
 // Centralized error handling and user-friendly error messages
 
 import { ApiError } from '@/lib/data/repositories/client';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface ErrorState {
   hasError: boolean;
@@ -21,32 +22,33 @@ export class ErrorHandler {
    * Convert technical errors to user-friendly messages
    */
   static toUserFriendlyError(error: Error): UserFriendlyError {
+    const language = getStoredLanguage();
+
     if (error instanceof ApiError) {
       return this.handleApiError(error);
     }
 
     if (error.name === 'NetworkError' || error.message.includes('fetch')) {
       return {
-        title: 'Connection Error',
-        message:
-          'Unable to connect to the server. Please check your internet connection.',
-        action: 'Try Again',
+        title: t('connectionErrorTitle', language),
+        message: t('connectionErrorDescription', language),
+        action: t('tryAgain', language),
         retryable: true,
       };
     }
 
     if (error.name === 'ValidationError') {
       return {
-        title: 'Invalid Input',
-        message: 'Please check your input and try again.',
+        title: t('invalidInputTitle', language),
+        message: t('invalidInputDescription', language),
         retryable: false,
       };
     }
 
     return {
-      title: 'Something went wrong',
-      message: 'An unexpected error occurred. Please try again later.',
-      action: 'Try Again',
+      title: t('somethingWentWrongTitle', language),
+      message: t('unexpectedErrorOccurredDescription', language),
+      action: t('tryAgain', language),
       retryable: true,
     };
   }
@@ -55,63 +57,63 @@ export class ErrorHandler {
    * Handle API-specific errors
    */
   private static handleApiError(error: ApiError): UserFriendlyError {
+    const language = getStoredLanguage();
     const map: Record<number, UserFriendlyError> = {
       400: {
-        title: 'Invalid Request',
-        message: 'Please check your input and try again.',
+        title: t('invalidInputTitle', language),
+        message: t('invalidInputDescription', language),
         retryable: false,
       },
       401: {
-        title: 'Authentication Required',
-        message: 'Please log in to continue.',
-        action: 'Log In',
+        title: t('unauthorizedTitle', language),
+        message: t('unauthorizedDescription', language),
+        action: t('signIn', language),
         retryable: false,
       },
       403: {
-        title: 'Access Denied',
-        message: 'You do not have permission to perform this action.',
+        title: t('accessDeniedTitle', language),
+        message: t('accessDeniedDescription', language),
         retryable: false,
       },
       404: {
-        title: 'Not Found',
-        message: 'The requested resource was not found.',
+        title: t('notFoundTitle', language),
+        message: t('notFoundDescription', language),
         retryable: false,
       },
       409: {
-        title: 'Conflict',
-        message: 'This action conflicts with existing data.',
+        title: t('errorTitle', language),
+        message: error.message,
         retryable: false,
       },
       422: {
-        title: 'Validation Error',
-        message: error.message || 'Please check your input and try again.',
+        title: t('invalidInputTitle', language),
+        message: error.message || t('invalidInputDescription', language),
         retryable: false,
       },
       429: {
-        title: 'Too Many Requests',
-        message: 'Please wait a moment before trying again.',
-        action: 'Try Again',
+        title: t('errorTitle', language),
+        message: error.message,
+        action: t('tryAgain', language),
         retryable: true,
       },
       500: {
-        title: 'Server Error',
-        message: 'Something went wrong on our end. Please try again later.',
-        action: 'Try Again',
+        title: t('serverErrorTitle', language),
+        message: t('serverErrorDescription', language),
+        action: t('tryAgain', language),
         retryable: true,
       },
       503: {
-        title: 'Service Unavailable',
-        message:
-          'The service is temporarily unavailable. Please try again later.',
-        action: 'Try Again',
+        title: t('serverErrorTitle', language),
+        message: t('serverErrorDescription', language),
+        action: t('tryAgain', language),
         retryable: true,
       },
     };
     return (
       map[error.status] || {
-        title: 'Error',
-        message: error.message || 'An unexpected error occurred.',
-        action: 'Try Again',
+        title: t('errorTitle', language),
+        message: error.message || t('unexpectedErrorOccurredDescription', language),
+        action: t('tryAgain', language),
         retryable: true,
       }
     );

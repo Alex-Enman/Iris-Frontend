@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface UseSupplierProfileViewOptions {
   supplierId: string;
@@ -10,24 +11,25 @@ export interface UseSupplierProfileViewOptions {
 export function useSupplierProfileView({
   supplierId,
 }: UseSupplierProfileViewOptions) {
+  const language = getStoredLanguage();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleAddToCart = useCallback(
     (productId: number, productName: string) => {
-      toast.success(`${productName} added to cart`);
+      toast.success(t('addedToCart', language), {
+        description: productName,
+      });
     },
     []
   );
 
   const handleToggleFavorite = useCallback(() => {
     setIsFavorite(prev => !prev);
-    toast.success(
-      !isFavorite ? 'Added to favorites' : 'Removed from favorites'
-    );
+    toast.success(t(!isFavorite ? 'addedToFavorites' : 'removedFromFavorites', language));
   }, [isFavorite]);
 
   const handleContact = useCallback(() => {
-    toast.success('Opening message');
+    toast.success(t('openingMessage', language));
   }, []);
 
   return {

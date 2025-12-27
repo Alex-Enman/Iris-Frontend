@@ -1,8 +1,11 @@
+'use client';
+
 import { Card } from '@components/ui/card';
 import { Button } from '@components/ui/button';
 import { Separator } from '@components/ui/separator';
 import { Switch } from '@components/ui/switch';
 import { Save } from 'lucide-react';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface NotificationPreferencesCardProps {
   values: {
@@ -26,24 +29,25 @@ export function NotificationPreferencesCard({
   onToggle,
   onSave,
 }: NotificationPreferencesCardProps) {
+  const { t } = useLanguage();
   return (
     <Card className='rounded-3xl border-0 p-8 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'>
       <div className='mb-6'>
-        <h2 className='mb-2'>Notification Preferences</h2>
+        <h2 className='mb-2'>{t('notificationPreferences')}</h2>
         <p className='text-sm text-muted-foreground'>
-          Choose how you want to be notified about updates
+          {t('chooseHowYouWantToBeNotifiedAboutUpdates')}
         </p>
       </div>
 
       <div className='space-y-6'>
         <div>
-          <h3 className='mb-4'>Email Notifications</h3>
+          <h3 className='mb-4'>{t('emailNotifications')}</h3>
           <div className='space-y-4'>
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>Order Updates</p>
+                <p className='font-medium'>{t('orderUpdates')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Get notified when your order status changes
+                  {t('orderUpdatesDescription')}
                 </p>
               </div>
               <Switch
@@ -54,9 +58,9 @@ export function NotificationPreferencesCard({
 
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>New Products</p>
+                <p className='font-medium'>{t('newProducts')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Be the first to know about new products from your suppliers
+                  {t('newProductsDescription')}
                 </p>
               </div>
               <Switch
@@ -67,9 +71,9 @@ export function NotificationPreferencesCard({
 
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>Promotions & Deals</p>
+                <p className='font-medium'>{t('promotionsAndDeals')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Receive exclusive offers and special promotions
+                  {t('promotionsAndDealsDescription')}
                 </p>
               </div>
               <Switch
@@ -80,9 +84,9 @@ export function NotificationPreferencesCard({
 
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>Weekly Digest</p>
+                <p className='font-medium'>{t('weeklyDigest')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Summary of your activity and recommendations
+                  {t('weeklyDigestDescription')}
                 </p>
               </div>
               <Switch
@@ -96,13 +100,13 @@ export function NotificationPreferencesCard({
         <Separator />
 
         <div>
-          <h3 className='mb-4'>Delivery Channels</h3>
+          <h3 className='mb-4'>{t('deliveryChannels')}</h3>
           <div className='space-y-4'>
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>Email Notifications</p>
+                <p className='font-medium'>{t('emailNotifications')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Receive notifications via email
+                  {t('receiveNotificationsViaEmail')}
                 </p>
               </div>
               <Switch
@@ -115,9 +119,9 @@ export function NotificationPreferencesCard({
 
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>SMS Notifications</p>
+                <p className='font-medium'>{t('smsNotifications')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Get important updates via text message
+                  {t('getImportantUpdatesViaTextMessage')}
                 </p>
               </div>
               <Switch
@@ -130,9 +134,9 @@ export function NotificationPreferencesCard({
 
             <div className='flex items-center justify-between rounded-xl bg-muted/30 p-4'>
               <div>
-                <p className='font-medium'>Push Notifications</p>
+                <p className='font-medium'>{t('pushNotifications')}</p>
                 <p className='text-sm text-muted-foreground'>
-                  Browser notifications for instant updates
+                  {t('browserNotificationsForInstantUpdates')}
                 </p>
               </div>
               <Switch
@@ -151,7 +155,7 @@ export function NotificationPreferencesCard({
             className='rounded-xl bg-primary hover:bg-primary/90'
           >
             <Save className='mr-2 h-4 w-4' />
-            Save Preferences
+            {t('savePreferences')}
           </Button>
         </div>
       </div>

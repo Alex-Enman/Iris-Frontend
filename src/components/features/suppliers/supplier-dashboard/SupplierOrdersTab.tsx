@@ -4,6 +4,7 @@ import { useSupplierOrdersTab } from '@/hooks/suppliers/use-supplier-orders-tab'
 import { OrderCard } from './orders/OrderCard';
 import { OrdersStatsGrid } from './orders/OrdersStatsGrid';
 import type { Order } from '@/types/suppliers/supplier-dashboard/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface SupplierOrdersTabProps {
   orders: Order[];
@@ -16,6 +17,7 @@ export function SupplierOrdersTab({
   expandedOrderId,
   onToggleExpanded,
 }: SupplierOrdersTabProps) {
+  const { t } = useLanguage();
   const {
     filteredOrders,
     activeOrders,
@@ -27,9 +29,9 @@ export function SupplierOrdersTab({
   return (
     <div className='space-y-6'>
       <div className='mb-8'>
-        <h1 className='mb-2 text-4xl text-primary'>Orders</h1>
+        <h1 className='mb-2 text-4xl text-primary'>{t('orders')}</h1>
         <p className='text-muted-foreground'>
-          Manage and track all your orders in one place
+          {t('ordersDescription')}
         </p>
       </div>
 
@@ -37,19 +39,19 @@ export function SupplierOrdersTab({
         <TabsList className='mb-8 grid h-9 w-full max-w-2xl grid-cols-4 rounded-xl bg-white p-1 text-muted-foreground shadow-[0_1px_4px_rgba(0,0,0,0.08)]'>
           <TabsTrigger value='active' className='rounded-lg'>
             <Clock className='mr-2 h-4 w-4' />
-            Active ({activeOrders.length})
+            {t('active')} ({activeOrders.length})
           </TabsTrigger>
           <TabsTrigger value='completed' className='rounded-lg'>
             <CheckCircle className='mr-2 h-4 w-4' />
-            Completed ({completedOrders.length})
+            {t('completed')} ({completedOrders.length})
           </TabsTrigger>
           <TabsTrigger value='reorder' className='rounded-lg'>
             <Truck className='mr-2 h-4 w-4' />
-            Reorder ({reorderOrders.length})
+            {t('reorder')} ({reorderOrders.length})
           </TabsTrigger>
           <TabsTrigger value='drafts' className='rounded-lg'>
             <Package className='mr-2 h-4 w-4' />
-            Drafts ({draftOrders.length})
+            {t('drafts')} ({draftOrders.length})
           </TabsTrigger>
         </TabsList>
 
@@ -75,7 +77,7 @@ export function SupplierOrdersTab({
               key={o.id}
               order={o}
               progressPct={100}
-              estimate='Delivered'
+              estimate={t('delivered')}
             />
           ))}
         </TabsContent>

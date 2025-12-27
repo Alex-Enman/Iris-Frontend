@@ -4,6 +4,7 @@
 import React from 'react';
 import { Badge } from '@components/ui/badge';
 import { OrderStatus as OrderStatusType } from '@/types';
+import { useLanguage } from '@contexts/LanguageContext';
 
 interface OrderStatusProps {
   status: OrderStatusType;
@@ -23,20 +24,11 @@ const VARIANT_MAP: Record<
   returned: 'secondary',
 };
 
-const LABEL_MAP: Record<OrderStatusType, string> = {
-  pending: 'Pending',
-  confirmed: 'Confirmed',
-  preparing: 'Preparing',
-  shipped: 'Shipped',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled',
-  returned: 'Returned',
-};
-
 export function OrderStatus(props: OrderStatusProps) {
+  const { t } = useLanguage();
   const { status, className } = props;
   const variant = VARIANT_MAP[status] ?? 'secondary';
-  const label = LABEL_MAP[status] ?? status;
+  const label = t(status) ?? status;
   return (
     <Badge variant={variant} className={className}>
       {label}

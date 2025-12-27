@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { toast } from 'sonner';
+import { getStoredLanguage, t } from '@lib/i18n';
 
 export interface Message {
   id: string;
@@ -20,6 +21,7 @@ export interface Chat {
 }
 
 export function useMessagesPage() {
+  const language = getStoredLanguage();
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string>('');
   const [messageInput, setMessageInput] = useState('');
@@ -35,7 +37,7 @@ export function useMessagesPage() {
     const newMessage: Message = {
       id: `m${Date.now()}`,
       text: messageInput,
-      sender: 'You',
+      sender: t('you', language),
       timestamp: new Date().toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
@@ -54,14 +56,14 @@ export function useMessagesPage() {
     );
 
     setMessageInput('');
-    toast.success('Message sent');
+    toast.success(t('messageSent', language));
 
     // Simulate response after 2 seconds if not general chat
     if (selectedChat?.type === 'project') {
       setTimeout(() => {
         const autoReply: Message = {
           id: `m${Date.now()}`,
-          text: "Thanks for your message! We'll get back to you shortly.",
+          text: t('autoReplyThanksWellGetBackSoon', language),
           sender: selectedChat.name,
           timestamp: new Date().toLocaleTimeString([], {
             hour: '2-digit',
@@ -84,7 +86,7 @@ export function useMessagesPage() {
   };
 
   const handleNewChat = () => {
-    toast.success('New chat feature coming soon!');
+    toast.success(t('newChatFeatureComingSoon', language));
   };
 
   const getParticipantCount = (chat: Chat) => {

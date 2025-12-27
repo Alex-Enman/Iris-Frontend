@@ -8,6 +8,7 @@ import type {
   SupplierContentInfo,
   SupplierStats,
 } from '@/components/types/supplier-profile';
+import { useLanguage } from '@contexts/LanguageContext';
 
 export interface SupplierInfoSectionProps {
   display: SupplierDisplayInfo;
@@ -20,6 +21,7 @@ export function SupplierInfoSection({
   content,
   stats,
 }: SupplierInfoSectionProps) {
+  const { t } = useLanguage();
   const { rating, totalReviews, memberSince } = display;
   const { description, certifications } = content;
   return (
@@ -29,19 +31,21 @@ export function SupplierInfoSection({
           <Star className='h-5 w-5 fill-primary text-primary' />
           <span className='text-lg'>{rating}</span>
           <span className='text-sm text-muted-foreground'>
-            ({totalReviews} reviews)
+            ({totalReviews} {t('reviews')})
           </span>
         </div>
         <div className='h-6 w-px bg-border' />
         <div className='text-sm text-muted-foreground'>
-          Member since {memberSince}
+          {t('memberSince')} {memberSince}
         </div>
       </div>
 
       <p className='mb-4 leading-relaxed text-foreground'>{description}</p>
 
       <div className='mb-4'>
-        <p className='mb-2 text-sm text-muted-foreground'>Certifications</p>
+        <p className='mb-2 text-sm text-muted-foreground'>
+          {t('certificationsLabel')}
+        </p>
         <div className='flex flex-wrap gap-2'>
           {certifications.map((cert, index) => (
             <Badge key={index} variant='outline'>
@@ -55,28 +59,28 @@ export function SupplierInfoSection({
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
             <Package className='h-4 w-4' />
-            Products
+            {t('products')}
           </div>
           <div>{stats.totalProducts}</div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
             <ShoppingCart className='h-4 w-4' />
-            Total Orders
+            {t('totalOrders')}
           </div>
           <div>{stats.totalOrders}</div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
             <Clock className='h-4 w-4' />
-            Response Time
+            {t('responseTime')}
           </div>
           <div>{stats.responseTime}</div>
         </div>
         <div>
           <div className='mb-1 flex items-center gap-2 text-sm text-muted-foreground'>
             <TrendingUp className='h-4 w-4' />
-            Delivery Rate
+            {t('deliveryRate')}
           </div>
           <div>{stats.deliveryRate}</div>
         </div>
