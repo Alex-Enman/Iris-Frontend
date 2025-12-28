@@ -5,6 +5,10 @@ export interface CartItem {
   productImage?: string;
   unit?: string;
   quantity: number;
+  quantityUnit?: 'kg' | 'batches';
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: number;
+  batchPriceSek?: number;
   purchaseMode: 'direct' | 'offer';
   listedUnitPrice: number;
   offeredUnitPrice?: number;

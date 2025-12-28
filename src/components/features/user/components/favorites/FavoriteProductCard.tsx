@@ -16,7 +16,7 @@ interface FavoriteProductCardProps {
   rating: number;
   organic: boolean;
   lastOrdered: string;
-  onAdd: () => void;
+  onAdd: (productId: number) => void;
   onViewSupplier: (supplierId: number) => void;
   onRemove: (id: number) => void;
 }
@@ -87,7 +87,7 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
         </div>
         <div className='space-y-2'>
           <Button
-            onClick={onAdd}
+            onClick={() => onAdd(id)}
             disabled={!inStock}
             className='w-full rounded-xl'
           >

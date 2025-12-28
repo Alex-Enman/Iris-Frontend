@@ -14,6 +14,9 @@ export function useSupplierProductsTab(initialProducts: Product[]) {
     category: 'vegetables',
     price: '',
     unit: 'kg',
+    pricingMode: 'perKg',
+    batchWeightKg: '',
+    batchPriceSek: '',
     stock: '',
     imageUrl: '',
   });
@@ -35,6 +38,9 @@ export function useSupplierProductsTab(initialProducts: Product[]) {
       category: 'vegetables',
       price: '',
       unit: 'kg',
+      pricingMode: 'perKg',
+      batchWeightKg: '',
+      batchPriceSek: '',
       stock: '',
       imageUrl: '',
     });

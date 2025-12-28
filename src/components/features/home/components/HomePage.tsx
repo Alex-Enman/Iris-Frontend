@@ -8,7 +8,7 @@ import { RecommendedProducers } from './RecommendedProducers';
 import { useLanguage } from '@contexts/LanguageContext';
 
 interface HomePageProps {
-  onNavigateToProduct: () => void;
+  onNavigateToProduct: (productId: string) => void;
   onViewSupplier?: (supplierId: string) => void;
 }
 

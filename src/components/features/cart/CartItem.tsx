@@ -10,6 +10,8 @@ import { Input } from '@components/ui/input';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { CartItem as CartItemType } from '@/types';
 import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
+import { getPricingMode } from '@/utils/product-pricing';
 
 interface CartItemProps {
   item: CartItemType;
@@ -19,6 +21,11 @@ interface CartItemProps {
 
 export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const { t } = useLanguage();
+  const mode = getPricingMode(item);
+  const unitLabel = mode === 'batch' ? t('batchUnitShort') : item.unit ?? '';
+  const quantityLabel =
+    mode === 'batch' ? t('batchesLabel') : item.quantityUnit === 'kg' ? t('kgShort') : t('kgShort');
+
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
     onUpdateQuantity?.(item.id, newQuantity);
@@ -45,7 +52,10 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
             <p className='truncate text-sm text-muted-foreground'>
               {item.supplierName}
             </p>
-            <p className='text-sm font-medium'>${item.unitPrice.toFixed(2)}</p>
+            <p className='text-sm font-medium'>
+              {formatCurrency(item.unitPrice, 'SEK')}
+              {unitLabel ? `/${unitLabel}` : ''}
+            </p>
           </div>
 
           <div className='flex items-center space-x-2'>
@@ -79,7 +89,10 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
 
           <div className='text-right'>
             <p className='font-medium'>
-              ${(item.unitPrice * item.quantity).toFixed(2)}
+              {formatCurrency(item.unitPrice * item.quantity, 'SEK')}
+            </p>
+            <p className='text-xs text-muted-foreground'>
+              {t('quantityLabel')}: {item.quantity} {quantityLabel}
             </p>
             <Button
               variant='ghost'

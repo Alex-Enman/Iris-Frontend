@@ -25,6 +25,9 @@ export function useStoreProducts({
     category: 'Vegetables',
     price: '',
     unit: 'kg',
+    pricingMode: 'perKg',
+    batchWeightKg: '',
+    batchPriceSek: '',
     stock: '',
     description: '',
     imageUrl: '',
@@ -36,6 +39,9 @@ export function useStoreProducts({
       category: 'Vegetables',
       price: '',
       unit: 'kg',
+      pricingMode: 'perKg',
+      batchWeightKg: '',
+      batchPriceSek: '',
       stock: '',
       description: '',
       imageUrl: '',
@@ -56,6 +62,15 @@ export function useStoreProducts({
         category: product.category,
         price: product.price.toString(),
         unit: product.unit,
+        pricingMode: product.pricingMode ?? 'perKg',
+        batchWeightKg:
+          product.pricingMode === 'batch' && product.batchWeightKg !== undefined
+            ? String(product.batchWeightKg)
+            : '',
+        batchPriceSek:
+          product.pricingMode === 'batch' && product.batchPriceSek !== undefined
+            ? String(product.batchPriceSek)
+            : '',
         stock: product.stock.toString(),
         description: product.description || '',
         imageUrl: product.image,

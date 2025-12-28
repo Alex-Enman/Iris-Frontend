@@ -1,62 +1,59 @@
 // Error message utilities
 
-import { getStoredLanguage, t } from '@lib/i18n';
-
-export function getErrorMessage(error: any) {
-  const language = getStoredLanguage();
+export function getErrorMessage(error: any, t: (key: any) => string) {
 
   if (error?.status === 401) {
     return {
-      title: t('unauthorizedTitle', language),
-      description: t('unauthorizedDescription', language),
+      title: t('unauthorizedTitle'),
+      description: t('unauthorizedDescription'),
     };
   }
 
   if (error?.status === 403) {
     return {
-      title: t('accessDeniedTitle', language),
-      description: t('accessDeniedDescription', language),
+      title: t('accessDeniedTitle'),
+      description: t('accessDeniedDescription'),
     };
   }
 
   if (error?.status === 404) {
     return {
-      title: t('notFoundTitle', language),
-      description: t('notFoundDescription', language),
+      title: t('notFoundTitle'),
+      description: t('notFoundDescription'),
     };
   }
 
   if (error?.status === 408) {
     return {
-      title: t('connectionErrorTitle', language),
-      description: t('requestTimeoutError', language),
+      title: t('connectionErrorTitle'),
+      description: t('requestTimeoutError'),
     };
   }
 
   if (error?.status === 429) {
     return {
-      title: t('tooManyRequestsTitle', language),
-      description: t('tooManyRequestsDescription', language),
+      title: t('tooManyRequestsTitle'),
+      description: t('tooManyRequestsDescription'),
     };
   }
 
   if (error?.status === 500) {
     return {
-      title: t('serverErrorTitle', language),
-      description: t('serverErrorDescription', language),
+      title: t('serverErrorTitle'),
+      description: t('serverErrorDescription'),
     };
   }
 
   if (error?.status === 0 || !error?.status) {
     return {
-      title: t('networkErrorTitle', language),
-      description: t('networkErrorDescription', language),
+      title: t('networkErrorTitle'),
+      description: t('networkErrorDescription'),
     };
   }
 
   return {
-    title: t('errorTitle', language),
+    title: t('errorTitle'),
     description:
-      error?.message || t('unexpectedErrorOccurredDescription', language),
+      error?.message || t('unexpectedErrorOccurredDescription'),
   };
 }

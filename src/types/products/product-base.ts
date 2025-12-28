@@ -20,6 +20,9 @@ export interface ProductPricing {
   unit: string;
   isAvailable: boolean;
   minimumOrderQuantity: number;
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: number;
+  batchPriceSek?: number;
 }
 
 // Product media

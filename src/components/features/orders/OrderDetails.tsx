@@ -26,7 +26,15 @@ import {
 } from 'lucide-react';
 import { Order } from '@/types/orders/types';
 import { useLanguage } from '@contexts/LanguageContext';
-import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
+
+function normalizeOrderStatusId(value: string): string {
+  const raw = String(value ?? '').trim();
+  const lower = raw.toLowerCase();
+  if (lower === 'in transit' || lower === 'in_transit' || lower === 'intransit') {
+    return 'inTransit';
+  }
+  return lower;
+}
 
 interface OrderDetailsProps {
   order: Order;

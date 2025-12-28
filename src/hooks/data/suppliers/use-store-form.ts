@@ -110,6 +110,9 @@ export function useStoreForm({
     category: 'vegetables',
     price: '',
     unit: 'kg',
+    pricingMode: 'perKg',
+    batchWeightKg: '',
+    batchPriceSek: '',
     stock: '',
     description: '',
     imageUrl: '',
@@ -151,17 +154,33 @@ export function useStoreForm({
     }));
   };
 
-  const createProductFromForm = (formData: ProductFormData): Product => ({
-    id: products.length + 1,
-    name: formData.name,
-    category: formData.category,
-    price: parseFloat(formData.price),
-    unit: formData.unit,
-    stock: parseInt(formData.stock),
-    status: parseInt(formData.stock) > 0 ? 'inStock' : 'outOfStock',
-    image: formData.imageUrl || 'https://via.placeholder.com/150',
-    description: formData.description,
-  });
+  const createProductFromForm = (formData: ProductFormData): Product => {
+    const mode = formData.pricingMode ?? 'perKg';
+    const priceValue = parseFloat(formData.price);
+
+    const batchWeightValue = parseFloat(formData.batchWeightKg ?? '');
+    const batchPriceValue = parseFloat(formData.batchPriceSek ?? '');
+
+    const derivedPerKgPrice =
+      mode === 'batch'
+        ? batchPriceValue / batchWeightValue
+        : priceValue;
+
+    return {
+      id: products.length + 1,
+      name: formData.name,
+      category: formData.category,
+      price: derivedPerKgPrice,
+      unit: mode === 'batch' ? 'kg' : formData.unit,
+      pricingMode: mode,
+      batchWeightKg: mode === 'batch' ? batchWeightValue : undefined,
+      batchPriceSek: mode === 'batch' ? batchPriceValue : undefined,
+      stock: parseInt(formData.stock),
+      status: parseInt(formData.stock) > 0 ? 'inStock' : 'outOfStock',
+      image: formData.imageUrl || 'https://via.placeholder.com/150',
+      description: formData.description,
+    };
+  };
 
   const resetProductForm = () => {
     setNewProduct({
@@ -169,6 +188,9 @@ export function useStoreForm({
       category: 'vegetables',
       price: '',
       unit: 'kg',
+      pricingMode: 'perKg',
+      batchWeightKg: '',
+      batchPriceSek: '',
       stock: '',
       description: '',
       imageUrl: '',
@@ -176,7 +198,28 @@ export function useStoreForm({
   };
 
   const addProduct = () => {
-    if (newProduct.name && newProduct.price && newProduct.stock) {
+    const mode = newProduct.pricingMode ?? 'perKg';
+    const stockValue = parseInt(newProduct.stock);
+    const hasValidStock = Number.isFinite(stockValue) && stockValue >= 0;
+
+    const priceValue = parseFloat(newProduct.price);
+    const hasValidPerKgPrice = Number.isFinite(priceValue) && priceValue > 0;
+
+    const batchWeightValue = parseFloat(newProduct.batchWeightKg ?? '');
+    const batchPriceValue = parseFloat(newProduct.batchPriceSek ?? '');
+    const hasValidBatch =
+      Number.isFinite(batchWeightValue) &&
+      batchWeightValue > 0 &&
+      Number.isFinite(batchPriceValue) &&
+      batchPriceValue > 0;
+
+    if (
+      newProduct.name &&
+      newProduct.stock &&
+      hasValidStock &&
+      ((mode === 'perKg' && newProduct.price && hasValidPerKgPrice) ||
+        (mode === 'batch' && hasValidBatch))
+    ) {
       const product = createProductFromForm(newProduct);
       setProducts(prev => [...prev, product]);
       resetProductForm();
@@ -192,6 +235,15 @@ export function useStoreForm({
         category: normalizeCategory(product.category),
         price: product.price.toString(),
         unit: product.unit,
+        pricingMode: product.pricingMode ?? 'perKg',
+        batchWeightKg:
+          product.pricingMode === 'batch' && product.batchWeightKg !== undefined
+            ? String(product.batchWeightKg)
+            : '',
+        batchPriceSek:
+          product.pricingMode === 'batch' && product.batchPriceSek !== undefined
+            ? String(product.batchPriceSek)
+            : '',
         stock: product.stock.toString(),
         description: product.description || '',
         imageUrl: product.image,
@@ -205,9 +257,30 @@ export function useStoreForm({
     if (
       editingProduct &&
       newProduct.name &&
-      newProduct.price &&
       newProduct.stock
     ) {
+      const mode = newProduct.pricingMode ?? 'perKg';
+      const stockValue = parseInt(newProduct.stock);
+      const hasValidStock = Number.isFinite(stockValue) && stockValue >= 0;
+
+      const priceValue = parseFloat(newProduct.price);
+      const hasValidPerKgPrice = Number.isFinite(priceValue) && priceValue > 0;
+
+      const batchWeightValue = parseFloat(newProduct.batchWeightKg ?? '');
+      const batchPriceValue = parseFloat(newProduct.batchPriceSek ?? '');
+      const hasValidBatch =
+        Number.isFinite(batchWeightValue) &&
+        batchWeightValue > 0 &&
+        Number.isFinite(batchPriceValue) &&
+        batchPriceValue > 0;
+
+      const canUpdate =
+        hasValidStock &&
+        ((mode === 'perKg' && newProduct.price && hasValidPerKgPrice) ||
+          (mode === 'batch' && hasValidBatch));
+
+      if (!canUpdate) return;
+
       const updatedProduct = createProductFromForm(newProduct);
       setProducts(prev =>
         prev.map(p =>

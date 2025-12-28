@@ -14,9 +14,11 @@ import { getMockProducts } from '@/tests/mocks/mock-products';
 import { getMockSupplierOrders } from '@/tests/mocks/mock-orders';
 import { getMockSupplierCustomers } from '@/tests/mocks/mock-customers';
 import { useLanguage } from '@contexts/LanguageContext';
+import { useSupplierProductActions } from '@/hooks/suppliers/use-supplier-product-actions';
 
 export function useSupplierDashboard() {
   const { t } = useLanguage();
+  const { createProduct } = useSupplierProductActions();
   const [activeTab, setActiveTab] = useState<DashboardTab>('dashboard');
   const [editingProduct, setEditingProduct] = useState<number | null>(null);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
@@ -31,6 +33,9 @@ export function useSupplierDashboard() {
     category: 'vegetables',
     price: '',
     unit: 'kg',
+    pricingMode: 'perKg',
+    batchWeightKg: '',
+    batchPriceSek: '',
     stock: '',
     imageUrl: '',
   });
@@ -113,30 +118,52 @@ export function useSupplierDashboard() {
   // Mock customers data
   const [customers] = useState<Customer[]>(getMockSupplierCustomers());
 
-  const handleAddProduct = () => {
-    if (newProduct.name && newProduct.price && newProduct.stock) {
+  const handleAddProduct = (form: NewProductForm) => {
+    const mode = form.pricingMode ?? 'perKg';
+    const stockValue = parseInt(form.stock);
+    const hasValidStock = Number.isFinite(stockValue) && stockValue >= 0;
+
+    const priceValue = parseFloat(form.price);
+    const hasValidPerKgPrice = Number.isFinite(priceValue) && priceValue > 0;
+
+    const batchWeightValue = parseFloat(form.batchWeightKg ?? '');
+    const batchPriceValue = parseFloat(form.batchPriceSek ?? '');
+    const hasValidBatch =
+      Number.isFinite(batchWeightValue) &&
+      batchWeightValue > 0 &&
+      Number.isFinite(batchPriceValue) &&
+      batchPriceValue > 0;
+
+    if (
+      form.name &&
+      form.stock &&
+      hasValidStock &&
+      ((mode === 'perKg' && form.price && hasValidPerKgPrice) ||
+        (mode === 'batch' && hasValidBatch))
+    ) {
+      const derivedPerKgPrice =
+        mode === 'batch' ? batchPriceValue / batchWeightValue : priceValue;
+
+      const nextId =
+        products.length === 0 ? 1 : Math.max(...products.map(p => p.id)) + 1;
       const product: Product = {
-        id: products.length + 1,
-        name: newProduct.name,
-        category: newProduct.category,
-        price: parseFloat(newProduct.price),
-        unit: newProduct.unit,
-        stock: parseInt(newProduct.stock),
-        status: parseInt(newProduct.stock) > 0 ? 'inStock' : 'outOfStock',
-        image: newProduct.imageUrl || 'https://via.placeholder.com/150',
+        id: nextId,
+        name: form.name,
+        category: form.category,
+        price: derivedPerKgPrice,
+        unit: mode === 'batch' ? 'kg' : form.unit,
+        pricingMode: mode,
+        batchWeightKg: mode === 'batch' ? batchWeightValue : undefined,
+        batchPriceSek: mode === 'batch' ? batchPriceValue : undefined,
+        stock: stockValue,
+        status: stockValue > 0 ? 'inStock' : 'outOfStock',
+        image: form.imageUrl || 'https://via.placeholder.com/150',
         sales: 0,
         revenue: 'kr0.00',
       };
-      setProducts([...products, product]);
-      setNewProduct({
-        name: '',
-        category: 'vegetables',
-        price: '',
-        unit: 'kg',
-        stock: '',
-        imageUrl: '',
-      });
-      setIsAddProductOpen(false);
+
+      setProducts(prev => [...prev, product]);
+      void createProduct({ product });
     }
   };
 

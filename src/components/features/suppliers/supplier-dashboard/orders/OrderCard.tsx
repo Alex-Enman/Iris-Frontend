@@ -6,7 +6,15 @@ import { Progress } from '@components/ui/progress';
 import type { Order } from '@/types/suppliers/supplier-dashboard/types';
 import { getStatusIcon, getStatusColor } from './OrderStatusHelpers';
 import { useLanguage } from '@contexts/LanguageContext';
-import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
+
+function normalizeOrderStatusId(value: string): string {
+  const raw = String(value ?? '').trim();
+  const lower = raw.toLowerCase();
+  if (lower === 'in transit' || lower === 'in_transit' || lower === 'intransit') {
+    return 'inTransit';
+  }
+  return lower;
+}
 
 interface OrderCardProps {
   order: Order;

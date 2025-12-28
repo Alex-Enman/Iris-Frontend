@@ -9,7 +9,6 @@ import { Store, UtensilsCrossed } from 'lucide-react';
 import { UserRole } from '@/types';
 import { getMockAuthCredentials } from '@/tests/mocks/mock-data';
 import { useLanguage } from '@contexts/LanguageContext';
-import type { TranslationKey } from '@lib/i18n';
 
 interface LoginPageProps {
   onLogin: (userType: UserRole) => void;
@@ -19,7 +18,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const { t } = useLanguage();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<TranslationKey | ''>('');
+  const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -114,7 +113,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
                 {error && (
                   <Alert variant='destructive' className='rounded-xl'>
-                    <AlertDescription>{t(error)}</AlertDescription>
+                    <AlertDescription>{t(error as any)}</AlertDescription>
                   </Alert>
                 )}
 

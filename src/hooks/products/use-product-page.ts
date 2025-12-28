@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Leaf, MapPin, Award } from 'lucide-react';
 import { useLanguage } from '@contexts/LanguageContext';
+import { getMockProducts } from '@/tests/mocks/mock-products';
 
 export interface ProductBadgeDef {
   icon: any;
@@ -17,6 +18,9 @@ type ProductIdentity = {
 type ProductPricing = {
   price: number;
   unit: string;
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: number;
+  batchPriceSek?: number;
 };
 
 type ProductMeta = {
@@ -60,20 +64,31 @@ export type ReviewItem = {
   date: string;
 };
 
-export function useProductPage() {
+export function useProductPage(productId?: string) {
   const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   const [imageScale, setImageScale] = useState(1);
   const [showCompare, setShowCompare] = useState(false);
   const [highlightBest, setHighlightBest] = useState(false);
 
+  const mockProducts = getMockProducts();
+  const selected =
+    productId != null
+      ? mockProducts.find(p => p.id === productId) ?? mockProducts[0]
+      : mockProducts[0];
+
+  const selectedUnit = selected?.unit ?? 'kg';
+  const selectedImage = selected?.image ?? '';
+
   const product: ProductData = {
-    name: t('productHeirloomTomatoes'),
-    producer: t('supplierNameGreenValleyFarm'),
-    price: 45,
-    unit: 'kg',
-    image:
-      'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
+    name: selected?.name ?? t('productHeirloomTomatoes'),
+    producer: selected?.supplierName ?? t('supplierNameGreenValleyFarm'),
+    price: selected?.price ?? 45,
+    unit: selectedUnit,
+    pricingMode: (selected as any)?.pricingMode,
+    batchWeightKg: (selected as any)?.batchWeightKg,
+    batchPriceSek: (selected as any)?.batchPriceSek,
+    image: selectedImage,
     rating: 4.8,
     reviews: 127,
     location: t('distance12kmAway'),

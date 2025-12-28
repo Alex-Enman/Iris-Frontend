@@ -7,7 +7,7 @@ import { FavoriteOrderCard } from './components/favorites/FavoriteOrderCard';
 import { useLanguage } from '@contexts/LanguageContext';
 
 interface FavoritesPageProps {
-  onNavigateToProduct: () => void;
+  onNavigateToProduct: (productId: string) => void;
   onViewSupplier?: (supplierId: string) => void;
 }
 
@@ -96,7 +96,7 @@ export function FavoritesPage({
                   <FavoriteProductCard
                     key={p.id}
                     {...p}
-                    onAdd={onNavigateToProduct}
+                    onAdd={id => onNavigateToProduct(String(id))}
                     onViewSupplier={id => onViewSupplier?.(id.toString())}
                     onRemove={removeFavoriteProduct}
                   />

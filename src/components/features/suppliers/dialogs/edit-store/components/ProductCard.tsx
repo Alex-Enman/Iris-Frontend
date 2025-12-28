@@ -13,6 +13,7 @@ import {
 import { Edit, MoreVertical, Trash2 } from 'lucide-react';
 import { Product } from '@/types/suppliers/edit-store/types';
 import { useLanguage } from '@contexts/LanguageContext';
+import { formatCurrency } from '@/utils/formatters';
 
 export interface ProductCardProps {
   product: Product;
@@ -50,6 +51,15 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
   const { t } = useLanguage();
   const categoryLabel = (t(product.category as any) as string) ?? product.category;
   const statusKey = getStatusLabelKey(product.status);
+  const mode = product.pricingMode ?? 'perKg';
+  const hasBatchDetails =
+    mode === 'batch' &&
+    product.batchWeightKg !== undefined &&
+    product.batchPriceSek !== undefined &&
+    Number.isFinite(product.batchWeightKg) &&
+    product.batchWeightKg > 0 &&
+    Number.isFinite(product.batchPriceSek) &&
+    product.batchPriceSek > 0;
   return (
     <Card className='p-4'>
       <div className='mb-3 flex items-start justify-between'>
@@ -86,16 +96,43 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
       </div>
 
       <div className='space-y-2'>
-        <div className='flex justify-between text-sm'>
-          <span className='text-muted-foreground'>{t('price')}:</span>
-          <span className='font-medium'>
-            kr{product.price}/{product.unit}
-          </span>
-        </div>
+        {mode === 'batch' ? (
+          <>
+            <div className='flex items-center justify-between'>
+              <Badge className='bg-primary/10 text-primary'>
+                {t('soldInBatchesBadge')}
+              </Badge>
+            </div>
+            <div className='flex justify-between text-sm'>
+              <span className='text-muted-foreground'>{t('pricePerKgLabel')}:</span>
+              <span className='font-medium'>
+                {formatCurrency(product.price, 'SEK')}/{t('kgShort')}
+              </span>
+            </div>
+            <div className='flex justify-between text-sm'>
+              <span className='text-muted-foreground'>{t('batchUnitShort')}:</span>
+              <span className='font-medium'>
+                {hasBatchDetails
+                  ? `${product.batchWeightKg} ${t('kgShort')} ${t('for')} ${formatCurrency(
+                      product.batchPriceSek as number,
+                      'SEK'
+                    )}`
+                  : '-'}
+              </span>
+            </div>
+          </>
+        ) : (
+          <div className='flex justify-between text-sm'>
+            <span className='text-muted-foreground'>{t('pricePerKgLabel')}:</span>
+            <span className='font-medium'>
+              {formatCurrency(product.price, 'SEK')}/{product.unit}
+            </span>
+          </div>
+        )}
         <div className='flex justify-between text-sm'>
           <span className='text-muted-foreground'>{t('stock')}:</span>
           <span className='font-medium'>
-            {product.stock} {t('units')}
+            {product.stock} {mode === 'batch' ? t('batchesLabel') : t('units')}
           </span>
         </div>
         <div className='flex items-center justify-between'>

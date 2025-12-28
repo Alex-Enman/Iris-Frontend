@@ -9,6 +9,13 @@ import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
 import { cn } from '@/utils/utils';
 import { useLanguage } from '@contexts/LanguageContext';
+import {
+  getPricingMode,
+  getProductBatchSummary,
+  getProductListedUnitPrice,
+  getProductPricePerKgSek,
+  getProductQuantityUnit,
+} from '@/utils/product-pricing';
 
 export function ProductCard({
   product,
@@ -19,6 +26,12 @@ export function ProductCard({
   showSupplier = true,
 }: ProductCardProps) {
   const { t } = useLanguage();
+
+  const pricingMode = getPricingMode(product);
+  const quantityUnit = getProductQuantityUnit(product);
+  const listedUnitPrice = getProductListedUnitPrice(product);
+  const batchSummary = getProductBatchSummary(product);
+  const pricePerKgSek = getProductPricePerKgSek(product);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -107,17 +120,28 @@ export function ProductCard({
           <div className='flex items-center justify-between'>
             <div className='space-y-1'>
               <p className='text-lg font-bold text-foreground'>
-                {formatCurrency(product.price)}
+                {formatCurrency(listedUnitPrice)}
               </p>
               <p className='text-xs text-muted-foreground'>
-                {t('perPrefix')} {product.unit}
+                {pricingMode === 'batch'
+                  ? `${t('perPrefix')} ${t('batchUnitShort')}`
+                  : `${t('perPrefix')} ${product.unit}`}
               </p>
+              <p className='text-xs text-muted-foreground'>
+                {t('pricePerKgLabel')}: {formatCurrency(pricePerKgSek, 'SEK')}/{t('kgShort')}
+              </p>
+              {pricingMode === 'batch' && batchSummary ? (
+                <p className='text-xs text-muted-foreground'>
+                  {t('soldInBatchesBadge')}: {batchSummary.batchWeightKg} {t('kgShort')} {t('for')} {formatCurrency(batchSummary.batchPriceSek, 'SEK')}
+                </p>
+              ) : null}
             </div>
 
             {/* Minimum order quantity */}
             <div className='text-right'>
               <p className='text-xs text-muted-foreground'>
-                {t('minLabel')}: {product.minimumOrderQuantity} {product.unit}
+                {t('minLabel')}: {product.minimumOrderQuantity}{' '}
+                {quantityUnit === 'batches' ? t('batchesLabel') : product.unit}
               </p>
             </div>
           </div>

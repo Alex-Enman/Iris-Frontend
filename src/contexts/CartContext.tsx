@@ -3,6 +3,11 @@
 import { createContext, useContext, useReducer, ReactNode } from 'react';
 import { Product } from '@/types';
 import type { CartItem as DomainCartItem } from '@/types/cart';
+import {
+  getPricingMode,
+  getProductListedUnitPrice,
+  getProductQuantityUnit,
+} from '@/utils/product-pricing';
 
 /**
  * CartItem represents a simplified version of Product for cart functionality.
@@ -23,6 +28,10 @@ export type AddItemInput = {
   productImage?: string;
   unit?: string;
   quantity: number;
+  quantityUnit?: 'kg' | 'batches';
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: number;
+  batchPriceSek?: number;
   purchaseMode: 'direct' | 'offer';
   listedUnitPrice: number;
   offeredUnitPrice?: number;
@@ -40,7 +49,11 @@ export const createCartItemFromProduct = (
   productName: product.name,
   productImage: product.image,
   unit: product.unit,
-  listedUnitPrice: product.price,
+  quantityUnit: getProductQuantityUnit(product),
+  pricingMode: getPricingMode(product),
+  batchWeightKg: product.batchWeightKg,
+  batchPriceSek: product.batchPriceSek,
+  listedUnitPrice: getProductListedUnitPrice(product),
   supplierId: product.supplierId,
   supplierName: product.supplierName,
 });
@@ -97,12 +110,15 @@ function normalizeOfferUnitPrice(offeredUnitPrice?: number) {
 
 function getCartItemId(input: {
   productId: string;
+  pricingMode?: 'perKg' | 'batch';
   purchaseMode: 'direct' | 'offer';
   offeredUnitPrice?: number;
 }) {
-  if (input.purchaseMode === 'direct') return `${input.productId}::direct`;
+  const pricingMode = input.pricingMode ?? 'perKg';
+  if (input.purchaseMode === 'direct')
+    return `${input.productId}::${pricingMode}::direct`;
   const normalized = normalizeOfferUnitPrice(input.offeredUnitPrice);
-  return `${input.productId}::offer::${normalized ?? 'none'}`;
+  return `${input.productId}::${pricingMode}::offer::${normalized ?? 'none'}`;
 }
 
 function getTotals(items: CartItem[]) {
@@ -126,6 +142,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
           item.id === itemId
             ? {
                 ...item,
+                quantityUnit: action.payload.quantityUnit,
+                pricingMode: action.payload.pricingMode,
+                batchWeightKg: action.payload.batchWeightKg,
+                batchPriceSek: action.payload.batchPriceSek,
                 purchaseMode: action.payload.purchaseMode,
                 listedUnitPrice: action.payload.listedUnitPrice,
                 offeredUnitPrice: normalizeOfferUnitPrice(action.payload.offeredUnitPrice),
@@ -147,6 +167,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         productImage: action.payload.productImage,
         unit: action.payload.unit,
         quantity: action.payload.quantity,
+        quantityUnit: action.payload.quantityUnit,
+        pricingMode: action.payload.pricingMode,
+        batchWeightKg: action.payload.batchWeightKg,
+        batchPriceSek: action.payload.batchPriceSek,
         purchaseMode: action.payload.purchaseMode,
         listedUnitPrice: action.payload.listedUnitPrice,
         offeredUnitPrice: normalizeOfferUnitPrice(action.payload.offeredUnitPrice),
@@ -208,6 +232,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       const targetItemId = getCartItemId({
         productId: sourceItem.productId,
+        pricingMode: sourceItem.pricingMode,
         purchaseMode: action.payload.purchaseMode,
         offeredUnitPrice: nextOfferedUnitPrice,
       });
@@ -261,6 +286,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       const targetItemId = getCartItemId({
         productId: sourceItem.productId,
+        pricingMode: sourceItem.pricingMode,
         purchaseMode: 'offer',
         offeredUnitPrice: nextOfferedUnitPrice,
       });

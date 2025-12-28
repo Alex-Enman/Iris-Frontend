@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useProductPage } from '@hooks/products/use-product-page';
 import { Button } from '@components/ui/button';
 import { Badge } from '@components/ui/badge';
@@ -9,6 +9,14 @@ import { ComparisonDialog } from './components/ComparisonDialog';
 import { useLanguage } from '@contexts/LanguageContext';
 import { useCartActions } from '@/hooks/cart/use-cart-actions';
 import { formatCurrency } from '@/utils/formatters';
+import { getMockProducts } from '@/tests/mocks/mock-products';
+import {
+  getPricingMode,
+  getProductBatchSummary,
+  getProductListedUnitPrice,
+  getProductPricePerKgSek,
+  getProductQuantityUnit,
+} from '@/utils/product-pricing';
 import {
   Dialog,
   DialogContent,
@@ -28,11 +36,19 @@ import {
 
 interface ProductPageProps {
   onAddToCart: () => void;
+  productId?: string;
 }
 
-export function ProductPage({ onAddToCart }: ProductPageProps) {
+export function ProductPage({ onAddToCart, productId }: ProductPageProps) {
   const { t } = useLanguage();
   const { addDirectLineItem, addOfferLineItem } = useCartActions();
+
+  const mockProducts = useMemo(() => getMockProducts(), []);
+  const effectiveSelectedProductId = useMemo(
+    () => productId ?? mockProducts[0]?.id ?? '1',
+    [mockProducts, productId]
+  );
+
   const {
     quantity,
     setQuantity,
@@ -45,14 +61,50 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
     product,
     similarProducts,
     reviews,
-  } = useProductPage();
+  } = useProductPage(effectiveSelectedProductId);
+
+  const selectedProductMeta = useMemo(
+    () =>
+      mockProducts.find(p => p.id === effectiveSelectedProductId) ?? mockProducts[0],
+    [mockProducts, effectiveSelectedProductId]
+  );
+
+  const effectiveProductId = useMemo(
+    () => selectedProductMeta?.id ?? 'pdp-product-1',
+    [selectedProductMeta]
+  );
+  const effectiveSupplierId = useMemo(
+    () => selectedProductMeta?.supplierId ?? 'supplier-1',
+    [selectedProductMeta]
+  );
+
+  const pricingMode = useMemo(() => getPricingMode(product as any), [product]);
+  const quantityUnit = useMemo(() => getProductQuantityUnit(product as any), [product]);
+  const listedUnitPrice = useMemo(
+    () => getProductListedUnitPrice(product as any),
+    [product]
+  );
+  const batchSummary = useMemo(
+    () => getProductBatchSummary(product as any),
+    [product]
+  );
+  const pricePerKgSek = useMemo(
+    () => getProductPricePerKgSek(product as any),
+    [product]
+  );
 
   const [makeOfferOpen, setMakeOfferOpen] = useState(false);
   const [offerQuantity, setOfferQuantity] = useState(1);
-  const [offerUnitPrice, setOfferUnitPrice] = useState(product.price);
+  const [offerUnitPrice, setOfferUnitPrice] = useState(listedUnitPrice);
 
-  const demoProductId = useMemo(() => 'pdp-product-1', []);
-  const demoSupplierId = useMemo(() => 'supplier-1', []);
+  useEffect(() => {
+    setOfferUnitPrice(listedUnitPrice);
+  }, [listedUnitPrice]);
+
+  useEffect(() => {
+    setQuantity(1);
+    setOfferQuantity(1);
+  }, [effectiveSelectedProductId, setQuantity]);
 
   const offerFormError = useMemo(() => {
     if (!Number.isFinite(offerQuantity) || offerQuantity <= 0)
@@ -64,13 +116,17 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
 
   const handleAddDirectlyToCart = () => {
     addDirectLineItem({
-      productId: demoProductId,
+      productId: effectiveProductId,
       productName: product.name,
       productImage: product.image,
       unit: product.unit,
       quantity,
-      listedUnitPrice: product.price,
-      supplierId: demoSupplierId,
+      quantityUnit,
+      pricingMode,
+      batchWeightKg: batchSummary?.batchWeightKg,
+      batchPriceSek: batchSummary?.batchPriceSek,
+      listedUnitPrice,
+      supplierId: effectiveSupplierId,
       supplierName: product.producer,
     });
     onAddToCart();
@@ -80,14 +136,18 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
     if (offerFormError) return;
 
     addOfferLineItem({
-      productId: demoProductId,
+      productId: effectiveProductId,
       productName: product.name,
       productImage: product.image,
       unit: product.unit,
       quantity: offerQuantity,
-      listedUnitPrice: product.price,
+      quantityUnit,
+      pricingMode,
+      batchWeightKg: batchSummary?.batchWeightKg,
+      batchPriceSek: batchSummary?.batchPriceSek,
+      listedUnitPrice,
       offeredUnitPrice: offerUnitPrice,
-      supplierId: demoSupplierId,
+      supplierId: effectiveSupplierId,
       supplierName: product.producer,
     });
     setMakeOfferOpen(false);
@@ -148,11 +208,24 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
               </div>
 
               <div className='mb-6 text-4xl text-primary'>
-                {formatCurrency(product.price, 'SEK')}
+                {pricingMode === 'batch' && batchSummary
+                  ? formatCurrency(batchSummary.batchPriceSek, 'SEK')
+                  : formatCurrency(product.price, 'SEK')}
                 <span className='text-xl text-muted-foreground'>
-                  /{product.unit}
+                  /{pricingMode === 'batch' ? t('batchUnitShort') : product.unit}
                 </span>
               </div>
+
+              {pricingMode === 'batch' && batchSummary ? (
+                <div className='mb-6 space-y-1 text-sm text-muted-foreground'>
+                  <div>
+                    {t('soldInBatchesBadge')}: {batchSummary.batchWeightKg} {t('kgShort')} {t('for')} {formatCurrency(batchSummary.batchPriceSek, 'SEK')}
+                  </div>
+                  <div>
+                    {t('pricePerKgLabel')}: {formatCurrency(pricePerKgSek, 'SEK')}/{t('kgShort')}
+                  </div>
+                </div>
+              ) : null}
 
               <div className='mb-6 flex flex-wrap gap-3'>
                 {product.badges.map((badge, index) => (
@@ -183,7 +256,9 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   >
                     −
                   </button>
-                  <span className='min-w-[3rem] text-center'>{quantity}</span>
+                  <span className='min-w-[3rem] text-center'>
+                    {quantity} {pricingMode === 'batch' ? t('batchesLabel') : t('kgShort')}
+                  </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className='px-4 py-3 transition-colors hover:bg-muted'
@@ -200,7 +275,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                           className='duration-250 h-12 flex-1 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
                         >
                           {t('addDirectlyToCart')} —{' '}
-                          {formatCurrency(product.price * quantity, 'SEK')}
+                          {formatCurrency(listedUnitPrice * quantity, 'SEK')}
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -214,7 +289,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                           variant='outline'
                           onClick={() => {
                             setOfferQuantity(quantity);
-                            setOfferUnitPrice(product.price);
+                            setOfferUnitPrice(listedUnitPrice);
                             setMakeOfferOpen(true);
                           }}
                           className='duration-250 h-12 flex-1 rounded-xl transition-all hover:border-accent hover:bg-accent/10 hover:text-accent'
@@ -259,7 +334,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   className='h-12 flex-1 rounded-xl bg-primary text-primary-foreground'
                 >
                   {t('addDirectlyToCart')} —{' '}
-                  {formatCurrency(product.price * quantity, 'SEK')}
+                  {formatCurrency(listedUnitPrice * quantity, 'SEK')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -273,7 +348,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   variant='outline'
                   onClick={() => {
                     setOfferQuantity(quantity);
-                    setOfferUnitPrice(product.price);
+                    setOfferUnitPrice(listedUnitPrice);
                     setMakeOfferOpen(true);
                   }}
                   className='h-12 flex-1 rounded-xl'
@@ -318,7 +393,9 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                 >
                   −
                 </button>
-                <span className='min-w-[3rem] text-center'>{offerQuantity}</span>
+                <span className='min-w-[3rem] text-center'>
+                  {offerQuantity} {pricingMode === 'batch' ? t('batchesLabel') : t('kgShort')}
+                </span>
                 <button
                   onClick={() => setOfferQuantity(offerQuantity + 1)}
                   className='px-4 py-3 transition-colors hover:bg-muted'
@@ -330,7 +407,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
 
             <div className='space-y-2'>
               <Label htmlFor='offer-unit-price'>
-                {t('offerPriceLabel')} ({t('currencySekSymbol')})
+                {pricingMode === 'batch' ? t('offerPricePerBatchLabel') : t('offerPricePerKgLabel')} ({t('currencySekSymbol')})
               </Label>
               <Input
                 id='offer-unit-price'
@@ -342,7 +419,8 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                 onChange={e => setOfferUnitPrice(Number(e.target.value))}
               />
               <p className='text-xs text-muted-foreground'>
-                {t('listedPriceLabel')}: {formatCurrency(product.price, 'SEK')}/{product.unit}
+                {t('listedPriceLabel')}: {formatCurrency(listedUnitPrice, 'SEK')}
+                /{pricingMode === 'batch' ? t('batchUnitShort') : product.unit}
               </p>
             </div>
 

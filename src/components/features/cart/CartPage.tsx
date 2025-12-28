@@ -6,6 +6,7 @@ import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { useLanguage } from '@contexts/LanguageContext';
 import { useCartActions } from '@/hooks/cart/use-cart-actions';
 import { formatCurrency } from '@/utils/formatters';
+import { getPricingMode } from '@/utils/product-pricing';
 import {
   Dialog,
   DialogContent,
@@ -61,6 +62,11 @@ export function CartPage({ onCheckout }: CartPageProps) {
       return t('invalidOfferPrice');
     return null;
   }, [switchOfferOpen, switchOfferUnitPrice, t]);
+
+  const switchOfferPriceLabelKey = useMemo(() => {
+    const mode = switchOfferItem ? getPricingMode(switchOfferItem) : 'perKg';
+    return mode === 'batch' ? 'offerPricePerBatchLabel' : 'offerPricePerKgLabel';
+  }, [switchOfferItem]);
 
   const openSwitchToOfferDialog = (itemId: string) => {
     const item = cartItems.find(i => i.id === itemId);
@@ -141,11 +147,43 @@ export function CartPage({ onCheckout }: CartPageProps) {
                         <p className='text-sm text-muted-foreground'>
                           {item.supplierName}
                         </p>
+                        {(() => {
+                          const mode = getPricingMode(item);
+                          if (mode !== 'batch') return null;
+                          const batchWeightKg = item.batchWeightKg;
+                          const batchPriceSek = item.batchPriceSek;
+                          if (
+                            typeof batchWeightKg !== 'number' ||
+                            !Number.isFinite(batchWeightKg) ||
+                            batchWeightKg <= 0 ||
+                            typeof batchPriceSek !== 'number' ||
+                            !Number.isFinite(batchPriceSek) ||
+                            batchPriceSek <= 0
+                          )
+                            return null;
+
+                          const pricePerKg = item.unitPrice / batchWeightKg;
+
+                          return (
+                            <div className='mt-1 space-y-1 text-xs text-muted-foreground'>
+                              <div>
+                                {t('soldInBatchesBadge')}: {batchWeightKg} {t('kgShort')} {t('for')} {formatCurrency(batchPriceSek, 'SEK')}
+                              </div>
+                              <div>
+                                {t('pricePerKgLabel')}: {formatCurrency(pricePerKg, 'SEK')}/{t('kgShort')}
+                              </div>
+                            </div>
+                          );
+                        })()}
                         {item.purchaseMode === 'offer' &&
                           typeof item.offeredUnitPrice === 'number' && (
                             <p className='mt-1 text-xs text-muted-foreground'>
                               {t('yourOffer')}: {formatCurrency(item.offeredUnitPrice, 'SEK')}
-                              {item.unit ? `/${item.unit}` : ''}
+                              {item.pricingMode === 'batch'
+                                ? `/${t('batchUnitShort')}`
+                                : item.unit
+                                  ? `/${item.unit}`
+                                  : ''}
                             </p>
                           )}
                       </div>
@@ -174,10 +212,20 @@ export function CartPage({ onCheckout }: CartPageProps) {
                         <div className='text-right'>
                           <div className='text-sm text-muted-foreground'>
                             {formatCurrency(item.unitPrice, 'SEK')}
-                            {item.unit ? `/${item.unit}` : ''}
+                            {item.pricingMode === 'batch'
+                              ? `/${t('batchUnitShort')}`
+                              : item.unit
+                                ? `/${item.unit}`
+                                : ''}
                           </div>
                           <div className='text-xl text-primary'>
                             {formatCurrency(item.totalPrice, 'SEK')}
+                          </div>
+                          <div className='mt-1 text-xs text-muted-foreground'>
+                            {t('quantityLabel')}: {item.quantity}{' '}
+                            {item.pricingMode === 'batch'
+                              ? t('batchesLabel')
+                              : t('kgShort')}
                           </div>
                         </div>
                       </div>
@@ -282,7 +330,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
           <div className='space-y-4'>
             <div className='space-y-2'>
               <Label htmlFor='cart-offer-unit-price'>
-                {t('offerPriceLabel')} ({t('currencySekSymbol')})
+                {t(switchOfferPriceLabelKey as any)} ({t('currencySekSymbol')})
               </Label>
               <Input
                 id='cart-offer-unit-price'
@@ -296,7 +344,11 @@ export function CartPage({ onCheckout }: CartPageProps) {
               {switchOfferItem && (
                 <p className='text-xs text-muted-foreground'>
                   {t('listedPriceLabel')}: {formatCurrency(switchOfferItem.listedUnitPrice, 'SEK')}
-                  {switchOfferItem.unit ? `/${switchOfferItem.unit}` : ''}
+                  {getPricingMode(switchOfferItem) === 'batch'
+                    ? `/${t('batchUnitShort')}`
+                    : switchOfferItem.unit
+                      ? `/${switchOfferItem.unit}`
+                      : ''}
                 </p>
               )}
             </div>

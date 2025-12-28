@@ -21,10 +21,7 @@ export function CartSummary({
   onClearCart,
 }: CartSummaryProps) {
   const { t } = useLanguage();
-  const subtotal = cart.items.reduce(
-    (total, item) => total + item.unitPrice * item.quantity,
-    0
-  );
+  const subtotal = cart.items.reduce((total, item) => total + item.totalPrice, 0);
   const tax = subtotal * 0.08; // 8% tax
   const shipping = subtotal > 1000 ? 0 : 100; // Free shipping over kr1000
   const total = subtotal + tax + shipping;

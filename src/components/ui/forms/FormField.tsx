@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import { Label } from '@components/ui/label';
 import { cn } from '@/utils/utils';
 import { useLanguage } from '@contexts/LanguageContext';
-import { translations, type TranslationKey } from '@lib/i18n';
 
 interface FormFieldProps {
   label: string;
@@ -24,10 +23,8 @@ export function FormField({
   const { t } = useLanguage();
 
   const getErrorText = (value: string) => {
-    if (Object.prototype.hasOwnProperty.call(translations.en, value)) {
-      return t(value as TranslationKey);
-    }
-    return value;
+    const translated = t(value as any);
+    return translated === value ? value : translated;
   };
 
   return (

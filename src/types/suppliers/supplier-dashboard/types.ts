@@ -6,6 +6,9 @@ interface Product {
   category: string;
   price: number;
   unit: string;
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: number;
+  batchPriceSek?: number;
   stock: number;
   status: string;
   image: string;
@@ -18,6 +21,9 @@ interface NewProductForm {
   category: string;
   price: string;
   unit: string;
+  pricingMode?: 'perKg' | 'batch';
+  batchWeightKg?: string;
+  batchPriceSek?: string;
   stock: string;
   imageUrl: string;
 }

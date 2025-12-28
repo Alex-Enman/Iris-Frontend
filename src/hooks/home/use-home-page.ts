@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '@contexts/LanguageContext';
+import { getMockProducts } from '@/tests/mocks/mock-products';
+import { formatCurrency } from '@/utils/formatters';
+import {
+  getPricingMode,
+  getProductListedUnitPrice,
+} from '@/utils/product-pricing';
 
 export interface Producer {
   id: number;
@@ -16,7 +22,7 @@ export interface Producer {
 }
 
 export interface ProductItem {
-  id: number;
+  id: string;
   name: string;
   producer: string;
   image: string;
@@ -86,31 +92,42 @@ export function useHomePage() {
     [t]
   );
 
-  const allProducts: ProductItem[] = useMemo(
-    () => [
-      {
-        id: 1,
-        name: t('productHeirloomTomatoes'),
-        producer: t('supplierNameGreenValleyFarm'),
-        image:
-          'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
-        price: 'kr45/kg',
-        categoryType: ['vegetables', 'organic', 'seasonal'],
-        certifications: [t('organic'), t('local')],
-      },
-      {
-        id: 2,
-        name: t('freeRangeEggs'),
-        producer: t('supplierNameFreeRangePoultry'),
-        image:
-          'https://images.unsplash.com/photo-1669669420238-7a4be2e3eac6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwZWdncyUyMGZhcm18ZW58MXx8fHwxNzYxMjcyMTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
-        price: 'kr52/dozen',
-        categoryType: ['organic'],
-        certifications: [t('organic'), t('local')],
-      },
-    ],
-    [t]
-  );
+  const allProducts: ProductItem[] = useMemo(() => {
+    const categoryTypeByCategory = (category: unknown): string[] => {
+      const raw = String(category ?? '').toLowerCase();
+      if (raw.includes('dairy')) return ['dairy'];
+      if (raw.includes('meat') || raw.includes('poultry')) return ['meat'];
+      if (raw.includes('seafood') || raw.includes('fish')) return ['meat'];
+      if (raw.includes('bakery')) return ['vegetables'];
+      return ['vegetables'];
+    };
+
+    const mapCertifications = (tags: unknown): string[] => {
+      const values = Array.isArray(tags) ? tags.map(v => String(v)) : [];
+      const certs: string[] = [];
+      if (values.some(v => v.toLowerCase().includes('organic'))) certs.push(t('organic'));
+      if (values.some(v => v.toLowerCase().includes('local'))) certs.push(t('local'));
+      if (values.some(v => v.toLowerCase().includes('trace'))) certs.push(t('traceable'));
+      return certs;
+    };
+
+    const products = getMockProducts();
+    return products.map(p => {
+      const mode = getPricingMode(p as any);
+      const listed = getProductListedUnitPrice(p as any);
+      const unitLabel = mode === 'batch' ? t('batchUnitShort') : p.unit;
+
+      return {
+        id: p.id,
+        name: p.name,
+        producer: p.supplierName,
+        image: p.image ?? '',
+        price: `${formatCurrency(listed, 'SEK')}/${unitLabel}`,
+        categoryType: categoryTypeByCategory((p as any).category),
+        certifications: mapCertifications((p as any).tags),
+      };
+    });
+  }, [t]);
 
   useEffect(() => {
     setSelectedRegions([]);

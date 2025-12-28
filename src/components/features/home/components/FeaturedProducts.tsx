@@ -5,7 +5,7 @@ import { Filter } from 'lucide-react';
 import { useLanguage } from '@contexts/LanguageContext';
 
 interface ProductItem {
-  id: number;
+  id: string;
   name: string;
   producer: string;
   image: string;
@@ -14,7 +14,7 @@ interface ProductItem {
 
 interface FeaturedProductsProps {
   products: ProductItem[];
-  onNavigate: () => void;
+  onNavigate: (productId: string) => void;
   onClearAll: () => void;
 }
 
@@ -50,7 +50,7 @@ export function FeaturedProducts({
             {products.map(product => (
               <div
                 key={product.id}
-                onClick={onNavigate}
+                onClick={() => onNavigate(product.id)}
                 className='duration-250 group w-80 flex-shrink-0 cursor-pointer snap-start overflow-hidden rounded-2xl bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]'
               >
                 <div className='relative aspect-square overflow-hidden'>

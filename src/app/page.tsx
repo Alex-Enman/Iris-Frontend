@@ -100,7 +100,7 @@ export default function App() {
       case 'home':
         return (
           <HomePage
-            onNavigateToProduct={() => handleNavigate('product')}
+            onNavigateToProduct={productId => handleNavigate('product', productId)}
             onViewSupplier={id => handleNavigate('supplier-profile', id)}
           />
         );
@@ -111,13 +111,18 @@ export default function App() {
           />
         );
       case 'product':
-        return <ProductPage onAddToCart={handleAddToCart} />;
+        return (
+          <ProductPage
+            onAddToCart={handleAddToCart}
+            productId={currentProfileId ?? undefined}
+          />
+        );
       case 'cart':
         return <CartPage onCheckout={handleCheckout} />;
       case 'favorites':
         return (
           <FavoritesPage
-            onNavigateToProduct={() => handleNavigate('product')}
+            onNavigateToProduct={productId => handleNavigate('product', productId)}
             onViewSupplier={id => handleNavigate('supplier-profile', id)}
           />
         );
@@ -151,7 +156,7 @@ export default function App() {
       default:
         return (
           <HomePage
-            onNavigateToProduct={() => handleNavigate('product')}
+            onNavigateToProduct={productId => handleNavigate('product', productId)}
             onViewSupplier={id => handleNavigate('supplier-profile', id)}
           />
         );
