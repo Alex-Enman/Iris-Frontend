@@ -20,16 +20,17 @@ import {
 import { Toaster } from '@components/ui/sonner';
 import { toast } from 'sonner';
 import { useLanguage } from '@contexts/LanguageContext';
+import { useCart } from '@contexts/CartContext';
 
 export default function App() {
   const { t } = useLanguage();
+  const { state, clearCart } = useCart();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState<'supplier' | 'restaurant' | null>(
     null
   );
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
-  const [cartCount, setCartCount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState(3);
 
   const handleLogin = (type: 'supplier' | 'restaurant') => {
@@ -45,7 +46,7 @@ export default function App() {
     setIsAuthenticated(false);
     setUserType(null);
     setCurrentPage('home');
-    setCartCount(0);
+    clearCart();
     toast.success(t('loggedOutSuccessfully'), {
       duration: 3000,
     });
@@ -58,7 +59,6 @@ export default function App() {
   };
 
   const handleAddToCart = () => {
-    setCartCount(cartCount + 1);
     toast.success(t('addedToCart'), {
       description: t('itemAddedToCart'),
       duration: 3000,
@@ -70,7 +70,7 @@ export default function App() {
       description: t('orderConfirmed'),
       duration: 3000,
     });
-    setCartCount(0);
+    clearCart();
     handleNavigate('orders');
   };
 
@@ -163,7 +163,7 @@ export default function App() {
       <Navigation
         currentPage={currentPage}
         onNavigate={handleNavigate}
-        cartCount={cartCount}
+        cartCount={state.itemCount}
         onLogout={handleLogout}
         unreadMessages={unreadMessages}
       />

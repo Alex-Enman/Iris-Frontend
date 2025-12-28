@@ -1,9 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Trash2, TrendingUp, ShoppingBag } from 'lucide-react';
 import { Button } from '@components/ui/button';
+import { Badge } from '@components/ui/badge';
 import { ImageWithFallback } from '@components/ui/image-with-fallback';
 import { useLanguage } from '@contexts/LanguageContext';
+import { useCartActions } from '@/hooks/cart/use-cart-actions';
 import { formatCurrency } from '@/utils/formatters';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
 
 interface CartPageProps {
   onCheckout: () => void;
@@ -11,83 +23,21 @@ interface CartPageProps {
 
 export function CartPage({ onCheckout }: CartPageProps) {
   const { t } = useLanguage();
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: t('productHeirloomTomatoes'),
-      producer: t('supplierNameGreenValleyFarm'),
-      price: 45,
-      quantity: 3,
-      unit: 'kg',
-      image:
-        'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
-    },
-    {
-      id: 2,
-      name: t('freeRangeEggs'),
-      producer: t('supplierNameSunriseFarm'),
-      price: 52,
-      quantity: 2,
-      unit: t('dozenUnit'),
-      image:
-        'https://images.unsplash.com/photo-1669669420238-7a4be2e3eac6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwZWdncyUyMGZhcm18ZW58MXx8fHwxNzYxMjcyMTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
-    },
-    {
-      id: 3,
-      name: t('productExtraVirginOliveOil'),
-      producer: t('supplierNameOliveGroveEstate'),
-      price: 120,
-      quantity: 1,
-      unit: 'L',
-      image:
-        'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbGl2ZSUyMG9pbCUyMGJvdHRsZXxlbnwxfHx8fDE3NjEyMDU0MTh8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    },
-  ]);
+  const {
+    state,
+    removeLineItem,
+    updateLineItemQuantity,
+    switchLineItemToDirect,
+    switchLineItemToOffer,
+  } = useCartActions();
 
-  useEffect(() => {
-    setCartItems(prev =>
-      prev.map(item => {
-        if (item.id === 1)
-          return {
-            ...item,
-            name: t('productHeirloomTomatoes'),
-            producer: t('supplierNameGreenValleyFarm'),
-          };
-        if (item.id === 2)
-          return {
-            ...item,
-            name: t('freeRangeEggs'),
-            producer: t('supplierNameSunriseFarm'),
-            unit: t('dozenUnit'),
-          };
-        if (item.id === 3)
-          return {
-            ...item,
-            name: t('productExtraVirginOliveOil'),
-            producer: t('supplierNameOliveGroveEstate'),
-          };
-        return item;
-      })
-    );
-  }, [t]);
+  const [switchOfferOpen, setSwitchOfferOpen] = useState(false);
+  const [switchOfferItemId, setSwitchOfferItemId] = useState<string | null>(null);
+  const [switchOfferUnitPrice, setSwitchOfferUnitPrice] = useState<number>(0);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+  const cartItems = state.items;
 
-  const removeItem = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = useMemo(() => state.total, [state.total]);
   const deliveryFee = 50;
   const total = subtotal + deliveryFee;
 
@@ -95,6 +45,37 @@ export function CartPage({ onCheckout }: CartPageProps) {
     recommendedQuantity: 4,
     savings: 125,
     reasoning: t('aiDemandPredictionReasoning'),
+  };
+
+  const switchOfferItem = useMemo(
+    () =>
+      switchOfferItemId
+        ? cartItems.find(i => i.id === switchOfferItemId) ?? null
+        : null,
+    [cartItems, switchOfferItemId]
+  );
+
+  const switchOfferError = useMemo(() => {
+    if (!switchOfferOpen) return null;
+    if (!Number.isFinite(switchOfferUnitPrice) || switchOfferUnitPrice <= 0)
+      return t('invalidOfferPrice');
+    return null;
+  }, [switchOfferOpen, switchOfferUnitPrice, t]);
+
+  const openSwitchToOfferDialog = (itemId: string) => {
+    const item = cartItems.find(i => i.id === itemId);
+    if (!item) return;
+    setSwitchOfferItemId(itemId);
+    setSwitchOfferUnitPrice(item.listedUnitPrice);
+    setSwitchOfferOpen(true);
+  };
+
+  const submitSwitchToOffer = () => {
+    if (!switchOfferItemId) return;
+    if (switchOfferError) return;
+    switchLineItemToOffer(switchOfferItemId, switchOfferUnitPrice);
+    setSwitchOfferOpen(false);
+    setSwitchOfferItemId(null);
   };
 
   return (
@@ -120,8 +101,8 @@ export function CartPage({ onCheckout }: CartPageProps) {
                   <div className='flex gap-6'>
                     <div className='h-32 w-32 flex-shrink-0 overflow-hidden rounded-xl'>
                       <ImageWithFallback
-                        src={item.image}
-                        alt={item.name}
+                        src={item.productImage || ''}
+                        alt={item.productName}
                         width={128}
                         height={128}
                         className='h-full w-full object-cover'
@@ -129,16 +110,50 @@ export function CartPage({ onCheckout }: CartPageProps) {
                     </div>
                     <div className='flex flex-1 flex-col justify-between'>
                       <div>
-                        <h3 className='mb-1'>{item.name}</h3>
+                        <div className='mb-1 flex flex-wrap items-center gap-2'>
+                          <h3>{item.productName}</h3>
+                          <Badge
+                            variant={
+                              item.purchaseMode === 'offer' ? 'secondary' : 'default'
+                            }
+                            className='text-xs'
+                          >
+                            {item.purchaseMode === 'offer'
+                              ? t('purchaseModeOffer')
+                              : t('purchaseModeDirect')}
+                          </Badge>
+                          <button
+                            onClick={() => {
+                              if (item.purchaseMode === 'direct') {
+                                openSwitchToOfferDialog(item.id);
+                                return;
+                              }
+
+                              switchLineItemToDirect(item.id);
+                            }}
+                            className='text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline'
+                          >
+                            {item.purchaseMode === 'offer'
+                              ? t('switchToDirectPurchase')
+                              : t('switchToOfferPurchase')}
+                          </button>
+                        </div>
                         <p className='text-sm text-muted-foreground'>
-                          {item.producer}
+                          {item.supplierName}
                         </p>
+                        {item.purchaseMode === 'offer' &&
+                          typeof item.offeredUnitPrice === 'number' && (
+                            <p className='mt-1 text-xs text-muted-foreground'>
+                              {t('yourOffer')}: {formatCurrency(item.offeredUnitPrice, 'SEK')}
+                              {item.unit ? `/${item.unit}` : ''}
+                            </p>
+                          )}
                       </div>
                       <div className='flex items-end justify-between'>
                         <div className='flex items-center rounded-xl border border-border bg-background'>
                           <button
                             onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
+                              updateLineItemQuantity(item.id, item.quantity - 1)
                             }
                             className='px-3 py-2 transition-colors hover:bg-muted'
                           >
@@ -149,7 +164,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
                           </span>
                           <button
                             onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
+                              updateLineItemQuantity(item.id, item.quantity + 1)
                             }
                             className='px-3 py-2 transition-colors hover:bg-muted'
                           >
@@ -158,16 +173,17 @@ export function CartPage({ onCheckout }: CartPageProps) {
                         </div>
                         <div className='text-right'>
                           <div className='text-sm text-muted-foreground'>
-                            {formatCurrency(item.price, 'SEK')}/{item.unit}
+                            {formatCurrency(item.unitPrice, 'SEK')}
+                            {item.unit ? `/${item.unit}` : ''}
                           </div>
                           <div className='text-xl text-primary'>
-                            {formatCurrency(item.price * item.quantity, 'SEK')}
+                            {formatCurrency(item.totalPrice, 'SEK')}
                           </div>
                         </div>
                       </div>
                     </div>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeLineItem(item.id)}
                       className='duration-250 h-fit rounded-lg p-2 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100'
                     >
                       <Trash2 className='h-5 w-5' />
@@ -255,6 +271,57 @@ export function CartPage({ onCheckout }: CartPageProps) {
           </div>
         </div>
       </div>
+
+      <Dialog open={switchOfferOpen} onOpenChange={setSwitchOfferOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('switchToOfferDialogTitle')}</DialogTitle>
+            <DialogDescription>{t('switchToOfferDialogDescription')}</DialogDescription>
+          </DialogHeader>
+
+          <div className='space-y-4'>
+            <div className='space-y-2'>
+              <Label htmlFor='cart-offer-unit-price'>
+                {t('offerPriceLabel')} ({t('currencySekSymbol')})
+              </Label>
+              <Input
+                id='cart-offer-unit-price'
+                type='number'
+                inputMode='decimal'
+                min={0}
+                step='0.01'
+                value={switchOfferUnitPrice}
+                onChange={e => setSwitchOfferUnitPrice(Number(e.target.value))}
+              />
+              {switchOfferItem && (
+                <p className='text-xs text-muted-foreground'>
+                  {t('listedPriceLabel')}: {formatCurrency(switchOfferItem.listedUnitPrice, 'SEK')}
+                  {switchOfferItem.unit ? `/${switchOfferItem.unit}` : ''}
+                </p>
+              )}
+            </div>
+
+            {switchOfferError && (
+              <p className='text-sm text-destructive'>{switchOfferError}</p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant='outline'
+              onClick={() => {
+                setSwitchOfferOpen(false);
+                setSwitchOfferItemId(null);
+              }}
+            >
+              {t('cancel')}
+            </Button>
+            <Button onClick={submitSwitchToOffer} disabled={!!switchOfferError}>
+              {t('applyOffer')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

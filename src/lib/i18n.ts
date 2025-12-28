@@ -798,6 +798,36 @@ export const translations = {
     bunchUnit: 'bunch',
     addToCart: 'Add to Cart',
 
+    purchaseModeDirect: 'Direct purchase',
+    purchaseModeOffer: 'Offer',
+    offerPricePrompt: 'Enter your offer price per unit (kr)',
+    switchToOfferPurchase: 'Switch to offer',
+    switchToDirectPurchase: 'Switch to direct',
+    yourOffer: 'Your offer',
+
+    addDirectlyToCart: 'Add Directly to Cart',
+    addDirectlyToCartTooltip:
+      'Add this item to your cart at the listed price for immediate checkout.',
+    makeOffer: 'Make Offer',
+    makeOfferTooltip:
+      'Propose a different unit price. The supplier can accept, reject, or counter your offer.',
+    makeOfferDialogTitle: 'Make an Offer',
+    makeOfferDialogDescription:
+      'Enter the quantity and your offered price per unit. You can review and adjust the offer later in your cart.',
+    offerQuantityLabel: 'Quantity',
+    offerPriceLabel: 'Offer price per unit',
+    listedPriceLabel: 'Listed price',
+    submitOffer: 'Submit Offer',
+    submitOfferTooltip: 'Submit your offer for supplier review.',
+    invalidOfferQuantity: 'Please enter a valid quantity.',
+    invalidOfferPrice: 'Please enter a valid offer price.',
+    currencySekSymbol: 'kr',
+
+    switchToOfferDialogTitle: 'Switch to Offer',
+    switchToOfferDialogDescription:
+      'Enter your offer price per unit. Your cart will keep direct and offer purchases as separate line items.',
+    applyOffer: 'Apply Offer',
+
     back: 'Back',
     verified: 'Verified',
     verifiedPurchase: 'Verified Purchase',
@@ -2045,6 +2075,36 @@ export const translations = {
     pieceUnit: 'styck',
     bunchUnit: 'knippe',
     addToCart: 'Lägg i varukorg',
+
+    purchaseModeDirect: 'Direktköp',
+    purchaseModeOffer: 'Bud',
+    offerPricePrompt: 'Ange ditt bud per enhet (kr)',
+    switchToOfferPurchase: 'Byt till bud',
+    switchToDirectPurchase: 'Byt till direktköp',
+    yourOffer: 'Ditt bud',
+
+    addDirectlyToCart: 'Lägg direkt i varukorgen',
+    addDirectlyToCartTooltip:
+      'Lägg varan i varukorgen till listpris för omedelbar checkout.',
+    makeOffer: 'Lägg bud',
+    makeOfferTooltip:
+      'Föreslå ett annat enhetspris. Leverantören kan acceptera, neka eller kontra ditt bud.',
+    makeOfferDialogTitle: 'Lägg ett bud',
+    makeOfferDialogDescription:
+      'Ange antal och ditt bud per enhet. Du kan granska och justera budet senare i varukorgen.',
+    offerQuantityLabel: 'Antal',
+    offerPriceLabel: 'Bud per enhet',
+    listedPriceLabel: 'Listpris',
+    submitOffer: 'Skicka bud',
+    submitOfferTooltip: 'Skicka ditt bud för leverantörens granskning.',
+    invalidOfferQuantity: 'Ange ett giltigt antal.',
+    invalidOfferPrice: 'Ange ett giltigt budpris.',
+    currencySekSymbol: 'kr',
+
+    switchToOfferDialogTitle: 'Byt till bud',
+    switchToOfferDialogDescription:
+      'Ange ditt bud per enhet. Varukorgen behåller direktköp och bud som separata rader.',
+    applyOffer: 'Tillämpa bud',
 
     back: 'Tillbaka',
     verified: 'Verifierad',

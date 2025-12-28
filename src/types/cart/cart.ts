@@ -3,7 +3,11 @@ export interface CartItem {
   productId: string;
   productName: string;
   productImage?: string;
+  unit?: string;
   quantity: number;
+  purchaseMode: 'direct' | 'offer';
+  listedUnitPrice: number;
+  offeredUnitPrice?: number;
   unitPrice: number;
   totalPrice: number;
   supplierId: string;

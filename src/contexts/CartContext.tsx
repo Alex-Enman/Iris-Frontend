@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useReducer, ReactNode } from 'react';
 import { Product } from '@/types';
+import type { CartItem as DomainCartItem } from '@/types/cart';
 
 /**
  * CartItem represents a simplified version of Product for cart functionality.
@@ -14,30 +15,34 @@ import { Product } from '@/types';
  * This separation allows the cart to be lightweight while still maintaining
  * the relationship to the full Product entity.
  */
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
+export type CartItem = DomainCartItem;
+
+export type AddItemInput = {
+  productId: string;
+  productName: string;
+  productImage?: string;
+  unit?: string;
   quantity: number;
+  purchaseMode: 'direct' | 'offer';
+  listedUnitPrice: number;
+  offeredUnitPrice?: number;
   supplierId: string;
   supplierName: string;
-  image?: string;
-  unit?: string;
-}
+};
 
 /**
  * Helper function to create a CartItem from a Product
  */
 export const createCartItemFromProduct = (
   product: Product
-): Omit<CartItem, 'quantity'> => ({
-  id: product.id,
-  name: product.name,
-  price: product.price,
+): Omit<AddItemInput, 'quantity' | 'purchaseMode' | 'offeredUnitPrice'> => ({
+  productId: product.id,
+  productName: product.name,
+  productImage: product.image,
+  unit: product.unit,
+  listedUnitPrice: product.price,
   supplierId: product.supplierId,
   supplierName: product.supplierName,
-  image: product.image,
-  unit: product.unit,
 });
 
 interface CartState {
@@ -47,9 +52,24 @@ interface CartState {
 }
 
 type CartAction =
-  | { type: 'ADD_ITEM'; payload: Omit<CartItem, 'quantity'> }
+  | { type: 'ADD_ITEM'; payload: AddItemInput }
   | { type: 'REMOVE_ITEM'; payload: string }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
+  | { type: 'UPDATE_QUANTITY'; payload: { itemId: string; quantity: number } }
+  | {
+      type: 'SET_PURCHASE_MODE';
+      payload: {
+        itemId: string;
+        purchaseMode: 'direct' | 'offer';
+        offeredUnitPrice?: number;
+      };
+    }
+  | {
+      type: 'SET_OFFER_UNIT_PRICE';
+      payload: {
+        itemId: string;
+        offeredUnitPrice: number;
+      };
+    }
   | { type: 'CLEAR_CART' }
   | { type: 'SET_ITEMS'; payload: CartItem[] };
 
@@ -59,54 +79,96 @@ const initialState: CartState = {
   itemCount: 0,
 };
 
+function getEffectiveUnitPrice(input: {
+  purchaseMode: 'direct' | 'offer';
+  listedUnitPrice: number;
+  offeredUnitPrice?: number;
+}) {
+  return input.purchaseMode === 'offer'
+    ? (input.offeredUnitPrice ?? input.listedUnitPrice)
+    : input.listedUnitPrice;
+}
+
+function normalizeOfferUnitPrice(offeredUnitPrice?: number) {
+  if (typeof offeredUnitPrice !== 'number' || !Number.isFinite(offeredUnitPrice))
+    return undefined;
+  return Number(offeredUnitPrice.toFixed(2));
+}
+
+function getCartItemId(input: {
+  productId: string;
+  purchaseMode: 'direct' | 'offer';
+  offeredUnitPrice?: number;
+}) {
+  if (input.purchaseMode === 'direct') return `${input.productId}::direct`;
+  const normalized = normalizeOfferUnitPrice(input.offeredUnitPrice);
+  return `${input.productId}::offer::${normalized ?? 'none'}`;
+}
+
+function getTotals(items: CartItem[]) {
+  return {
+    total: items.reduce((sum, item) => sum + item.totalPrice, 0),
+    itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+  };
+}
+
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existingItem = state.items.find(
-        item => item.id === action.payload.id
-      );
+      const itemId = getCartItemId(action.payload);
+      const existingItem = state.items.find(item => item.id === itemId);
+
+      const effectiveUnitPrice = getEffectiveUnitPrice(action.payload);
 
       if (existingItem) {
+        const nextQuantity = existingItem.quantity + action.payload.quantity;
         const updatedItems = state.items.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.id === itemId
+            ? {
+                ...item,
+                purchaseMode: action.payload.purchaseMode,
+                listedUnitPrice: action.payload.listedUnitPrice,
+                offeredUnitPrice: normalizeOfferUnitPrice(action.payload.offeredUnitPrice),
+                unitPrice: effectiveUnitPrice,
+                quantity: nextQuantity,
+                totalPrice: effectiveUnitPrice * nextQuantity,
+              }
             : item
         );
-        return {
-          ...state,
-          items: updatedItems,
-          total: updatedItems.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-          ),
-          itemCount: updatedItems.reduce((sum, item) => sum + item.quantity, 0),
-        };
+
+        const totals = getTotals(updatedItems);
+        return { ...state, items: updatedItems, ...totals };
       }
 
-      const newItems = [...state.items, { ...action.payload, quantity: 1 }];
-      return {
-        ...state,
-        items: newItems,
-        total: newItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
-        itemCount: newItems.reduce((sum, item) => sum + item.quantity, 0),
+      const newItem: CartItem = {
+        id: itemId,
+        productId: action.payload.productId,
+        productName: action.payload.productName,
+        productImage: action.payload.productImage,
+        unit: action.payload.unit,
+        quantity: action.payload.quantity,
+        purchaseMode: action.payload.purchaseMode,
+        listedUnitPrice: action.payload.listedUnitPrice,
+        offeredUnitPrice: normalizeOfferUnitPrice(action.payload.offeredUnitPrice),
+        unitPrice: effectiveUnitPrice,
+        totalPrice: effectiveUnitPrice * action.payload.quantity,
+        supplierId: action.payload.supplierId,
+        supplierName: action.payload.supplierName,
+        addedAt: new Date().toISOString(),
       };
+
+      const newItems = [...state.items, newItem];
+      const totals = getTotals(newItems);
+      return { ...state, items: newItems, ...totals };
     }
 
     case 'REMOVE_ITEM': {
-      const updatedItems = state.items.filter(
-        item => item.id !== action.payload
-      );
+      const updatedItems = state.items.filter(item => item.id !== action.payload);
+      const totals = getTotals(updatedItems);
       return {
         ...state,
         items: updatedItems,
-        total: updatedItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
-        itemCount: updatedItems.reduce((sum, item) => sum + item.quantity, 0),
+        ...totals,
       };
     }
 
@@ -114,38 +176,141 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       if (action.payload.quantity <= 0) {
         return cartReducer(state, {
           type: 'REMOVE_ITEM',
-          payload: action.payload.id,
+          payload: action.payload.itemId,
         });
       }
 
       const updatedItems = state.items.map(item =>
-        item.id === action.payload.id
-          ? { ...item, quantity: action.payload.quantity }
+        item.id === action.payload.itemId
+          ? {
+              ...item,
+              quantity: action.payload.quantity,
+              totalPrice: item.unitPrice * action.payload.quantity,
+            }
           : item
       );
+      const totals = getTotals(updatedItems);
       return {
         ...state,
         items: updatedItems,
-        total: updatedItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
-        itemCount: updatedItems.reduce((sum, item) => sum + item.quantity, 0),
+        ...totals,
       };
+    }
+
+    case 'SET_PURCHASE_MODE': {
+      const sourceItem = state.items.find(item => item.id === action.payload.itemId);
+      if (!sourceItem) return state;
+
+      const nextOfferedUnitPrice =
+        action.payload.purchaseMode === 'offer'
+          ? normalizeOfferUnitPrice(action.payload.offeredUnitPrice)
+          : undefined;
+
+      const targetItemId = getCartItemId({
+        productId: sourceItem.productId,
+        purchaseMode: action.payload.purchaseMode,
+        offeredUnitPrice: nextOfferedUnitPrice,
+      });
+
+      const unitPrice = getEffectiveUnitPrice({
+        purchaseMode: action.payload.purchaseMode,
+        listedUnitPrice: sourceItem.listedUnitPrice,
+        offeredUnitPrice: nextOfferedUnitPrice,
+      });
+
+      const updatedSource: CartItem = {
+        ...sourceItem,
+        id: targetItemId,
+        purchaseMode: action.payload.purchaseMode,
+        offeredUnitPrice: nextOfferedUnitPrice,
+        unitPrice,
+        totalPrice: unitPrice * sourceItem.quantity,
+      };
+
+      const withoutSource = state.items.filter(item => item.id !== sourceItem.id);
+      const existingTarget = withoutSource.find(item => item.id === targetItemId);
+
+      const mergedItems = existingTarget
+        ? withoutSource.map(item => {
+            if (item.id !== targetItemId) return item;
+
+            const nextQuantity = item.quantity + updatedSource.quantity;
+            return {
+              ...item,
+              purchaseMode: updatedSource.purchaseMode,
+              listedUnitPrice: updatedSource.listedUnitPrice,
+              offeredUnitPrice: updatedSource.offeredUnitPrice,
+              unitPrice: updatedSource.unitPrice,
+              quantity: nextQuantity,
+              totalPrice: updatedSource.unitPrice * nextQuantity,
+            };
+          })
+        : [...withoutSource, updatedSource];
+
+      const totals = getTotals(mergedItems);
+      return { ...state, items: mergedItems, ...totals };
+    }
+
+    case 'SET_OFFER_UNIT_PRICE': {
+      const sourceItem = state.items.find(item => item.id === action.payload.itemId);
+      if (!sourceItem || sourceItem.purchaseMode !== 'offer') return state;
+
+      const nextOfferedUnitPrice = normalizeOfferUnitPrice(
+        action.payload.offeredUnitPrice
+      );
+
+      const targetItemId = getCartItemId({
+        productId: sourceItem.productId,
+        purchaseMode: 'offer',
+        offeredUnitPrice: nextOfferedUnitPrice,
+      });
+
+      const unitPrice = getEffectiveUnitPrice({
+        purchaseMode: 'offer',
+        listedUnitPrice: sourceItem.listedUnitPrice,
+        offeredUnitPrice: nextOfferedUnitPrice,
+      });
+
+      const updatedSource: CartItem = {
+        ...sourceItem,
+        id: targetItemId,
+        offeredUnitPrice: nextOfferedUnitPrice,
+        unitPrice,
+        totalPrice: unitPrice * sourceItem.quantity,
+      };
+
+      const withoutSource = state.items.filter(item => item.id !== sourceItem.id);
+      const existingTarget = withoutSource.find(item => item.id === targetItemId);
+
+      const mergedItems = existingTarget
+        ? withoutSource.map(item => {
+            if (item.id !== targetItemId) return item;
+
+            const nextQuantity = item.quantity + updatedSource.quantity;
+            return {
+              ...item,
+              listedUnitPrice: updatedSource.listedUnitPrice,
+              offeredUnitPrice: updatedSource.offeredUnitPrice,
+              unitPrice: updatedSource.unitPrice,
+              quantity: nextQuantity,
+              totalPrice: updatedSource.unitPrice * nextQuantity,
+            };
+          })
+        : [...withoutSource, updatedSource];
+
+      const totals = getTotals(mergedItems);
+      return { ...state, items: mergedItems, ...totals };
     }
 
     case 'CLEAR_CART':
       return initialState;
 
     case 'SET_ITEMS': {
+      const totals = getTotals(action.payload);
       return {
         ...state,
         items: action.payload,
-        total: action.payload.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        ),
-        itemCount: action.payload.reduce((sum, item) => sum + item.quantity, 0),
+        ...totals,
       };
     }
 
@@ -156,9 +321,15 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 interface CartContextType {
   state: CartState;
-  addItem: (item: Omit<CartItem, 'quantity'>) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  addItem: (item: AddItemInput) => void;
+  removeItem: (itemId: string) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
+  setPurchaseMode: (
+    itemId: string,
+    purchaseMode: 'direct' | 'offer',
+    offeredUnitPrice?: number
+  ) => void;
+  setOfferUnitPrice: (itemId: string, offeredUnitPrice: number) => void;
   clearCart: () => void;
   setItems: (items: CartItem[]) => void;
 }
@@ -168,16 +339,37 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
+  const addItem = (item: AddItemInput) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
   };
 
-  const removeItem = (id: string) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: id });
+  const removeItem = (itemId: string) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: itemId });
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
+  const updateQuantity = (itemId: string, quantity: number) => {
+    dispatch({
+      type: 'UPDATE_QUANTITY',
+      payload: { itemId, quantity },
+    });
+  };
+
+  const setPurchaseMode = (
+    itemId: string,
+    purchaseMode: 'direct' | 'offer',
+    offeredUnitPrice?: number
+  ) => {
+    dispatch({
+      type: 'SET_PURCHASE_MODE',
+      payload: { itemId, purchaseMode, offeredUnitPrice },
+    });
+  };
+
+  const setOfferUnitPrice = (itemId: string, offeredUnitPrice: number) => {
+    dispatch({
+      type: 'SET_OFFER_UNIT_PRICE',
+      payload: { itemId, offeredUnitPrice },
+    });
   };
 
   const clearCart = () => {
@@ -195,6 +387,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addItem,
         removeItem,
         updateQuantity,
+        setPurchaseMode,
+        setOfferUnitPrice,
         clearCart,
         setItems,
       }}

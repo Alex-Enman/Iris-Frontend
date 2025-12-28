@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { useProductPage } from '@hooks/products/use-product-page';
 import { Button } from '@components/ui/button';
 import { Badge } from '@components/ui/badge';
@@ -6,7 +7,24 @@ import { BadgeCheck, MapPin, Star, Truck, ArrowLeftRight } from 'lucide-react';
 import { ProductTabs } from './components/ProductTabs';
 import { ComparisonDialog } from './components/ComparisonDialog';
 import { useLanguage } from '@contexts/LanguageContext';
+import { useCartActions } from '@/hooks/cart/use-cart-actions';
 import { formatCurrency } from '@/utils/formatters';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
 
 interface ProductPageProps {
   onAddToCart: () => void;
@@ -14,6 +32,7 @@ interface ProductPageProps {
 
 export function ProductPage({ onAddToCart }: ProductPageProps) {
   const { t } = useLanguage();
+  const { addDirectLineItem, addOfferLineItem } = useCartActions();
   const {
     quantity,
     setQuantity,
@@ -27,6 +46,53 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
     similarProducts,
     reviews,
   } = useProductPage();
+
+  const [makeOfferOpen, setMakeOfferOpen] = useState(false);
+  const [offerQuantity, setOfferQuantity] = useState(1);
+  const [offerUnitPrice, setOfferUnitPrice] = useState(product.price);
+
+  const demoProductId = useMemo(() => 'pdp-product-1', []);
+  const demoSupplierId = useMemo(() => 'supplier-1', []);
+
+  const offerFormError = useMemo(() => {
+    if (!Number.isFinite(offerQuantity) || offerQuantity <= 0)
+      return t('invalidOfferQuantity');
+    if (!Number.isFinite(offerUnitPrice) || offerUnitPrice <= 0)
+      return t('invalidOfferPrice');
+    return null;
+  }, [offerQuantity, offerUnitPrice, t]);
+
+  const handleAddDirectlyToCart = () => {
+    addDirectLineItem({
+      productId: demoProductId,
+      productName: product.name,
+      productImage: product.image,
+      unit: product.unit,
+      quantity,
+      listedUnitPrice: product.price,
+      supplierId: demoSupplierId,
+      supplierName: product.producer,
+    });
+    onAddToCart();
+  };
+
+  const handleSubmitOffer = () => {
+    if (offerFormError) return;
+
+    addOfferLineItem({
+      productId: demoProductId,
+      productName: product.name,
+      productImage: product.image,
+      unit: product.unit,
+      quantity: offerQuantity,
+      listedUnitPrice: product.price,
+      offeredUnitPrice: offerUnitPrice,
+      supplierId: demoSupplierId,
+      supplierName: product.producer,
+    });
+    setMakeOfferOpen(false);
+    onAddToCart();
+  };
 
   return (
     <div className='min-h-screen'>
@@ -125,12 +191,43 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                     +
                   </button>
                 </div>
-                <Button
-                  onClick={onAddToCart}
-                  className='duration-250 h-12 flex-1 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
-                >
-                  {t('addToCart')} — {formatCurrency(product.price * quantity, 'SEK')}
-                </Button>
+                <TooltipProvider>
+                  <div className='flex flex-1 flex-col gap-3 sm:flex-row'>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={handleAddDirectlyToCart}
+                          className='duration-250 h-12 flex-1 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
+                        >
+                          {t('addDirectlyToCart')} —{' '}
+                          {formatCurrency(product.price * quantity, 'SEK')}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t('addDirectlyToCartTooltip')}</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant='outline'
+                          onClick={() => {
+                            setOfferQuantity(quantity);
+                            setOfferUnitPrice(product.price);
+                            setMakeOfferOpen(true);
+                          }}
+                          className='duration-250 h-12 flex-1 rounded-xl transition-all hover:border-accent hover:bg-accent/10 hover:text-accent'
+                        >
+                          {t('makeOffer')}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t('makeOfferTooltip')}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
               </div>
 
               <Button
@@ -153,12 +250,43 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
       </div>
 
       <div className='fixed bottom-0 left-0 right-0 border-t border-border bg-white/95 p-4 backdrop-blur-sm lg:hidden'>
-        <Button
-          onClick={onAddToCart}
-          className='h-12 w-full rounded-xl bg-primary text-primary-foreground'
-        >
-          {t('addToCart')} — {formatCurrency(product.price * quantity, 'SEK')}
-        </Button>
+        <TooltipProvider>
+          <div className='flex gap-3'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleAddDirectlyToCart}
+                  className='h-12 flex-1 rounded-xl bg-primary text-primary-foreground'
+                >
+                  {t('addDirectlyToCart')} —{' '}
+                  {formatCurrency(product.price * quantity, 'SEK')}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t('addDirectlyToCartTooltip')}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='outline'
+                  onClick={() => {
+                    setOfferQuantity(quantity);
+                    setOfferUnitPrice(product.price);
+                    setMakeOfferOpen(true);
+                  }}
+                  className='h-12 flex-1 rounded-xl'
+                >
+                  {t('makeOffer')}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t('makeOfferTooltip')}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
 
       <ComparisonDialog
@@ -172,6 +300,76 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
           setShowCompare(false);
         }}
       />
+
+      <Dialog open={makeOfferOpen} onOpenChange={setMakeOfferOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('makeOfferDialogTitle')}</DialogTitle>
+            <DialogDescription>{t('makeOfferDialogDescription')}</DialogDescription>
+          </DialogHeader>
+
+          <div className='space-y-4'>
+            <div className='space-y-2'>
+              <Label htmlFor='offer-quantity'>{t('offerQuantityLabel')}</Label>
+              <div className='flex items-center rounded-xl border border-border bg-white'>
+                <button
+                  onClick={() => setOfferQuantity(Math.max(1, offerQuantity - 1))}
+                  className='px-4 py-3 transition-colors hover:bg-muted'
+                >
+                  −
+                </button>
+                <span className='min-w-[3rem] text-center'>{offerQuantity}</span>
+                <button
+                  onClick={() => setOfferQuantity(offerQuantity + 1)}
+                  className='px-4 py-3 transition-colors hover:bg-muted'
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className='space-y-2'>
+              <Label htmlFor='offer-unit-price'>
+                {t('offerPriceLabel')} ({t('currencySekSymbol')})
+              </Label>
+              <Input
+                id='offer-unit-price'
+                type='number'
+                inputMode='decimal'
+                min={0}
+                step='0.01'
+                value={offerUnitPrice}
+                onChange={e => setOfferUnitPrice(Number(e.target.value))}
+              />
+              <p className='text-xs text-muted-foreground'>
+                {t('listedPriceLabel')}: {formatCurrency(product.price, 'SEK')}/{product.unit}
+              </p>
+            </div>
+
+            {offerFormError && (
+              <p className='text-sm text-destructive'>{offerFormError}</p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button variant='outline' onClick={() => setMakeOfferOpen(false)}>
+              {t('cancel')}
+            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={handleSubmitOffer} disabled={!!offerFormError}>
+                    {t('submitOffer')}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('submitOfferTooltip')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
