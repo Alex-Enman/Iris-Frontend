@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { toast } from 'sonner';
 import { useLanguage } from '@contexts/LanguageContext';
 
@@ -27,7 +27,8 @@ export function useSupplierMessagesTab({
 }: UseSupplierMessagesTabOptions = {}) {
   const { t } = useLanguage();
 
-  const demoChats: ChatItem[] = [
+  const demoChats: ChatItem[] = useMemo(
+    () => [
     {
       id: '1',
       name: t('supplierNameGreenValleyFarm'),
@@ -124,7 +125,9 @@ export function useSupplierMessagesTab({
         },
       ],
     },
-  ];
+  ],
+    [t]
+  );
 
   const [chats, setChats] = useState<ChatItem[]>([
     ...demoChats,
@@ -190,7 +193,7 @@ export function useSupplierMessagesTab({
   useEffect(() => {
     setChats(demoChats);
     setSelectedChatId('1');
-  }, [t]);
+  }, [demoChats]);
 
   const getParticipantCount = (chat: ChatItem) => {
     const uniqueSenders = new Set(chat.messages.map(m => m.sender));

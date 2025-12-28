@@ -50,11 +50,14 @@ export function useHomePage() {
     { id: 'seasonal', label: t('seasonal') },
   ];
 
-  const regionOptions = [
-    { id: 'within10km', label: t('within10km') },
-    { id: 'tenToTwentyKm', label: t('tenToTwentyKm') },
-    { id: 'twentyToFiftyKm', label: t('twentyToFiftyKm') },
-  ];
+  const regionOptions = useMemo(
+    () => [
+      { id: 'within10km', label: t('within10km') },
+      { id: 'tenToTwentyKm', label: t('tenToTwentyKm') },
+      { id: 'twentyToFiftyKm', label: t('twentyToFiftyKm') },
+    ],
+    [t]
+  );
 
   const regions = regionOptions.map(r => r.label);
   const certifications = [t('organic'), t('local'), t('traceable')];
@@ -157,7 +160,7 @@ export function useHomePage() {
         selectedCerts.every(cert => producer.certifications.includes(cert));
       return categoryMatch && regionMatch && certMatch;
     });
-  }, [selectedCategory, selectedRegions, selectedCerts, allProducers]);
+  }, [selectedCategory, selectedRegions, selectedCerts, allProducers, regionOptions]);
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter(product => {
