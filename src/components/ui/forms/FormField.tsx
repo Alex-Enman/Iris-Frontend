@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { Label } from '@components/ui/label';
 import { cn } from '@/utils/utils';
 import { useLanguage } from '@contexts/LanguageContext';
-import { translations, type TranslationKey } from '@lib/i18n';
+import { translations, type TranslationKey } from '@hooks/shared/use-i18n';
 
 interface FormFieldProps {
   label: string;

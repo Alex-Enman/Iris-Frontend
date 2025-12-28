@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { Order } from '@/types/orders/types';
 import { useLanguage } from '@contexts/LanguageContext';
-import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
+import { normalizeOrderStatusId } from '@hooks/data/orders/use-order-status';
 
 interface OrderDetailsProps {
   order: Order;

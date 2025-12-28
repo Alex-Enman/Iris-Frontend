@@ -21,20 +21,20 @@ export function useRestaurantProfileView({
 
   const handleContact = useCallback(() => {
     toast.success(t('openingMessage', language));
-  }, []);
+  }, [language]);
 
   const handleProposal = useCallback(() => {
     toast.success(t('creatingSupplyProposal', language));
-  }, []);
+  }, [language]);
 
   const handleFavorite = useCallback(() => {
     setIsFavorite(prev => !prev);
     toast.success(t(!isFavorite ? 'addedToFavorites' : 'removedFromFavorites', language));
-  }, [isFavorite]);
+  }, [isFavorite, language]);
 
   const handleSaveNotes = useCallback(() => {
     toast.success(t('notesSavedSuccessfully', language));
-  }, []);
+  }, [language]);
 
   return {
     restaurantId,

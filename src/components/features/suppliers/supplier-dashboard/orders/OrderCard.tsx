@@ -6,7 +6,7 @@ import { Progress } from '@components/ui/progress';
 import type { Order } from '@/types/suppliers/supplier-dashboard/types';
 import { getStatusIcon, getStatusColor } from './OrderStatusHelpers';
 import { useLanguage } from '@contexts/LanguageContext';
-import { normalizeOrderStatusId } from '@/lib/data/repositories/orders/normalize-order-status';
+import { normalizeOrderStatusId } from '@hooks/data/orders/use-order-status';
 
 interface OrderCardProps {
   order: Order;

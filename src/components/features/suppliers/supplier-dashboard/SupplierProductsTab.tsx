@@ -32,7 +32,7 @@ import type {
 } from '@/types/suppliers/supplier-dashboard/types';
 import { useLanguage } from '@contexts/LanguageContext';
 import { toast } from 'sonner';
-import { updateSupplierProduct } from '@/lib/data/services/suppliers/supplier-product-service';
+import { updateSupplierProduct } from '@hooks/data/suppliers/use-supplier-product';
 
 type EditStockMode = 'set' | 'add';
 

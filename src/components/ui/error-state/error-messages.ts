@@ -1,6 +1,6 @@
 // Error message utilities
 
-import { getStoredLanguage, t } from '@lib/i18n';
+import { getStoredLanguage, t } from '@hooks/shared/use-i18n';
 
 export function getErrorMessage(error: any) {
   const language = getStoredLanguage();

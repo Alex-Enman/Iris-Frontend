@@ -20,17 +20,17 @@ export function useSupplierProfileView({
         description: productName,
       });
     },
-    []
+    [language]
   );
 
   const handleToggleFavorite = useCallback(() => {
     setIsFavorite(prev => !prev);
     toast.success(t(!isFavorite ? 'addedToFavorites' : 'removedFromFavorites', language));
-  }, [isFavorite]);
+  }, [isFavorite, language]);
 
   const handleContact = useCallback(() => {
     toast.success(t('openingMessage', language));
-  }, []);
+  }, [language]);
 
   return {
     supplierId,

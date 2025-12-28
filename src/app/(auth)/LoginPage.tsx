@@ -9,7 +9,7 @@ import { Store, UtensilsCrossed } from 'lucide-react';
 import { UserRole } from '@/types';
 import { getMockAuthCredentials } from '@/tests/mocks/mock-data';
 import { useLanguage } from '@contexts/LanguageContext';
-import type { TranslationKey } from '@lib/i18n';
+import type { TranslationKey } from '@hooks/shared/use-i18n';
 
 interface LoginPageProps {
   onLogin: (userType: UserRole) => void;

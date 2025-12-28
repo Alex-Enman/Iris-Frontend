@@ -3,7 +3,7 @@
 import { ChatsSidebar } from './messages/ChatsSidebar';
 import { ChatArea } from './messages/ChatArea';
 import { useMessagesPage, type Chat } from '@/hooks/user/use-messages-page';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLanguage } from '@contexts/LanguageContext';
 
 export interface MessagesPageProps {
@@ -26,104 +26,107 @@ export function MessagesPage({ onViewSupplier }: MessagesPageProps) {
     getParticipantCount,
   } = useMessagesPage();
 
-  const initialChats: Chat[] = [
-    {
-      id: '1',
-      name: t('supplierNameGreenValleyFarm'),
-      type: 'project',
-      description: t('chatSupplierDescriptionOrganicVegetables'),
-      supplierId: '1',
-      messages: [
-        {
-          id: '1',
-          text: t('chatMsgHiPlaceOrderNextWeek'),
-          sender: t('you'),
-          timestamp: t('chatTimestamp10_30AM'),
-        },
-        {
-          id: '2',
-          text: t('chatMsgHelloHappyToHelpWhatItems'),
-          sender: t('supplierNameGreenValleyFarm'),
-          timestamp: t('chatTimestamp10_32AM'),
-        },
-        {
-          id: '3',
-          text: t('chatMsgNeed10kgTomatoesGreensCarrots'),
-          sender: t('you'),
-          timestamp: t('chatTimestamp10_33AM'),
-        },
-        {
-          id: '4',
-          text: t('chatMsgPerfectAllInStockTomatoesBeautiful'),
-          sender: t('supplierNameGreenValleyFarm'),
-          timestamp: t('chatTimestamp10_35AM'),
-        },
-      ],
-    },
-    {
-      id: '2',
-      name: t('supplierNameMountainDairyCo'),
-      type: 'project',
-      description: t('chatSupplierDescriptionArtisanDairy'),
-      supplierId: '2',
-      messages: [
-        {
-          id: '1',
-          text: t('chatMsgThanksLastDeliveryMozzarellaExcellent'),
-          sender: t('you'),
-          timestamp: t('chatTimestampYesterday3_45PM'),
-        },
-        {
-          id: '2',
-          text: t('chatMsgGladYouEnjoyedNewAgedCheddar'),
-          sender: t('supplierNameMountainDairyCo'),
-          timestamp: t('chatTimestampYesterday4_12PM'),
-        },
-      ],
-    },
-    {
-      id: '3',
-      name: t('supplierNameHeritageBakery'),
-      type: 'project',
-      description: t('chatSupplierDescriptionArtisanBakery'),
-      supplierId: '3',
-      messages: [
-        {
-          id: '1',
-          text: t('chatMsgCanIAddPastriesWeeklyOrder'),
-          sender: t('you'),
-          timestamp: t('chatTimestampOct23_2_15PM'),
-        },
-        {
-          id: '2',
-          text: t('chatMsgAbsolutelyFreshCroissantsPainAuChocolat'),
-          sender: t('supplierNameHeritageBakery'),
-          timestamp: t('chatTimestampOct23_2_20PM'),
-        },
-      ],
-    },
-    {
-      id: '4',
-      name: t('supplierNameOliveGroveEstate'),
-      type: 'project',
-      description: t('chatSupplierDescriptionOilsAndPreserves'),
-      supplierId: '4',
-      messages: [
-        {
-          id: '1',
-          text: t('chatMsgDoYouHaveTruffleOliveOil'),
-          sender: t('you'),
-          timestamp: t('chatTimestampOct18_11_00AM'),
-        },
-        {
-          id: '2',
-          text: t('chatMsgYesFreshBatchWouldYouLikeOrder'),
-          sender: t('supplierNameOliveGroveEstate'),
-          timestamp: t('chatTimestampOct18_11_15AM'),
-        },
-      ],
-    },
-  ];
+  const initialChats: Chat[] = useMemo(
+    () => [
+      {
+        id: '1',
+        name: t('supplierNameGreenValleyFarm'),
+        type: 'project',
+        description: t('chatSupplierDescriptionOrganicVegetables'),
+        supplierId: '1',
+        messages: [
+          {
+            id: '1',
+            text: t('chatMsgHiPlaceOrderNextWeek'),
+            sender: t('you'),
+            timestamp: t('chatTimestamp10_30AM'),
+          },
+          {
+            id: '2',
+            text: t('chatMsgHelloHappyToHelpWhatItems'),
+            sender: t('supplierNameGreenValleyFarm'),
+            timestamp: t('chatTimestamp10_32AM'),
+          },
+          {
+            id: '3',
+            text: t('chatMsgNeed10kgTomatoesGreensCarrots'),
+            sender: t('you'),
+            timestamp: t('chatTimestamp10_33AM'),
+          },
+          {
+            id: '4',
+            text: t('chatMsgPerfectAllInStockTomatoesBeautiful'),
+            sender: t('supplierNameGreenValleyFarm'),
+            timestamp: t('chatTimestamp10_35AM'),
+          },
+        ],
+      },
+      {
+        id: '2',
+        name: t('supplierNameMountainDairyCo'),
+        type: 'project',
+        description: t('chatSupplierDescriptionArtisanDairy'),
+        supplierId: '2',
+        messages: [
+          {
+            id: '1',
+            text: t('chatMsgThanksLastDeliveryMozzarellaExcellent'),
+            sender: t('you'),
+            timestamp: t('chatTimestampYesterday3_45PM'),
+          },
+          {
+            id: '2',
+            text: t('chatMsgGladYouEnjoyedNewAgedCheddar'),
+            sender: t('supplierNameMountainDairyCo'),
+            timestamp: t('chatTimestampYesterday4_12PM'),
+          },
+        ],
+      },
+      {
+        id: '3',
+        name: t('supplierNameHeritageBakery'),
+        type: 'project',
+        description: t('chatSupplierDescriptionArtisanBakery'),
+        supplierId: '3',
+        messages: [
+          {
+            id: '1',
+            text: t('chatMsgCanIAddPastriesWeeklyOrder'),
+            sender: t('you'),
+            timestamp: t('chatTimestampOct23_2_15PM'),
+          },
+          {
+            id: '2',
+            text: t('chatMsgAbsolutelyFreshCroissantsPainAuChocolat'),
+            sender: t('supplierNameHeritageBakery'),
+            timestamp: t('chatTimestampOct23_2_20PM'),
+          },
+        ],
+      },
+      {
+        id: '4',
+        name: t('supplierNameOliveGroveEstate'),
+        type: 'project',
+        description: t('chatSupplierDescriptionOilsAndPreserves'),
+        supplierId: '4',
+        messages: [
+          {
+            id: '1',
+            text: t('chatMsgDoYouHaveTruffleOliveOil'),
+            sender: t('you'),
+            timestamp: t('chatTimestampOct18_11_00AM'),
+          },
+          {
+            id: '2',
+            text: t('chatMsgYesFreshBatchWouldYouLikeOrder'),
+            sender: t('supplierNameOliveGroveEstate'),
+            timestamp: t('chatTimestampOct18_11_15AM'),
+          },
+        ],
+      },
+    ],
+    [t]
+  );
 
   useEffect(() => {
     if (chats.length === 0) {
@@ -136,7 +139,7 @@ export function MessagesPage({ onViewSupplier }: MessagesPageProps) {
     if (chats.length > 0) {
       setChats(initialChats);
     }
-  }, [t]);
+  }, [chats.length, initialChats, setChats]);
 
   if (!selectedChat) return null;
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { getStoredLanguage, t } from '@lib/i18n';
 
@@ -65,7 +65,7 @@ export interface TopSupplierSummary {
 export function useRestaurantProfile() {
   const language = getStoredLanguage();
 
-  const getDefaultRestaurantProfile = (): RestaurantProfile => ({
+  const getDefaultRestaurantProfile = useCallback((): RestaurantProfile => ({
     name: t('restaurantLaBellaCucina', language),
     type: t('restaurantTypeItalianFineDining', language),
     cuisine: [
@@ -146,7 +146,7 @@ export function useRestaurantProfile() {
         preferences: t('supplierNeedPreferencesPremiumItalianCheeses', language),
       },
     ],
-  });
+  }), [language]);
 
   const [restaurantProfile, setRestaurantProfile] = useState<RestaurantProfile>(
     getDefaultRestaurantProfile()
@@ -154,7 +154,7 @@ export function useRestaurantProfile() {
 
   useEffect(() => {
     setRestaurantProfile(getDefaultRestaurantProfile());
-  }, [language]);
+  }, [language, getDefaultRestaurantProfile]);
 
   const restaurantInfo = {
     name: restaurantProfile.name,
