@@ -58,7 +58,7 @@ export default function SettingsPage() {
     timezone: 'America/Los_Angeles',
 
     // Preferences
-    currency: 'USD',
+    currency: 'SEK',
     units: 'imperial',
     autoSave: true,
     compactView: false,
@@ -418,7 +418,7 @@ export default function SettingsPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='USD'>USD ($)</SelectItem>
-                    <SelectItem value='EUR'>EUR (€)</SelectItem>
+                    <SelectItem value='SEK'>SEK (kr)</SelectItem>
                     <SelectItem value='GBP'>GBP (£)</SelectItem>
                     <SelectItem value='CAD'>CAD (C$)</SelectItem>
                   </SelectContent>

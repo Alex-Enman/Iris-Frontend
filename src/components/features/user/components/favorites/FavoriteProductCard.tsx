@@ -82,7 +82,7 @@ export function FavoriteProductCard(props: FavoriteProductCardProps) {
           </span>
         </div>
         <div className='mb-3 flex items-baseline gap-1'>
-          <span className='text-xl text-primary'>€{price.toFixed(2)}</span>
+          <span className='text-xl text-primary'>kr{price.toFixed(2)}</span>
           <span className='text-sm text-muted-foreground'>/ {unit}</span>
         </div>
         <div className='space-y-2'>

@@ -30,7 +30,7 @@ export function PendingInvoicesCard() {
                 <h4 className='mb-1 text-sm font-medium'>INV-2024-002</h4>
                 <p className='text-sm text-muted-foreground'>{t('farmToFork')}</p>
               </div>
-              <span className='text-primary'>€32.40</span>
+              <span className='text-primary'>kr324.00</span>
             </div>
             <div className='flex items-center justify-between text-xs text-muted-foreground'>
               <span>{t('invoiceDueNov06_2024')}</span>
@@ -44,7 +44,7 @@ export function PendingInvoicesCard() {
                 <h4 className='mb-1 text-sm font-medium'>INV-2024-003</h4>
                 <p className='text-sm text-muted-foreground'>{t('greenTable')}</p>
               </div>
-              <span className='text-primary'>€78.20</span>
+              <span className='text-primary'>kr782.00</span>
             </div>
             <div className='flex items-center justify-between text-xs text-muted-foreground'>
               <span>{t('invoiceDueNov07_2024')}</span>

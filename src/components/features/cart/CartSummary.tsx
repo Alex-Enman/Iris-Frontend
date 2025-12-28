@@ -26,7 +26,7 @@ export function CartSummary({
     0
   );
   const tax = subtotal * 0.08; // 8% tax
-  const shipping = subtotal > 100 ? 0 : 10; // Free shipping over $100
+  const shipping = subtotal > 1000 ? 0 : 100; // Free shipping over kr1000
   const total = subtotal + tax + shipping;
 
   return (
@@ -41,25 +41,25 @@ export function CartSummary({
               {t('subtotal')} ({cart.items.length}{' '}
               {cart.items.length === 1 ? t('item') : t('items')})
             </span>
-            <span>{formatCurrency(subtotal, 'USD')}</span>
+            <span>{formatCurrency(subtotal, 'SEK')}</span>
           </div>
 
           <div className='flex justify-between text-sm'>
             <span>{t('tax')}</span>
-            <span>{formatCurrency(tax, 'USD')}</span>
+            <span>{formatCurrency(tax, 'SEK')}</span>
           </div>
 
           <div className='flex justify-between text-sm'>
             <span>{t('shipping')}</span>
             <span>
-              {shipping === 0 ? t('free') : formatCurrency(shipping, 'USD')}
+              {shipping === 0 ? t('free') : formatCurrency(shipping, 'SEK')}
             </span>
           </div>
 
           {shipping > 0 && (
             <p className='text-xs text-muted-foreground'>
               {t('addMoreForFreeShippingPrefix')}{' '}
-              {formatCurrency(100 - subtotal, 'USD')}{' '}
+              {formatCurrency(1000 - subtotal, 'SEK')}{' '}
               {t('addMoreForFreeShippingSuffix')}
             </p>
           )}
@@ -69,7 +69,7 @@ export function CartSummary({
 
         <div className='flex justify-between font-medium'>
           <span>{t('total')}</span>
-          <span>{formatCurrency(total, 'USD')}</span>
+          <span>{formatCurrency(total, 'SEK')}</span>
         </div>
 
         <div className='space-y-2 pt-4'>

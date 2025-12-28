@@ -22,7 +22,7 @@ export function OrdersStatsGrid({ totalOrders }: OrdersStatsGridProps) {
           <DollarSign className='h-5 w-5 text-accent' />
           <div className='text-sm text-muted-foreground'>{t('thisMonth')}</div>
         </div>
-        <div className='text-3xl text-accent'>{formatCurrency(599, 'EUR')}</div>
+        <div className='text-3xl text-accent'>{formatCurrency(5990, 'SEK')}</div>
       </div>
       <div className='rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 p-6'>
         <div className='mb-2 flex items-center gap-2'>

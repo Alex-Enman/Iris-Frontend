@@ -41,16 +41,16 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
   ];
 
   const topProducts = [
-    { name: 'Heirloom Tomatoes', sales: 245, revenue: '€1,102.50' },
-    { name: 'Organic Carrots', sales: 189, revenue: '€604.80' },
-    { name: 'Fresh Lettuce', sales: 134, revenue: '€375.20' },
-    { name: 'Organic Spinach', sales: 98, revenue: '€343.00' },
+    { name: 'Heirloom Tomatoes', sales: 245, revenue: 'kr11,025.00' },
+    { name: 'Organic Carrots', sales: 189, revenue: 'kr6,048.00' },
+    { name: 'Fresh Lettuce', sales: 134, revenue: 'kr3,752.00' },
+    { name: 'Organic Spinach', sales: 98, revenue: 'kr3,430.00' },
   ];
 
   const topCustomers = [
-    { name: 'Bella Vista Restaurant', orders: 24, total: '€2,340.50' },
-    { name: 'The Garden Bistro', orders: 31, total: '€3,120.80' },
-    { name: 'Café Moderno', orders: 18, total: '€1,890.20' },
+    { name: 'Bella Vista Restaurant', orders: 24, total: 'kr23,405.00' },
+    { name: 'The Garden Bistro', orders: 31, total: 'kr31,208.00' },
+    { name: 'Café Moderno', orders: 18, total: 'kr18,902.00' },
   ];
 
   return (
@@ -90,7 +90,7 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
               <p className='text-sm font-medium text-muted-foreground'>
                 {t('totalRevenue')}
               </p>
-              <p className='text-2xl font-bold'>{formatCurrency(65550, 'EUR')}</p>
+              <p className='text-2xl font-bold'>{formatCurrency(655500, 'SEK')}</p>
               <div className='mt-2 flex items-center'>
                 <TrendingUp className='mr-1 h-4 w-4 text-green-500' />
                 <span className='text-sm text-green-600'>
@@ -144,7 +144,7 @@ export function SupplierAnalyticsTab({}: SupplierAnalyticsTabProps) {
               <p className='text-sm font-medium text-muted-foreground'>
                 {t('avgOrderValue')}
               </p>
-              <p className='text-2xl font-bold'>{formatCurrency(184.13, 'EUR')}</p>
+              <p className='text-2xl font-bold'>{formatCurrency(1841.3, 'SEK')}</p>
               <div className='mt-2 flex items-center'>
                 <TrendingDown className='mr-1 h-4 w-4 text-red-500' />
                 <span className='text-sm text-red-600'>

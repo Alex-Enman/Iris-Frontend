@@ -132,7 +132,7 @@ export function ComparisonDialog({
                     {t('pricePerUnit')}
                   </div>
                   <div className='text-xl text-primary'>
-                    €{item.priceValue.toFixed(2)}
+                    kr{item.priceValue.toFixed(2)}
                     <span className='text-sm text-muted-foreground'>/kg</span>
                   </div>
                 </div>

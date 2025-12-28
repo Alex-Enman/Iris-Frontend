@@ -94,7 +94,7 @@ export function useHomePage() {
         producer: t('supplierNameGreenValleyFarm'),
         image:
           'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
-        price: '€4.50/kg',
+        price: 'kr45/kg',
         categoryType: ['vegetables', 'organic', 'seasonal'],
         certifications: [t('organic'), t('local')],
       },
@@ -104,7 +104,7 @@ export function useHomePage() {
         producer: t('supplierNameFreeRangePoultry'),
         image:
           'https://images.unsplash.com/photo-1669669420238-7a4be2e3eac6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwZWdncyUyMGZhcm18ZW58MXx8fHwxNzYxMjcyMTk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
-        price: '€5.20/dozen',
+        price: 'kr52/dozen',
         categoryType: ['organic'],
         certifications: [t('organic'), t('local')],
       },

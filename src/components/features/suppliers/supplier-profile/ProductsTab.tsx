@@ -52,7 +52,7 @@ export function ProductsTab({ products, onAddToCart }: ProductsTabProps) {
             </p>
             <div className='flex items-center justify-between'>
               <div className='text-primary'>
-                {formatCurrency(product.price, 'EUR')}
+                {formatCurrency(product.price, 'SEK')}
                 <span className='text-sm text-muted-foreground'>
                   /{product.unit}
                 </span>

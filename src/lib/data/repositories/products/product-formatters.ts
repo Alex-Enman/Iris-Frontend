@@ -8,7 +8,7 @@ export class ProductFormatters {
   /**
    * Format product price for display
    */
-  static formatPrice(price: number, currency = 'USD'): string {
+  static formatPrice(price: number, currency = 'SEK'): string {
     return new Intl.NumberFormat(getCurrentLocale(), {
       style: 'currency',
       currency,

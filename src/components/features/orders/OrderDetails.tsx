@@ -120,7 +120,7 @@ export function OrderDetails({
 
           <div className='flex items-center space-x-2'>
             <div className='text-right'>
-              <p className='text-lg font-semibold'>€{order.total.toFixed(2)}</p>
+              <p className='text-lg font-semibold'>kr{order.total.toFixed(2)}</p>
               <p className='text-sm text-muted-foreground'>{order.date}</p>
             </div>
             <div className='flex items-center space-x-1'>
@@ -164,7 +164,7 @@ export function OrderDetails({
                         {item.quantity}
                       </p>
                     </div>
-                    <p className='font-medium'>€{item.price.toFixed(2)}</p>
+                    <p className='font-medium'>kr{item.price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>

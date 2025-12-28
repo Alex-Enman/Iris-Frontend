@@ -77,14 +77,14 @@ export function FavoriteOrderCard({
                 {item.name} × {item.quantity}
               </span>
               <span className='text-primary'>
-                {formatCurrency(item.price, 'EUR')}
+                {formatCurrency(item.price, 'SEK')}
               </span>
             </div>
           ))}
           <div className='mt-3 flex items-center justify-between border-t border-border pt-3'>
             <span className='text-muted-foreground'>{t('total')}</span>
             <span className='text-lg text-primary'>
-              {formatCurrency(total, 'EUR')}
+              {formatCurrency(total, 'SEK')}
             </span>
           </div>
         </div>

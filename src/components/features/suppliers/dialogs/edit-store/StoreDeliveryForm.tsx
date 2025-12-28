@@ -43,7 +43,7 @@ export function StoreDeliveryForm({
             </div>
 
             <div>
-              <Label htmlFor='deliveryFee'>{t('deliveryFeeEur')}</Label>
+              <Label htmlFor='deliveryFee'>{t('deliveryFeeSek')}</Label>
               <Input
                 id='deliveryFee'
                 type='number'
@@ -57,7 +57,7 @@ export function StoreDeliveryForm({
 
             <div>
               <Label htmlFor='freeDeliveryThreshold'>
-                {t('freeDeliveryThresholdEur')}
+                {t('freeDeliveryThresholdSek')}
               </Label>
               <Input
                 id='freeDeliveryThreshold'
@@ -77,7 +77,7 @@ export function StoreDeliveryForm({
         <Card className='p-4'>
           <div className='space-y-4'>
             <div>
-              <Label htmlFor='minOrderAmount'>{t('minimumOrderAmountEur')}</Label>
+              <Label htmlFor='minOrderAmount'>{t('minimumOrderAmountSek')}</Label>
               <Input
                 id='minOrderAmount'
                 type='number'

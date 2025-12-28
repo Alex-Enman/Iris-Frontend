@@ -82,7 +82,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
               </div>
 
               <div className='mb-6 text-4xl text-primary'>
-                {formatCurrency(product.price, 'EUR')}
+                {formatCurrency(product.price, 'SEK')}
                 <span className='text-xl text-muted-foreground'>
                   /{product.unit}
                 </span>
@@ -129,7 +129,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
                   onClick={onAddToCart}
                   className='duration-250 h-12 flex-1 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_4px_12px_rgba(45,77,49,0.3)]'
                 >
-                  {t('addToCart')} — {formatCurrency(product.price * quantity, 'EUR')}
+                  {t('addToCart')} — {formatCurrency(product.price * quantity, 'SEK')}
                 </Button>
               </div>
 
@@ -157,7 +157,7 @@ export function ProductPage({ onAddToCart }: ProductPageProps) {
           onClick={onAddToCart}
           className='h-12 w-full rounded-xl bg-primary text-primary-foreground'
         >
-          {t('addToCart')} — {formatCurrency(product.price * quantity, 'EUR')}
+          {t('addToCart')} — {formatCurrency(product.price * quantity, 'SEK')}
         </Button>
       </div>
 

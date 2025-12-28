@@ -75,7 +75,7 @@ export function useSupplierDashboard() {
         status: ((p as any).stockQuantity ?? 100) > 0 ? 'inStock' : 'outOfStock',
         image: p.image || '',
         sales: 0,
-        revenue: '€0.00',
+        revenue: 'kr0.00',
       }))
   );
 
@@ -125,7 +125,7 @@ export function useSupplierDashboard() {
         status: parseInt(newProduct.stock) > 0 ? 'inStock' : 'outOfStock',
         image: newProduct.imageUrl || 'https://via.placeholder.com/150',
         sales: 0,
-        revenue: '€0.00',
+        revenue: 'kr0.00',
       };
       setProducts([...products, product]);
       setNewProduct({

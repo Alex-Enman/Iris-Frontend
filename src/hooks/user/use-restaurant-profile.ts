@@ -85,7 +85,7 @@ export function useRestaurantProfile() {
     leadTime: t('leadTime48Hours', language),
     deliveryWindow: t('deliveryWindow6to9am', language),
     paymentTerms: t('paymentTermsNet30', language),
-    minimumOrder: '€100',
+    minimumOrder: 'kr1,000',
     menu: [
       {
         category: t('menuCategoryAntipasti', language),
@@ -93,14 +93,14 @@ export function useRestaurantProfile() {
           {
             name: t('menuItemBruschettaAlPomodoro', language),
             description: t('menuItemBruschettaDescription', language),
-            price: '€12',
+            price: 'kr120',
             image:
               'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400',
           },
           {
             name: t('menuItemBurrataConProsciutto', language),
             description: t('menuItemBurrataDescription', language),
-            price: '€18',
+            price: 'kr180',
             image:
               'https://images.unsplash.com/photo-1498579397066-22750a3cb424?w=400',
           },
@@ -112,14 +112,14 @@ export function useRestaurantProfile() {
           {
             name: t('menuItemTagliatelleAlTartufo', language),
             description: t('menuItemTagliatelleDescription', language),
-            price: '€28',
+            price: 'kr280',
             image:
               'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400',
           },
           {
             name: t('menuItemRisottoAiFunghi', language),
             description: t('menuItemRisottoDescription', language),
-            price: '€24',
+            price: 'kr240',
             image:
               'https://images.unsplash.com/photo-1476124369491-c7addf8a3b52?w=400',
           },
@@ -130,19 +130,19 @@ export function useRestaurantProfile() {
       {
         category: t('vegetables', language),
         frequency: t('supplierNeedFrequencyTwiceWeekly', language),
-        averageOrder: '€250',
+        averageOrder: 'kr2,500',
         preferences: t('supplierNeedPreferencesOrganicLocallySourced', language),
       },
       {
         category: t('seafood', language),
         frequency: t('supplierNeedFrequencyDaily', language),
-        averageOrder: '€450',
+        averageOrder: 'kr4,500',
         preferences: t('supplierNeedPreferencesFreshSustainableSources', language),
       },
       {
         category: t('dairy', language),
         frequency: t('weeklyFrequency', language),
-        averageOrder: '€180',
+        averageOrder: 'kr1,800',
         preferences: t('supplierNeedPreferencesPremiumItalianCheeses', language),
       },
     ],
@@ -185,9 +185,9 @@ export function useRestaurantProfile() {
   ];
 
   const topSuppliers: TopSupplierSummary[] = [
-    { name: t('supplierNameGreenValleyFarm', language), orders: 28, spend: '€1,247' },
-    { name: t('supplierNameMountainDairyCo', language), orders: 19, spend: '€892' },
-    { name: t('supplierNameHeritageBakery', language), orders: 15, spend: '€675' },
+    { name: t('supplierNameGreenValleyFarm', language), orders: 28, spend: 'kr12,470' },
+    { name: t('supplierNameMountainDairyCo', language), orders: 19, spend: 'kr8,920' },
+    { name: t('supplierNameHeritageBakery', language), orders: 15, spend: 'kr6,750' },
   ];
 
   const sustainabilityScore = 82;

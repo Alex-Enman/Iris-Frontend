@@ -62,14 +62,14 @@ export function RestaurantProfileView({
           {
             name: t('menuItemBruschettaAlPomodoro'),
             description: t('menuItemBruschettaDescription'),
-            price: '€12',
+            price: 'kr120',
             image:
               'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400',
           },
           {
             name: t('menuItemBurrataConProsciutto'),
             description: t('menuItemBurrataDescription'),
-            price: '€18',
+            price: 'kr180',
             image:
               'https://images.unsplash.com/photo-1498579397066-22750a3cb424?w=400',
           },
@@ -81,14 +81,14 @@ export function RestaurantProfileView({
           {
             name: t('menuItemTagliatelleAlTartufo'),
             description: t('menuItemTagliatelleDescription'),
-            price: '€28',
+            price: 'kr280',
             image:
               'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400',
           },
           {
             name: t('menuItemRisottoAiFunghi'),
             description: t('menuItemRisottoDescription'),
-            price: '€24',
+            price: 'kr240',
             image:
               'https://images.unsplash.com/photo-1476124369491-c7addf8a3b52?w=400',
           },
@@ -100,14 +100,14 @@ export function RestaurantProfileView({
           {
             name: t('menuItemOssoBucoAllaMilanese'),
             description: t('menuItemOssoBucoDescription'),
-            price: '€38',
+            price: 'kr380',
             image:
               'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400',
           },
           {
             name: t('menuItemBranzinoAlForno'),
             description: t('menuItemBranzinoDescription'),
-            price: '€35',
+            price: 'kr350',
             image:
               'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400',
           },
@@ -118,25 +118,25 @@ export function RestaurantProfileView({
       {
         category: t('vegetables'),
         frequency: t('supplierNeedFrequencyTwiceWeekly'),
-        averageOrder: '€250',
+        averageOrder: 'kr2,500',
         preferences: t('supplierNeedPreferencesOrganicLocallySourced'),
       },
       {
         category: t('seafood'),
         frequency: t('supplierNeedFrequencyDaily'),
-        averageOrder: '€450',
+        averageOrder: 'kr4,500',
         preferences: t('supplierNeedPreferencesFreshSustainableSources'),
       },
       {
         category: t('dairy'),
         frequency: t('weeklyFrequency'),
-        averageOrder: '€180',
+        averageOrder: 'kr1,800',
         preferences: t('supplierNeedPreferencesPremiumItalianCheeses'),
       },
       {
         category: t('supplierNeedCategoryHerbsAndSpices'),
         frequency: t('weeklyFrequency'),
-        averageOrder: '€120',
+        averageOrder: 'kr1,200',
         preferences: t('supplierNeedPreferencesFreshHerbsSpecialtySpices'),
       },
     ],
@@ -149,14 +149,14 @@ export function RestaurantProfileView({
       leadTime: t('leadTime48Hours'),
       deliveryWindow: t('deliveryWindow6to9am'),
       paymentTerms: t('paymentTermsNet30'),
-      minimumOrder: '€100',
+      minimumOrder: 'kr1,000',
     },
   };
 
   const supplierAnalytics = {
-    totalRevenue: '€12,543',
+    totalRevenue: 'kr125,430',
     totalOrders: 47,
-    avgOrderValue: '€267',
+    avgOrderValue: 'kr2,670',
     lastOrderDate: `2 ${t('daysAgo')}`,
     orderFrequency: t('weeklyFrequency'),
     topProducts: [t('productTomatoes'), t('productFreshHerbs'), t('productMozzarella')],
@@ -167,21 +167,21 @@ export function RestaurantProfileView({
       id: 'ORD-1234',
       date: '2024-10-20',
       items: [t('productTomatoes'), t('productBasil'), t('productMozzarella')],
-      total: '€265.50',
+      total: 'kr2,655.00',
       status: t('deliveredStatus'),
     },
     {
       id: 'ORD-1198',
       date: '2024-10-13',
       items: [t('productOliveOil'), t('productParmesan'), t('productFreshHerbs')],
-      total: '€189.30',
+      total: 'kr1,893.00',
       status: t('deliveredStatus'),
     },
     {
       id: 'ORD-1167',
       date: '2024-10-06',
       items: [t('productTomatoes'), t('productArugula'), t('productBurrata')],
-      total: '€245.00',
+      total: 'kr2,450.00',
       status: t('deliveredStatus'),
     },
   ];

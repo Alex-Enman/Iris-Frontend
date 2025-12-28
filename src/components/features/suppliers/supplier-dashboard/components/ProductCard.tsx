@@ -115,7 +115,7 @@ export function ProductCard(props: ProductCardProps) {
           <div className='flex justify-between text-sm'>
             <span className='text-muted-foreground'>{t('price')}:</span>
             <span className='font-medium'>
-              €{price}/{unit}
+              kr{price}/{unit}
             </span>
           </div>
           <div className='flex justify-between text-sm'>

@@ -89,7 +89,7 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
         <div className='flex justify-between text-sm'>
           <span className='text-muted-foreground'>{t('price')}:</span>
           <span className='font-medium'>
-            €{product.price}/{product.unit}
+            kr{product.price}/{product.unit}
           </span>
         </div>
         <div className='flex justify-between text-sm'>

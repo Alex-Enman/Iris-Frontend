@@ -132,7 +132,7 @@ export function SupplierDashboard({ onLogout }: SupplierDashboardProps) {
               stats={[
                 {
                   label: t('revenue'),
-                  value: '€12,450',
+                  value: 'kr124,500',
                   change: '+12.5%',
                   icon: BarChartBig,
                   trend: 'up',

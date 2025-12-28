@@ -8,7 +8,7 @@ export const MOCK_PRODUCTS: Product[] = [
     description:
       'Sweet and juicy heirloom tomatoes, perfect for salads and cooking',
     category: ProductCategory.PRODUCE,
-    price: 4.5,
+    price: 45,
     unit: 'kg',
     image:
       'https://images.unsplash.com/photo-1591171551239-80a5eddd627a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b21hdG9lcyUyMGZyZXNoJTIwbWFya2V0fGVufDF8fHx8MTc2MTMwNzMzOXww&ixlib=rb-4.1.0&q=80&w=1080',
@@ -26,7 +26,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Fresh Milk',
     description: 'Creamy whole milk from grass-fed cows',
     category: ProductCategory.DAIRY,
-    price: 3.25,
+    price: 32.5,
     unit: 'liter',
     image:
       'https://images.unsplash.com/photo-1550583724-b2692b85b150?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMG1pbGt8ZW58MXx8fHwxNzYxMzA3MzQzfDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -44,7 +44,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Grass-Fed Beef Steak',
     description: 'Premium cut of grass-fed beef, perfect for grilling',
     category: ProductCategory.MEAT,
-    price: 18.99,
+    price: 189.9,
     unit: 'kg',
     image:
       'https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWVmJTIwc3RlYWt8ZW58MXx8fHwxNzYxMzA3MzQ0fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -62,7 +62,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Fresh Salmon Fillet',
     description: 'Wild-caught salmon fillet, perfect for dinner',
     category: ProductCategory.SEAFOOD,
-    price: 22.5,
+    price: 225,
     unit: 'kg',
     image:
       'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzYWxtb24lMjBmaWxsZXR8ZW58MXx8fHwxNzYxMzA3MzQ1fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -80,7 +80,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Sourdough Bread',
     description: 'Artisan sourdough bread made with local flour',
     category: ProductCategory.BAKERY,
-    price: 6.99,
+    price: 69.9,
     unit: 'loaf',
     image:
       'https://images.unsplash.com/photo-1509440159596-0249088772ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb3VyZG91Z2glMjBicmVhZHx8ZW58MXx8fHwxNzYxMzA3MzQ2fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -98,7 +98,7 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Organic Carrots',
     description: 'Crisp and sweet organic carrots, perfect for snacking',
     category: ProductCategory.PRODUCE,
-    price: 2.99,
+    price: 29.9,
     unit: 'kg',
     image:
       'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJyb3RzJTIwb3JnYW5pY3x8ZW58MXx8fHwxNzYxMzA3MzQ3fDA&ixlib=rb-4.1.0&q=80&w=1080',

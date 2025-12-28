@@ -2,7 +2,7 @@
 
 import { getCurrentLocale, getStoredLanguage, t } from '@lib/i18n';
 
-export const formatCurrency = (amount: number, currency = 'USD'): string => {
+export const formatCurrency = (amount: number, currency = 'SEK'): string => {
   return new Intl.NumberFormat(getCurrentLocale(), {
     style: 'currency',
     currency,

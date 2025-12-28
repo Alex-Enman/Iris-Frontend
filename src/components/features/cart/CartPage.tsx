@@ -16,7 +16,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
       id: 1,
       name: t('productHeirloomTomatoes'),
       producer: t('supplierNameGreenValleyFarm'),
-      price: 4.5,
+      price: 45,
       quantity: 3,
       unit: 'kg',
       image:
@@ -26,7 +26,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
       id: 2,
       name: t('freeRangeEggs'),
       producer: t('supplierNameSunriseFarm'),
-      price: 5.2,
+      price: 52,
       quantity: 2,
       unit: t('dozenUnit'),
       image:
@@ -36,7 +36,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
       id: 3,
       name: t('productExtraVirginOliveOil'),
       producer: t('supplierNameOliveGroveEstate'),
-      price: 12.0,
+      price: 120,
       quantity: 1,
       unit: 'L',
       image:
@@ -88,12 +88,12 @@ export function CartPage({ onCheckout }: CartPageProps) {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const deliveryFee = 5.0;
+  const deliveryFee = 50;
   const total = subtotal + deliveryFee;
 
   const aiSuggestion = {
     recommendedQuantity: 4,
-    savings: 12.5,
+    savings: 125,
     reasoning: t('aiDemandPredictionReasoning'),
   };
 
@@ -158,10 +158,10 @@ export function CartPage({ onCheckout }: CartPageProps) {
                         </div>
                         <div className='text-right'>
                           <div className='text-sm text-muted-foreground'>
-                            {formatCurrency(item.price, 'EUR')}/{item.unit}
+                            {formatCurrency(item.price, 'SEK')}/{item.unit}
                           </div>
                           <div className='text-xl text-primary'>
-                            {formatCurrency(item.price * item.quantity, 'EUR')}
+                            {formatCurrency(item.price * item.quantity, 'SEK')}
                           </div>
                         </div>
                       </div>
@@ -208,7 +208,7 @@ export function CartPage({ onCheckout }: CartPageProps) {
                     </span>
                   </div>
                   <div className='text-sm text-accent'>
-                    {t('potentialSavings')}: {formatCurrency(aiSuggestion.savings, 'EUR')}
+                    {t('potentialSavings')}: {formatCurrency(aiSuggestion.savings, 'SEK')}
                   </div>
                 </div>
                 <Button
@@ -225,17 +225,17 @@ export function CartPage({ onCheckout }: CartPageProps) {
                 <div className='mb-4 space-y-3'>
                   <div className='flex justify-between'>
                     <span className='text-muted-foreground'>{t('subtotal')}</span>
-                    <span>{formatCurrency(subtotal, 'EUR')}</span>
+                    <span>{formatCurrency(subtotal, 'SEK')}</span>
                   </div>
                   <div className='flex justify-between'>
                     <span className='text-muted-foreground'>{t('delivery')}</span>
-                    <span>{formatCurrency(deliveryFee, 'EUR')}</span>
+                    <span>{formatCurrency(deliveryFee, 'SEK')}</span>
                   </div>
                   <div className='border-t border-border pt-3'>
                     <div className='flex justify-between text-lg'>
                       <span>{t('total')}</span>
                       <span className='text-primary'>
-                        {formatCurrency(total, 'EUR')}
+                        {formatCurrency(total, 'SEK')}
                       </span>
                     </div>
                   </div>

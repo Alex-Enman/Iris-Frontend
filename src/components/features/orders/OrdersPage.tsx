@@ -30,7 +30,7 @@ export function OrdersPage({ onViewSupplier }: OrdersPageProps) {
       supplier: t('supplierNameGreenValleyFarm'),
       supplierId: 1,
       date: t('orderDateOct22_2025'),
-      total: 127.5,
+      total: 1275,
       statusKey: 'inTransit',
       statusClass: 'bg-accent text-accent-foreground',
       progress: 75,
@@ -41,7 +41,7 @@ export function OrdersPage({ onViewSupplier }: OrdersPageProps) {
       supplier: t('supplierNameMountainDairyCo'),
       supplierId: 2,
       date: t('orderDateOct23_2025'),
-      total: 89.2,
+      total: 892,
       statusKey: 'processing',
       statusClass: 'bg-primary/20 text-primary',
       progress: 25,
@@ -52,7 +52,7 @@ export function OrdersPage({ onViewSupplier }: OrdersPageProps) {
       supplier: t('supplierNameHeritageBakery'),
       supplierId: 3,
       date: t('orderDateOct24_2025'),
-      total: 68.0,
+      total: 680,
       statusKey: 'confirmed',
       statusClass: 'bg-primary/10 text-primary',
       progress: 10,
@@ -96,7 +96,7 @@ export function OrdersPage({ onViewSupplier }: OrdersPageProps) {
               </div>
               <div className='flex items-center gap-1'>
                 <DollarSign className='h-4 w-4' />
-                <span>{formatCurrency(o.total, 'EUR')}</span>
+                <span>{formatCurrency(o.total, 'SEK')}</span>
               </div>
             </div>
           </div>
@@ -174,7 +174,7 @@ export function OrdersPage({ onViewSupplier }: OrdersPageProps) {
               <DollarSign className='h-5 w-5 text-accent' />
               <div className='text-sm text-muted-foreground'>{t('thisMonth')}</div>
             </div>
-            <div className='text-3xl text-accent'>{formatCurrency(599, 'EUR')}</div>
+            <div className='text-3xl text-accent'>{formatCurrency(5990, 'SEK')}</div>
           </div>
           <div className='rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 p-6'>
             <div className='mb-2 flex items-center gap-2'>
