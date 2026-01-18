@@ -3,5 +3,6 @@ export * from './core';
 export * from './orders';
 export * from './products';
 export * from './suppliers';
+export * from './marketplace';
 export * from './user';
 export * from './cart';

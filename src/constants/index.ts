@@ -80,6 +80,7 @@ export const CACHE_KEYS = {
   RESTAURANTS: 'restaurants',
   ORDERS: 'orders',
   CART: 'cart',
+  OVERVIEW: 'overview',
   USER: 'user',
   PROFILE: 'profile',
 } as const;
@@ -103,8 +104,15 @@ export const QUERY_KEYS = {
   ORDERS: [CACHE_KEYS.ORDERS],
   ORDER_DETAIL: (id: string) => [CACHE_KEYS.ORDERS, id],
 
+  // Parent Orders (multi-supplier)
+  PARENT_ORDERS: [CACHE_KEYS.ORDERS, 'parent'],
+  PARENT_ORDER_DETAIL: (id: string) => [CACHE_KEYS.ORDERS, 'parent', id],
+
   // Cart
   CART: [CACHE_KEYS.CART],
+
+  // Overview
+  OVERVIEW: [CACHE_KEYS.OVERVIEW],
 
   // User
   USER: [CACHE_KEYS.USER],

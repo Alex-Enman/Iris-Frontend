@@ -1,13 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { SuppliersPage as SuppliersDirectory } from '@components/features/suppliers/SuppliersPage';
 import { SupplierProfileView } from '@components/features/suppliers/SupplierProfileView';
 
 export default function SuppliersRoutePage() {
+  const searchParams = useSearchParams();
   const [selectedSupplierId, setSelectedSupplierId] = useState<string | null>(
     null
   );
+
+  useEffect(() => {
+    const supplierId = searchParams.get('supplierId');
+    if (supplierId) setSelectedSupplierId(supplierId);
+  }, [searchParams]);
 
   if (selectedSupplierId) {
     return (

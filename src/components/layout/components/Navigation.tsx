@@ -37,8 +37,9 @@ export function Navigation({
   }, []);
 
   const navItems = [
-    { id: 'home', label: t('marketplace') },
-    { id: 'suppliers', label: t('suppliers') },
+    { id: 'overview', label: t('overview') },
+    { id: 'marketplace', label: t('marketplace') },
+    { id: 'discover', label: t('discover') },
     { id: 'favorites', label: t('favorites') },
     { id: 'orders', label: t('orders') },
   ];
@@ -53,7 +54,7 @@ export function Navigation({
         <div className='flex h-20 items-center justify-between'>
           {/* Logo */}
           <button
-            onClick={() => onNavigate('home')}
+            onClick={() => onNavigate('overview')}
             className='duration-250 flex items-center gap-2 transition-opacity hover:opacity-70'
           >
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-primary'>

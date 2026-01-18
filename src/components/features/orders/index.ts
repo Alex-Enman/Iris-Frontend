@@ -1,6 +1,7 @@
 // Barrel export for orders page components
 
 export { OrdersPage } from './OrdersPage';
+export { OrderDetailsPage } from './OrderDetailsPage';
 export { OrderFilters } from './OrderFilters';
 export { OrderList } from './OrderList';
 export { OrderDetails } from './OrderDetails';

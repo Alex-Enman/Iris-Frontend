@@ -114,6 +114,63 @@ export const translations = {
     recentOrders: 'Recent Orders',
     yourLatestMarketplaceOrders: 'Your latest marketplace orders',
     viewAllOrders: 'View All Orders',
+    overviewRestaurantDescription:
+      'A quick snapshot of messages, orders, and what to do next.',
+    overviewRecentOrdersDescription: 'Latest updates from your suppliers',
+    overviewNoRecentOrdersTitle: 'No recent orders',
+    overviewNoRecentOrdersDescription:
+      'When you place orders, you will see the latest status updates here.',
+
+    hotRightNow: 'Hot right now',
+    overviewHotRightNowDescription:
+      'Trending products to keep your menu stocked and fresh.',
+    overviewNoHotProductsTitle: 'No products to show right now',
+    overviewNoHotProductsDescription:
+      'Browse the marketplace to discover new suppliers and products.',
+
+    orderAgain: 'Order again',
+    overviewOrderAgainDescription: 'Quickly re-add items from your latest order.',
+    overviewNoOrderAgainTitle: 'Nothing to reorder yet',
+    overviewNoOrderAgainDescription:
+      'Place your first order to get quick reorder shortcuts here.',
+    quickAdd: 'Quick add',
+
+    overviewUnreadMessagesDescription: 'Stay on top of supplier conversations',
+    overviewNoUnreadMessagesTitle: 'All caught up',
+    overviewNoUnreadMessagesDescription:
+      'You have no unread messages right now.',
+    overviewUnreadMessagesCountSuffix: 'unread',
+
+    overviewUrgentActionsDescription: 'Items that may need your attention',
+    overviewNoUrgentActionsTitle: 'No urgent actions',
+    overviewNoUrgentActionsDescription:
+      'You are all set for now. We will surface important actions here.',
+    urgent: 'Urgent',
+
+    payNow: 'Pay now',
+    review: 'Review',
+    resolve: 'Resolve',
+    comingSoonTooltip: 'Coming soon',
+
+    overviewUrgentPendingInvoicesDescription:
+      'You have invoices waiting for payment.',
+    overviewUrgentOffersPendingTitle: 'Offers pending response',
+    overviewUrgentOffersPendingDescription:
+      'Review supplier responses to your offers.',
+    overviewUrgentOrdersNeedConfirmationTitle: 'Orders need confirmation',
+    overviewUrgentOrdersNeedConfirmationDescription:
+      'One or more orders require your confirmation.',
+
+    overviewRecentReviewsDescription:
+      'Latest feedback from your supplier relationships.',
+    seeAllReviews: 'See all reviews',
+    overviewNoRecentReviewsTitle: 'No recent reviews',
+    overviewNoRecentReviewsDescription:
+      'When new reviews are available, they will show up here.',
+    overviewReviewExcerpt1:
+      'Great quality and consistent deliveries. The produce was excellent.',
+    overviewReviewExcerpt2:
+      'Reliable supplier and friendly communication. Would order again.',
     topSuppliers: 'Top Suppliers',
     yourMostTrustedSuppliers: 'Your most trusted suppliers',
     browseSuppliers: 'Browse Suppliers',
@@ -550,6 +607,7 @@ export const translations = {
     waterfront: 'Waterfront',
     nameAZ: 'Name (A-Z)',
     newest: 'Newest',
+    oldest: 'Oldest',
     seekingSuppliers: 'Seeking Suppliers',
     seekingNewSuppliers: 'Actively seeking new suppliers',
     capacity: 'Capacity',
@@ -646,6 +704,8 @@ export const translations = {
     orderIdLabel: 'Order ID',
     notes: 'Notes',
     paid: 'Paid',
+    failed: 'Failed',
+    refunded: 'Refunded',
 
     activeSupplyAgreements: 'Active Supply Agreements',
     discountLabel: 'discount',
@@ -800,6 +860,9 @@ export const translations = {
 
     purchaseModeDirect: 'Direct purchase',
     purchaseModeOffer: 'Offer',
+    offerAccepted: 'Offer accepted',
+    offerPending: 'Offer pending',
+    offerRejected: 'Offer rejected',
     offerPricePrompt: 'Enter your offer price per unit (kr)',
     switchToOfferPurchase: 'Switch to offer',
     switchToDirectPurchase: 'Switch to direct',
@@ -1280,6 +1343,59 @@ export const translations = {
     suppliers: 'Suppliers',
     favorites: 'Favorites',
     orders: 'Orders',
+    marketplaceHeroKicker: 'Shopping hub',
+    marketplaceHeroDescription:
+      'Products first, with smart filters and curated rails to keep ordering fast.',
+    searchMarketplacePlaceholder: 'Search products, suppliers, tags…',
+    browseAll: 'Browse all',
+
+    recommended: 'Recommended',
+    priceLowToHigh: 'Price: low to high',
+    priceHighToLow: 'Price: high to low',
+    reset: 'Reset',
+    priceRange: 'Price range',
+    availableNow: 'Available now',
+    deals: 'Deals',
+
+    seasonalPicks: 'Seasonal picks',
+    seasonalPicksDescription: 'Fresh drops that match the season right now.',
+    lowStockDescription: 'Limited quantities — order soon.',
+
+    discoverHeroKicker: 'Exploration hub',
+    discoverHeroDescription:
+      'Collections, supplier spotlights, and inspiration — built for discovery.',
+    curatedCollections: 'Curated collections',
+    curatedCollectionsDescription:
+      'Jump into themed baskets to explore and shop faster.',
+    exploreByCategory: 'Explore by category',
+    exploreByCategoryDescription:
+      'Start with a category and let the discovery flow from there.',
+    tapToBrowse: 'Tap to browse',
+    supplierSpotlights: 'Supplier spotlights',
+    supplierSpotlightsDescription:
+      'Stories and highlights from producers worth knowing.',
+    newAndNoteworthySuppliers: 'New & noteworthy suppliers',
+    newAndNoteworthySuppliersDescription:
+      'Recently added or rising suppliers to try this week.',
+    viewInMarketplace: 'View in Marketplace',
+    viewCollection: 'View collection',
+
+    collectionFarmToTable: 'Farm-to-table essentials',
+    collectionFarmToTableDescription:
+      'Local staples that work across menus — always a safe bet.',
+    collectionOrganicWeek: 'Organic week',
+    collectionOrganicWeekDescription:
+      'Stock up on organic picks for a cleaner menu rotation.',
+    collectionChefFavorites: 'Chef favorites',
+    collectionChefFavoritesDescription:
+      'Highly rated items and suppliers restaurants love.',
+    collectionFastDelivery: 'Fast delivery',
+    collectionFastDeliveryDescription:
+      'Close-by and available now — perfect for last-minute needs.',
+    ordersEmptyTitle: 'No orders to show',
+    ordersEmptyDescription:
+      'Try switching tabs, searching by supplier/product, or check back later.',
+    nextExpectedDelivery: 'Next expected delivery',
     messages: 'Messages',
     profile: 'Profile',
 
@@ -1307,6 +1423,16 @@ export const translations = {
     delivered: 'Delivered',
     cancelled: 'Cancelled',
     returned: 'Returned',
+
+    unknown: 'Unknown',
+
+    inProgress: 'In progress',
+    partiallyDelivered: 'Partially delivered',
+    supplierFulfillments: 'Supplier fulfillments',
+    timeline: 'Timeline',
+    backToOrders: 'Back to orders',
+    orderNotFoundTitle: 'Order not found',
+    orderNotFoundDescription: 'We could not find that order. It may have been removed.',
 
     available: 'Available',
     outOfStock: 'Out of Stock',
@@ -1413,6 +1539,63 @@ export const translations = {
     recentOrders: 'Senaste beställningar',
     yourLatestMarketplaceOrders: 'Dina senaste beställningar på marknadsplatsen',
     viewAllOrders: 'Visa alla beställningar',
+    overviewRestaurantDescription:
+      'En snabb översikt över meddelanden, beställningar och nästa steg.',
+    overviewRecentOrdersDescription: 'Senaste uppdateringarna från dina leverantörer',
+    overviewNoRecentOrdersTitle: 'Inga senaste beställningar',
+    overviewNoRecentOrdersDescription:
+      'När du lägger beställningar visas de senaste statusuppdateringarna här.',
+
+    hotRightNow: 'Populärt just nu',
+    overviewHotRightNowDescription:
+      'Trendande produkter som hjälper dig att hålla menyn välfylld.',
+    overviewNoHotProductsTitle: 'Inga produkter att visa just nu',
+    overviewNoHotProductsDescription:
+      'Utforska marknadsplatsen för att hitta nya leverantörer och produkter.',
+
+    orderAgain: 'Beställ igen',
+    overviewOrderAgainDescription:
+      'Lägg snabbt till varor från din senaste beställning.',
+    overviewNoOrderAgainTitle: 'Inget att beställa igen ännu',
+    overviewNoOrderAgainDescription:
+      'Lägg din första beställning för att få snabba genvägar här.',
+    quickAdd: 'Snabblägg till',
+
+    overviewUnreadMessagesDescription: 'Håll koll på leverantörskonversationer',
+    overviewNoUnreadMessagesTitle: 'Allt är uppdaterat',
+    overviewNoUnreadMessagesDescription: 'Du har inga olästa meddelanden just nu.',
+    overviewUnreadMessagesCountSuffix: 'olästa',
+
+    overviewUrgentActionsDescription: 'Saker som kan kräva din uppmärksamhet',
+    overviewNoUrgentActionsTitle: 'Inga brådskande åtgärder',
+    overviewNoUrgentActionsDescription:
+      'Allt ser bra ut för tillfället. Viktiga saker visas här.',
+    urgent: 'Brådskande',
+
+    payNow: 'Betala nu',
+    review: 'Granska',
+    resolve: 'Åtgärda',
+    comingSoonTooltip: 'Kommer snart',
+
+    overviewUrgentPendingInvoicesDescription:
+      'Du har fakturor som väntar på betalning.',
+    overviewUrgentOffersPendingTitle: 'Erbjudanden väntar på svar',
+    overviewUrgentOffersPendingDescription:
+      'Granska leverantörernas svar på dina erbjudanden.',
+    overviewUrgentOrdersNeedConfirmationTitle: 'Beställningar behöver bekräftas',
+    overviewUrgentOrdersNeedConfirmationDescription:
+      'En eller flera beställningar kräver din bekräftelse.',
+
+    overviewRecentReviewsDescription:
+      'Senaste feedbacken från dina leverantörsrelationer.',
+    seeAllReviews: 'Se alla omdömen',
+    overviewNoRecentReviewsTitle: 'Inga senaste omdömen',
+    overviewNoRecentReviewsDescription:
+      'När nya omdömen finns tillgängliga visas de här.',
+    overviewReviewExcerpt1:
+      'Jättebra kvalitet och leveranser som alltid håller tiden.',
+    overviewReviewExcerpt2:
+      'Pålitlig leverantör och smidig kommunikation. Beställer gärna igen.',
     topSuppliers: 'Topp-leverantörer',
     yourMostTrustedSuppliers: 'Dina mest betrodda leverantörer',
     browseSuppliers: 'Bläddra bland leverantörer',
@@ -1851,6 +2034,7 @@ export const translations = {
     waterfront: 'Hamnområdet',
     nameAZ: 'Namn (A-Ö)',
     newest: 'Nyast',
+    oldest: 'Äldst',
     seekingSuppliers: 'Söker leverantörer',
     seekingNewSuppliers: 'Söker aktivt nya leverantörer',
     capacity: 'Kapacitet',
@@ -1947,6 +2131,8 @@ export const translations = {
     orderIdLabel: 'Order-ID',
     notes: 'Anteckningar',
     paid: 'Betald',
+    failed: 'Misslyckad',
+    refunded: 'Återbetald',
 
     activeSupplyAgreements: 'Aktiva leveransavtal',
     discountLabel: 'rabatt',
@@ -2099,6 +2285,9 @@ export const translations = {
 
     purchaseModeDirect: 'Direktköp',
     purchaseModeOffer: 'Bud',
+    offerAccepted: 'Bud accepterat',
+    offerPending: 'Bud väntar',
+    offerRejected: 'Bud avvisat',
     offerPricePrompt: 'Ange ditt bud per enhet (kr)',
     switchToOfferPurchase: 'Byt till bud',
     switchToDirectPurchase: 'Byt till direktköp',
@@ -2580,6 +2769,59 @@ export const translations = {
     suppliers: 'Leverantörer',
     favorites: 'Favoriter',
     orders: 'Beställningar',
+    marketplaceHeroKicker: 'Shoppinghub',
+    marketplaceHeroDescription:
+      'Produkterna först, med smarta filter och kuraterade rader för snabb beställning.',
+    searchMarketplacePlaceholder: 'Sök produkter, leverantörer, taggar…',
+    browseAll: 'Bläddra alla',
+
+    recommended: 'Rekommenderat',
+    priceLowToHigh: 'Pris: lågt till högt',
+    priceHighToLow: 'Pris: högt till lågt',
+    reset: 'Återställ',
+    priceRange: 'Prisintervall',
+    availableNow: 'Tillgänglig nu',
+    deals: 'Erbjudanden',
+
+    seasonalPicks: 'Säsongens val',
+    seasonalPicksDescription: 'Färska släpp som passar säsongen just nu.',
+    lowStockDescription: 'Begränsade mängder — beställ snart.',
+
+    discoverHeroKicker: 'Upptäckhub',
+    discoverHeroDescription:
+      'Kollektioner, leverantörsspotlights och inspiration — byggt för upptäckt.',
+    curatedCollections: 'Kuraterade kollektioner',
+    curatedCollectionsDescription:
+      'Hoppa in i teman för att utforska och handla snabbare.',
+    exploreByCategory: 'Utforska efter kategori',
+    exploreByCategoryDescription:
+      'Börja med en kategori och låt upptäckten fortsätta därifrån.',
+    tapToBrowse: 'Tryck för att bläddra',
+    supplierSpotlights: 'Leverantörsspotlights',
+    supplierSpotlightsDescription:
+      'Berättelser och highlights från producenter värda att känna till.',
+    newAndNoteworthySuppliers: 'Nya & intressanta leverantörer',
+    newAndNoteworthySuppliersDescription:
+      'Nyligen tillagda eller växande leverantörer att testa i veckan.',
+    viewInMarketplace: 'Visa i Marknadsplatsen',
+    viewCollection: 'Visa kollektion',
+
+    collectionFarmToTable: 'Farm-to-table — basvaror',
+    collectionFarmToTableDescription:
+      'Lokala staples som funkar över menyer — alltid ett säkert kort.',
+    collectionOrganicWeek: 'Ekovecka',
+    collectionOrganicWeekDescription:
+      'Fyll på med ekologiska val för en renare menyrotation.',
+    collectionChefFavorites: 'Kockfavoriter',
+    collectionChefFavoritesDescription:
+      'Högt betygsatta varor och leverantörer som restauranger älskar.',
+    collectionFastDelivery: 'Snabb leverans',
+    collectionFastDeliveryDescription:
+      'Nära och tillgängligt nu — perfekt vid sista minuten.',
+    ordersEmptyTitle: 'Inga beställningar att visa',
+    ordersEmptyDescription:
+      'Prova att byta flik, sök efter leverantör/produkt eller kom tillbaka senare.',
+    nextExpectedDelivery: 'Nästa förväntade leverans',
     messages: 'Meddelanden',
     profile: 'Profil',
 
@@ -2607,6 +2849,16 @@ export const translations = {
     delivered: 'Levererad',
     cancelled: 'Avbruten',
     returned: 'Returnerad',
+
+    unknown: 'Okänt',
+
+    inProgress: 'Pågår',
+    partiallyDelivered: 'Delvis levererad',
+    supplierFulfillments: 'Leverantörsleveranser',
+    timeline: 'Tidslinje',
+    backToOrders: 'Tillbaka till beställningar',
+    orderNotFoundTitle: 'Beställningen hittades inte',
+    orderNotFoundDescription: 'Vi kunde inte hitta den beställningen. Den kan ha tagits bort.',
 
     available: 'Tillgänglig',
     outOfStock: 'Slut i lager',

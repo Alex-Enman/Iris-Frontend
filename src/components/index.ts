@@ -16,6 +16,7 @@ export { Providers } from './layout';
 
 // Feature UI barrels (Presentation)
 export * from './features/cart';
+export * from './features/overview';
 export * from './features/orders';
 export * from './features/products';
 export * from './features/suppliers';
